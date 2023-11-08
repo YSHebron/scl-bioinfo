@@ -1,2 +1,3 @@
 # scl-bioinformatics
-[WIP] A bioinformatics project that aims to extend existing computational methods to predict (problematic) Protein Complexes from noisy PPINs and improve their performance.
+
+[WIP] A bioinformatics project that aims to extend existing computational methods to predict (problematic) Protein Complexes from noisy PPINs and improve their performance. Output will be a prediction pipeline containing an improved algorithm.
