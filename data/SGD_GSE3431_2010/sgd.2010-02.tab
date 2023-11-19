@@ -1,0 +1,4825 @@
+-- C:\Documents and Settings\Gail Binkley\Desktop\tables\bud2.2010-02.tab
+--
+-- Generated for Oracle 10g on Fri Feb 12  09:33:20 2010 by Server Generator 10.1.2.9.28
+ 
+
+
+PROMPT Creating Table 'ABSTRACT'
+CREATE TABLE ABSTRACT
+ (REFERENCE_NO NUMBER(10) NOT NULL
+ ,ABSTRACT VARCHAR2(4000) NOT NULL
+ )
+ PCTUSED 70
+ PCTFREE 5
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 100M
+   NEXT 100M
+ )
+ TABLESPACE DATA3
+/
+
+COMMENT ON TABLE ABSTRACT IS 'Contains reference abstracts from published articles or meetings.'
+/
+
+COMMENT ON COLUMN ABSTRACT.REFERENCE_NO IS 'Unique identifier for a reference. Foreign key to the reference table.'
+/
+
+COMMENT ON COLUMN ABSTRACT.ABSTRACT IS 'Abstract for a reference.'
+/
+
+PROMPT Creating Table 'EXPT_EXPTPROP'
+CREATE TABLE EXPT_EXPTPROP
+ (EXPT_EXPTPROP_NO NUMBER(10) NOT NULL
+ ,EXPT_PROPERTY_NO NUMBER(10) NOT NULL
+ ,EXPERIMENT_NO NUMBER(10) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE EXPT_EXPTPROP IS 'Linking table between the experiment and expt_property tables.'
+/
+
+COMMENT ON COLUMN EXPT_EXPTPROP.EXPT_EXPTPROP_NO IS 'Assigned unique identifier for a row in the expt_exptprop table. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN EXPT_EXPTPROP.EXPT_PROPERTY_NO IS 'Unique identifier for an experiment property. Foreign key to the expt_property table.'
+/
+
+COMMENT ON COLUMN EXPT_EXPTPROP.EXPERIMENT_NO IS 'Unique identifier for an experiment.  Foreign key to the experiment table.'
+/
+
+PROMPT Creating Table 'LIT_GUIDE'
+CREATE TABLE LIT_GUIDE
+ (LIT_GUIDE_NO NUMBER(10) NOT NULL
+ ,REFERENCE_NO NUMBER(10) NOT NULL
+ ,LITERATURE_TOPIC VARCHAR2(100) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE LIT_GUIDE IS 'Contains information about reference literature topics, used for gene and non-gene literature curation.'
+/
+
+COMMENT ON COLUMN LIT_GUIDE.LIT_GUIDE_NO IS 'Assigned unique identifier for a reference attribute or property. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN LIT_GUIDE.REFERENCE_NO IS 'Unique identifier for a reference. Foreign key to the reference table.'
+/
+
+COMMENT ON COLUMN LIT_GUIDE.LITERATURE_TOPIC IS 'The literature topic associated with a reference.'
+/
+
+COMMENT ON COLUMN LIT_GUIDE.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN LIT_GUIDE.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'NOTE_LINK'
+CREATE TABLE NOTE_LINK
+ (NOTE_LINK_NO NUMBER(10) NOT NULL
+ ,NOTE_NO NUMBER(10) NOT NULL
+ ,TAB_NAME VARCHAR2(30) NOT NULL
+ ,PRIMARY_KEY NUMBER(10) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE NOTE_LINK IS 'This table links a note with any row in the database.'
+/
+
+COMMENT ON COLUMN NOTE_LINK.NOTE_LINK_NO IS 'Assigned unique identifier for a note in the note_link table. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN NOTE_LINK.NOTE_NO IS 'Unique identifier for a note. Foreign key to the note table.'
+/
+
+COMMENT ON COLUMN NOTE_LINK.TAB_NAME IS 'The table name of the row to which the note refers.'
+/
+
+COMMENT ON COLUMN NOTE_LINK.PRIMARY_KEY IS 'The primary key of the row to which the note refers.'
+/
+
+COMMENT ON COLUMN NOTE_LINK.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN NOTE_LINK.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'PHENOTYPE'
+CREATE TABLE PHENOTYPE
+ (PHENOTYPE_NO NUMBER(10) NOT NULL
+ ,SOURCE VARCHAR2(40) NOT NULL
+ ,EXPERIMENT_TYPE VARCHAR2(100) NOT NULL
+ ,MUTANT_TYPE VARCHAR2(100) NOT NULL
+ ,QUALIFIER VARCHAR2(240)
+ ,OBSERVABLE VARCHAR2(240) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE PHENOTYPE IS 'Contains categorized phenotypes associated with a feature.'
+/
+
+COMMENT ON COLUMN PHENOTYPE.PHENOTYPE_NO IS 'Assigned unique identifier for a phenotype. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN PHENOTYPE.SOURCE IS 'The source of the phenotype (coded).'
+/
+
+COMMENT ON COLUMN PHENOTYPE.EXPERIMENT_TYPE IS 'The experimental methodology that produced the phenotype (coded).'
+/
+
+COMMENT ON COLUMN PHENOTYPE.MUTANT_TYPE IS 'The mutation effect on the gene product function (coded.).'
+/
+
+COMMENT ON COLUMN PHENOTYPE.QUALIFIER IS 'The direction of the change relative to wild type (coded).'
+/
+
+COMMENT ON COLUMN PHENOTYPE.OBSERVABLE IS 'Indicates what feature is changed in the mutant (coded).'
+/
+
+COMMENT ON COLUMN PHENOTYPE.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN PHENOTYPE.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'INTERACT_PHENO'
+CREATE TABLE INTERACT_PHENO
+ (INTERACT_PHENO_NO NUMBER(10) NOT NULL
+ ,INTERACTION_NO NUMBER(10) NOT NULL
+ ,PHENOTYPE_NO NUMBER(10) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE INTERACT_PHENO IS 'Linking table between the interaction and phenotype tables.'
+/
+
+COMMENT ON COLUMN INTERACT_PHENO.INTERACT_PHENO_NO IS 'Assigned unique identifier for a row in the interact_pheno table. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN INTERACT_PHENO.INTERACTION_NO IS 'Unique identifier for an interaction. Foreign key to the interaction table.'
+/
+
+COMMENT ON COLUMN INTERACT_PHENO.PHENOTYPE_NO IS 'Unique identifier for a phenotype.  Foreign key to the phenotype table.'
+/
+
+PROMPT Creating Table 'FEAT_URL'
+CREATE TABLE FEAT_URL
+ (FEAT_URL_NO NUMBER(10) NOT NULL
+ ,FEATURE_NO NUMBER(10) NOT NULL
+ ,URL_NO NUMBER(10) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE FEAT_URL IS 'Linking table between the feature and url tables.'
+/
+
+COMMENT ON COLUMN FEAT_URL.FEAT_URL_NO IS 'Assigned unique identifier for a row in the feat_url table. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN FEAT_URL.FEATURE_NO IS 'Unique identifier for a feature. Foreign key to the feature table.'
+/
+
+COMMENT ON COLUMN FEAT_URL.URL_NO IS 'Unique identifier assigned for a URL.  Foreign key to the url table.'
+/
+
+PROMPT Creating Table 'COL_RULE'
+CREATE TABLE COL_RULE
+ (COL_RULE_NO NUMBER(10) NOT NULL
+ ,TAB_NAME VARCHAR2(30) NOT NULL
+ ,COL_NAME VARCHAR2(30) NOT NULL
+ ,COL_ORDER NUMBER(2) NOT NULL
+ ,COL_RULE VARCHAR2(4000)
+ ,COL_SEQUENCE_NAME VARCHAR2(30)
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE COL_RULE IS 'Contains column-based rules for the database.'
+/
+
+COMMENT ON COLUMN COL_RULE.COL_RULE_NO IS 'Assigned unique identifier for a column rule. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN COL_RULE.TAB_NAME IS 'Table to which the column belongs.'
+/
+
+COMMENT ON COLUMN COL_RULE.COL_NAME IS 'Column name.'
+/
+
+COMMENT ON COLUMN COL_RULE.COL_ORDER IS 'Order in which the column should be listed.'
+/
+
+COMMENT ON COLUMN COL_RULE.COL_RULE IS 'Rules associated with this column.'
+/
+
+COMMENT ON COLUMN COL_RULE.COL_SEQUENCE_NAME IS 'Name of the Oracle sequence, if any, associated with this column.'
+/
+
+PROMPT Creating Table 'WEB_DISPLAY'
+CREATE TABLE WEB_DISPLAY
+ (WEB_DISPLAY_NO NUMBER(10) NOT NULL
+ ,URL_NO NUMBER(10) NOT NULL
+ ,WEB_PAGE_NAME VARCHAR2(40) NOT NULL
+ ,LABEL_LOCATION VARCHAR2(40) NOT NULL
+ ,LABEL_TYPE VARCHAR2(40) NOT NULL
+ ,LABEL_NAME VARCHAR2(100) NOT NULL
+ ,IS_DEFAULT VARCHAR2(1) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE WEB_DISPLAY IS 'Contains information about how URL links are displayed on web pages.'
+/
+
+COMMENT ON COLUMN WEB_DISPLAY.WEB_DISPLAY_NO IS 'Assigned unique identifier for a web display location. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN WEB_DISPLAY.URL_NO IS 'Unique identifier assigned to a URL.  Foreign key to the url table.'
+/
+
+COMMENT ON COLUMN WEB_DISPLAY.WEB_PAGE_NAME IS 'Name of the web page containing the URL link (coded).'
+/
+
+COMMENT ON COLUMN WEB_DISPLAY.LABEL_LOCATION IS 'Location on the web page of the URL link (coded).'
+/
+
+COMMENT ON COLUMN WEB_DISPLAY.LABEL_TYPE IS 'Type of URL link (coded).'
+/
+
+COMMENT ON COLUMN WEB_DISPLAY.LABEL_NAME IS 'Name used for the URL link.'
+/
+
+COMMENT ON COLUMN WEB_DISPLAY.IS_DEFAULT IS 'Whether this URL link is the default link in a pull down menu.'
+/
+
+COMMENT ON COLUMN WEB_DISPLAY.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN WEB_DISPLAY.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'CVTERM_DBXREF'
+CREATE TABLE CVTERM_DBXREF
+ (CVTERM_DBXREF_NO NUMBER(10) NOT NULL
+ ,CV_TERM_NO NUMBER(10) NOT NULL
+ ,DBXREF_NO NUMBER(10) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE CVTERM_DBXREF IS 'Linking table between cv_term and dbxref tables.'
+/
+
+COMMENT ON COLUMN CVTERM_DBXREF.CVTERM_DBXREF_NO IS 'Assigned unique identifier to link the cvterm and dbxref tables. Oracle sequence generated number.'
+/
+
+COMMENT ON COLUMN CVTERM_DBXREF.CV_TERM_NO IS 'Assigned unique identifier for a controlled vocabulary term. Foreign key to the cv_term table.'
+/
+
+COMMENT ON COLUMN CVTERM_DBXREF.DBXREF_NO IS 'Assigned unique identifier for an database cross reference. Foreign key to the dbxref table.'
+/
+
+PROMPT Creating Table 'HOMOLOG_ALIGNMENT'
+CREATE TABLE HOMOLOG_ALIGNMENT
+ (HOMOLOG_ALIGNMENT_NO NUMBER(10) NOT NULL
+ ,QUERY_NO NUMBER(10) NOT NULL
+ ,TARGET_NO NUMBER(10) NOT NULL
+ ,METHOD VARCHAR2(40) NOT NULL
+ ,QUERY_MIN_COORD NUMBER(10) NOT NULL
+ ,QUERY_MAX_COORD NUMBER(10) NOT NULL
+ ,TARGET_MIN_COORD NUMBER(10) NOT NULL
+ ,TARGET_MAX_COORD NUMBER(10) NOT NULL
+ ,SCORE NUMBER(8,3) NOT NULL
+ ,SCORE_TYPE VARCHAR2(40) NOT NULL
+ ,PCT_ALIGNED NUMBER(5,2)
+ ,PCT_IDENTICAL NUMBER(5,2)
+ ,PCT_SIMILAR NUMBER(5,2)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 100M
+   NEXT 100M
+ )
+ TABLESPACE DATA3
+/
+
+COMMENT ON TABLE HOMOLOG_ALIGNMENT IS 'Contains alignments between S. cerevisiae features and their homologs.'
+/
+
+COMMENT ON COLUMN HOMOLOG_ALIGNMENT.HOMOLOG_ALIGNMENT_NO IS 'Assigned unique identifier for a homolog alignment. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN HOMOLOG_ALIGNMENT.QUERY_NO IS 'Unique identifier of the query sequence. Foreign key to the feature table.'
+/
+
+COMMENT ON COLUMN HOMOLOG_ALIGNMENT.TARGET_NO IS 'Unique identifier for a target sequence. Foreign key to homolog table.'
+/
+
+COMMENT ON COLUMN HOMOLOG_ALIGNMENT.METHOD IS 'Method used to generate the alignment data (coded).'
+/
+
+COMMENT ON COLUMN HOMOLOG_ALIGNMENT.QUERY_MIN_COORD IS 'Minimum coordinate of where the alignment begins for the query sequence.'
+/
+
+COMMENT ON COLUMN HOMOLOG_ALIGNMENT.QUERY_MAX_COORD IS 'Maximum coordinate of where the alignment ends for the query sequence.'
+/
+
+COMMENT ON COLUMN HOMOLOG_ALIGNMENT.TARGET_MIN_COORD IS 'Minimum coordinate of where the alignment begins for the target sequence.'
+/
+
+COMMENT ON COLUMN HOMOLOG_ALIGNMENT.TARGET_MAX_COORD IS 'Maximum coordinate of where the alignment ends for the target sequence.'
+/
+
+COMMENT ON COLUMN HOMOLOG_ALIGNMENT.SCORE IS 'The significance score.'
+/
+
+COMMENT ON COLUMN HOMOLOG_ALIGNMENT.SCORE_TYPE IS 'The type of score (coded).'
+/
+
+COMMENT ON COLUMN HOMOLOG_ALIGNMENT.PCT_ALIGNED IS 'Percent alignment.'
+/
+
+COMMENT ON COLUMN HOMOLOG_ALIGNMENT.PCT_IDENTICAL IS 'Percent identity.'
+/
+
+COMMENT ON COLUMN HOMOLOG_ALIGNMENT.PCT_SIMILAR IS 'Percent similarity.'
+/
+
+COMMENT ON COLUMN HOMOLOG_ALIGNMENT.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN HOMOLOG_ALIGNMENT.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'DBXREF_FEAT'
+CREATE TABLE DBXREF_FEAT
+ (DBXREF_FEAT_NO NUMBER(10) NOT NULL
+ ,DBXREF_NO NUMBER(10) NOT NULL
+ ,FEATURE_NO NUMBER(10) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE DBXREF_FEAT IS 'Linking table between the dbxref and feature tables.'
+/
+
+COMMENT ON COLUMN DBXREF_FEAT.DBXREF_FEAT_NO IS 'Assigned unique identifier for a row in the dbxref_feat table. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN DBXREF_FEAT.DBXREF_NO IS 'Unique identifier for an database cross reference. Foreign key to the dbxref table.'
+/
+
+COMMENT ON COLUMN DBXREF_FEAT.FEATURE_NO IS 'Unique identifier for a feature. Foreign key to the feature table.'
+/
+
+PROMPT Creating Table 'GUS_CONTIG'
+CREATE TABLE GUS_CONTIG
+ (GUS_CONTIG_NO NUMBER(10) NOT NULL
+ ,CONTIG_NAME VARCHAR2(40) NOT NULL
+ ,TAXON_ID NUMBER(10) NOT NULL
+ ,SOURCE VARCHAR2(40) NOT NULL
+ ,LENGTH NUMBER(10) NOT NULL
+ ,POST_GAP NUMBER(4)
+ ,PRE_GAP NUMBER(4)
+ ,CONTIG_ORDER NUMBER(4)
+ ,GUS_SCAFFOLD_NO NUMBER(10)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE GUS_CONTIG IS 'Contains information about contigs in other genomes used for sequence assembly.'
+/
+
+COMMENT ON COLUMN GUS_CONTIG.GUS_CONTIG_NO IS 'Assigned unique identifier for a contig. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN GUS_CONTIG.CONTIG_NAME IS 'The name of the contig.'
+/
+
+COMMENT ON COLUMN GUS_CONTIG.TAXON_ID IS 'The taxon id of the organism belonging to the contig as assigned by NCBI.  Foreign key to the taxonomy table.'
+/
+
+COMMENT ON COLUMN GUS_CONTIG.SOURCE IS 'The source of the contig (coded).'
+/
+
+COMMENT ON COLUMN GUS_CONTIG.LENGTH IS 'The length of the contig in nucleotides.'
+/
+
+COMMENT ON COLUMN GUS_CONTIG.POST_GAP IS 'The length of the gap at the end of the contig.  If the number is negative, then there is an overlap.'
+/
+
+COMMENT ON COLUMN GUS_CONTIG.PRE_GAP IS 'The length of the gap at the end of the contig.  If the number is negative, then there is an overlap.  If the number is 0, then it is the first contig in a scaffold.'
+/
+
+COMMENT ON COLUMN GUS_CONTIG.CONTIG_ORDER IS 'The order of the associated contigs.'
+/
+
+COMMENT ON COLUMN GUS_CONTIG.GUS_SCAFFOLD_NO IS 'Unique identifier for a scaffold. Foreign key to the gus_scaffold table.'
+/
+
+COMMENT ON COLUMN GUS_CONTIG.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN GUS_CONTIG.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'CV'
+CREATE TABLE CV
+ (CV_NO NUMBER(10) NOT NULL
+ ,CV_NAME VARCHAR2(40) NOT NULL
+ ,URL_NO NUMBER(10)
+ ,DESCRIPTION VARCHAR2(240)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE CV IS 'Contains external controlled vocabularies (e.g., ChEBI),  local CVs (e.g., experiment_type, mutant_type, qualifier, and observable namespaces that comprise the Yeast Phenotype Ontology), or database column names that identify coded values.'
+/
+
+COMMENT ON COLUMN CV.CV_NO IS 'Assigned unique identifier for a controlled vocabulary. Oracle generated sequential number'
+/
+
+COMMENT ON COLUMN CV.CV_NAME IS 'Unique name of the controlled vocabulary or database column name.'
+/
+
+COMMENT ON COLUMN CV.URL_NO IS 'Unique identifier assigned to a URL.  Foreign key to the URL table.'
+/
+
+COMMENT ON COLUMN CV.DESCRIPTION IS 'Full description of the controlled vocabulary.'
+/
+
+COMMENT ON COLUMN CV.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN CV.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'CV_TERM'
+CREATE TABLE CV_TERM
+ (CV_TERM_NO NUMBER(10) NOT NULL
+ ,CV_NO NUMBER(10) NOT NULL
+ ,TERM_NAME VARCHAR2(1024) NOT NULL
+ ,DBXREF_ID VARCHAR2(40)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ ,CVTERM_DEFINITION VARCHAR2(2900)
+ )
+ PCTUSED 60
+ PCTFREE 20
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE CV_TERM IS 'Contains individual terms for a specific controlled vocabulary.  The same term name can be used in multiple controlled vocabularies.'
+/
+
+COMMENT ON COLUMN CV_TERM.CV_TERM_NO IS 'Assigned unique identifier for a controlled vocabulary term. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN CV_TERM.CV_NO IS 'Unique identifier for a controlled vocabulary. Foreign key to the CV table.'
+/
+
+COMMENT ON COLUMN CV_TERM.TERM_NAME IS 'The name of the controlled vocabulary term (e.g., go term, phenotype observable term, etc.)'
+/
+
+COMMENT ON COLUMN CV_TERM.DBXREF_ID IS 'Identifier assigned by another source (e.g., GOID, Taxon id). This is the primary DBXREF_ID for this cv_term.  Use the cvterm_dbxref table to associate secondary dbxref_ids.'
+/
+
+COMMENT ON COLUMN CV_TERM.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN CV_TERM.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+COMMENT ON COLUMN CV_TERM.CVTERM_DEFINITION IS 'Definition of the controlled vocabulary term.'
+/
+
+PROMPT Creating Table 'COLL_GENERES'
+CREATE TABLE COLL_GENERES
+ (COLL_GENERES_NO NUMBER(10) NOT NULL
+ ,COLLEAGUE_NO NUMBER(10) NOT NULL
+ ,FEATURE_NO NUMBER(10) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE COLL_GENERES IS 'Linking table between the colleague and gene_reservation tables.'
+/
+
+COMMENT ON COLUMN COLL_GENERES.COLL_GENERES_NO IS 'Assigned unique identifier for a row in the coll_generes table.  Oracle generated sequential numberr.'
+/
+
+COMMENT ON COLUMN COLL_GENERES.COLLEAGUE_NO IS 'Unique identifier for a colleague.  Foreign key to the colleague table.'
+/
+
+COMMENT ON COLUMN COLL_GENERES.FEATURE_NO IS 'Unique identifier for a feature.  Foreign key to the gene_reservation table.'
+/
+
+PROMPT Creating Table 'EXPERIMENT'
+CREATE TABLE EXPERIMENT
+ (EXPERIMENT_NO NUMBER(10) NOT NULL
+ ,SOURCE VARCHAR2(40) NOT NULL
+ ,EXPERIMENT_COMMENT VARCHAR2(240)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE EXPERIMENT IS 'Contains individual experiments as described in references.'
+/
+
+COMMENT ON COLUMN EXPERIMENT.EXPERIMENT_NO IS 'Assigned unique identifier for an experiment.  Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN EXPERIMENT.SOURCE IS 'The source of the experiment (coded).'
+/
+
+COMMENT ON COLUMN EXPERIMENT.EXPERIMENT_COMMENT IS 'A description or note about the experiment.'
+/
+
+COMMENT ON COLUMN EXPERIMENT.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN EXPERIMENT.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'CVTERM_GROUP'
+CREATE TABLE CVTERM_GROUP
+ (CVTERM_GROUP_NO NUMBER(10) NOT NULL
+ ,CV_TERM_NO NUMBER(10) NOT NULL
+ ,GROUP_NAME VARCHAR2(40) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE CVTERM_GROUP IS 'Contains sub-sets or groups of terms that are not part of the definition of the controlled vocabulary (e.g., Yeast GO slim, terms not valid for annotation).'
+/
+
+COMMENT ON COLUMN CVTERM_GROUP.CVTERM_GROUP_NO IS 'Assigned unique identifier for a group of controlled vocabulary terms.  Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN CVTERM_GROUP.CV_TERM_NO IS 'Unique identifier for a controlled vocabulary term. Foreign key to the cv_term table.'
+/
+
+COMMENT ON COLUMN CVTERM_GROUP.GROUP_NAME IS 'The name of the controlled vocabulary group (coded).'
+/
+
+COMMENT ON COLUMN CVTERM_GROUP.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN CVTERM_GROUP.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'UPDATE_LOG'
+CREATE TABLE UPDATE_LOG
+ (UPDATE_LOG_NO NUMBER(10) NOT NULL
+ ,TAB_NAME VARCHAR2(30) NOT NULL
+ ,COL_NAME VARCHAR2(30) NOT NULL
+ ,PRIMARY_KEY NUMBER(10) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ ,OLD_VALUE VARCHAR2(4000)
+ ,NEW_VALUE VARCHAR2(4000)
+ ,DESCRIPTION VARCHAR2(240)
+ )
+ PCTUSED 70
+ PCTFREE 5
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 100M
+   NEXT 100M
+ )
+ TABLESPACE DATA3
+/
+
+COMMENT ON TABLE UPDATE_LOG IS 'Contains a row for each updated column in the database.'
+/
+
+COMMENT ON COLUMN UPDATE_LOG.UPDATE_LOG_NO IS 'Assigned unique identifier for an entry in the update log. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN UPDATE_LOG.TAB_NAME IS 'Name of the table being updated.'
+/
+
+COMMENT ON COLUMN UPDATE_LOG.COL_NAME IS 'Name of the column being updated.'
+/
+
+COMMENT ON COLUMN UPDATE_LOG.PRIMARY_KEY IS 'Primary key of the row that was updated.'
+/
+
+COMMENT ON COLUMN UPDATE_LOG.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN UPDATE_LOG.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+COMMENT ON COLUMN UPDATE_LOG.OLD_VALUE IS 'Old value.'
+/
+
+COMMENT ON COLUMN UPDATE_LOG.NEW_VALUE IS 'New value.'
+/
+
+COMMENT ON COLUMN UPDATE_LOG.DESCRIPTION IS 'Reason why the data was updated.'
+/
+
+PROMPT Creating Table 'HOMOLOG'
+CREATE TABLE HOMOLOG
+ (HOMOLOG_NO NUMBER(10) NOT NULL
+ ,TAXON_ID NUMBER(10)
+ ,IDENTIFIER VARCHAR2(100) NOT NULL
+ ,SOURCE VARCHAR2(40) NOT NULL
+ ,LENGTH NUMBER(10) NOT NULL
+ ,DESCRIPTION VARCHAR2(2000)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 20
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 100M
+   NEXT 100M
+ )
+ TABLESPACE DATA3
+/
+
+COMMENT ON TABLE HOMOLOG IS 'Contains information about individual homologs.'
+/
+
+COMMENT ON COLUMN HOMOLOG.HOMOLOG_NO IS 'Assigned unique identifier for a homolog. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN HOMOLOG.TAXON_ID IS 'Unique identifier for a taxonomy term assigned by NCBI. Foreign key to the taxonomy table.'
+/
+
+COMMENT ON COLUMN HOMOLOG.IDENTIFIER IS 'The idenitifer for the homolog; for the nr data, will be the nr title line, for example, gi|17945344|gb|AAL48728.1|'
+/
+
+COMMENT ON COLUMN HOMOLOG.SOURCE IS 'The source of the data (coded.).'
+/
+
+COMMENT ON COLUMN HOMOLOG.LENGTH IS 'The length of the sequence in amino acids.'
+/
+
+COMMENT ON COLUMN HOMOLOG.DESCRIPTION IS 'The description of the homolog.'
+/
+
+COMMENT ON COLUMN HOMOLOG.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN HOMOLOG.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'REF_UNLINK'
+CREATE TABLE REF_UNLINK
+ (REF_UNLINK_NO NUMBER(10) NOT NULL
+ ,PUBMED NUMBER(10) NOT NULL
+ ,TAB_NAME VARCHAR2(30) NOT NULL
+ ,PRIMARY_KEY NUMBER(10) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE REF_UNLINK IS 'Contains references which should not be associated with a specific feature, but which should not be deleted from the database.'
+/
+
+COMMENT ON COLUMN REF_UNLINK.REF_UNLINK_NO IS 'Assigned unique identifier for an unlinked reference. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN REF_UNLINK.PUBMED IS 'PubMed identifier for a reference that should not be associated with a given row in the database.'
+/
+
+COMMENT ON COLUMN REF_UNLINK.TAB_NAME IS 'Table name for which the reference needs to be unlinked.'
+/
+
+COMMENT ON COLUMN REF_UNLINK.PRIMARY_KEY IS 'Primary key of the row that should be unlinked from the reference'
+/
+
+COMMENT ON COLUMN REF_UNLINK.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN REF_UNLINK.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'WEB_METADATA'
+CREATE TABLE WEB_METADATA
+ (WEB_METADATA_NO NUMBER(10) NOT NULL
+ ,APPLICATION_NAME VARCHAR2(40) NOT NULL
+ ,TAB_NAME VARCHAR2(30) NOT NULL
+ ,COL_NAME VARCHAR2(30) NOT NULL
+ ,COL_VALUE VARCHAR2(40) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE WEB_METADATA IS 'Contains information about what is displayed or searched on a web page.  Used in conjunction with the web_display table.'
+/
+
+COMMENT ON COLUMN WEB_METADATA.WEB_METADATA_NO IS 'Assigned unique identifier for a row in the web_metadata table. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN WEB_METADATA.APPLICATION_NAME IS 'Name of the web page or application program (coded.).'
+/
+
+COMMENT ON COLUMN WEB_METADATA.TAB_NAME IS 'Table name from which the data is retrieved.'
+/
+
+COMMENT ON COLUMN WEB_METADATA.COL_NAME IS 'Column name from which the data is retrieved.'
+/
+
+COMMENT ON COLUMN WEB_METADATA.COL_VALUE IS 'Column value (usually a coded value) to which the web page display is restricted.'
+/
+
+COMMENT ON COLUMN WEB_METADATA.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN WEB_METADATA.CREATED_BY IS 'Userid of the person who entered the row into the database.'
+/
+
+PROMPT Creating Table 'TAB_RULE'
+CREATE TABLE TAB_RULE
+ (TAB_RULE_NO NUMBER(10) NOT NULL
+ ,GROUP_NAME VARCHAR2(40) NOT NULL
+ ,TAB_NAME VARCHAR2(30) NOT NULL
+ ,DIAGRAM_NAME VARCHAR2(40) NOT NULL
+ ,COMPLEX_RULE VARCHAR2(2000)
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE TAB_RULE IS 'Contains table-based business rules for the database.'
+/
+
+COMMENT ON COLUMN TAB_RULE.TAB_RULE_NO IS 'Assigned unique identifier for a table rule. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN TAB_RULE.GROUP_NAME IS 'The name or category for the table.'
+/
+
+COMMENT ON COLUMN TAB_RULE.TAB_NAME IS 'Table name.'
+/
+
+COMMENT ON COLUMN TAB_RULE.DIAGRAM_NAME IS 'Name of the schema diagram.'
+/
+
+COMMENT ON COLUMN TAB_RULE.COMPLEX_RULE IS 'Any complex rules for the table, if any.'
+/
+
+PROMPT Creating Table 'INTERACT_REF'
+CREATE TABLE INTERACT_REF
+ (INTERACT_REF_NO NUMBER(10) NOT NULL
+ ,INTERACTION_NO NUMBER(10) NOT NULL
+ ,REFERENCE_NO NUMBER(10) NOT NULL
+ ,NOTE VARCHAR2(1000)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE INTERACT_REF IS 'Linking table between the interaction and reference tables.'
+/
+
+COMMENT ON COLUMN INTERACT_REF.INTERACT_REF_NO IS 'Assigned unique identifier for the interact_ref table.  Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN INTERACT_REF.INTERACTION_NO IS 'Unique identifier for an interaction. Foreign key to the interaction table.'
+/
+
+COMMENT ON COLUMN INTERACT_REF.REFERENCE_NO IS 'Unique identifier for a reference. Foreign key to the reference table.'
+/
+
+COMMENT ON COLUMN INTERACT_REF.NOTE IS 'Description or annotation associated with this interaction reference.'
+/
+
+COMMENT ON COLUMN INTERACT_REF.DATE_CREATED IS 'Date the record was entered into the database'
+/
+
+COMMENT ON COLUMN INTERACT_REF.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'NOTE'
+CREATE TABLE NOTE
+ (NOTE_NO NUMBER(10) NOT NULL
+ ,NOTE VARCHAR2(2000) NOT NULL
+ ,NOTE_TYPE VARCHAR2(40) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE NOTE IS 'Contains notes about items in the database.'
+/
+
+COMMENT ON COLUMN NOTE.NOTE_NO IS 'Assigned unique identifier for a note. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN NOTE.NOTE IS 'The note or description.'
+/
+
+COMMENT ON COLUMN NOTE.NOTE_TYPE IS 'The type of note (coded).'
+/
+
+COMMENT ON COLUMN NOTE.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN NOTE.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'DS_REG'
+CREATE TABLE DS_REG
+ (DATASET_REGULATOR_NO NUMBER(10) NOT NULL
+ ,DATASET_GROUP_NO NUMBER(10) NOT NULL
+ ,REGULATOR_NO NUMBER(10) NOT NULL
+ ,REGULATOR_ORDER NUMBER(4) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE DS_REG IS 'Linking table between the dataset_group and regulator tables.'
+/
+
+COMMENT ON COLUMN DS_REG.DATASET_REGULATOR_NO IS 'Assigned unique identifier for a row in the dataset_regulator table. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN DS_REG.DATASET_GROUP_NO IS 'Unique identifier for a dataset_group. Foreign key to the dataset_group table.'
+/
+
+COMMENT ON COLUMN DS_REG.REGULATOR_NO IS 'Unique identifier for a regulator. Foreign key to the regulator table.'
+/
+
+COMMENT ON COLUMN DS_REG.REGULATOR_ORDER IS 'The order of action of the regulators per expression group.'
+/
+
+COMMENT ON COLUMN DS_REG.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN DS_REG.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'REF_LINK'
+CREATE TABLE REF_LINK
+ (REF_LINK_NO NUMBER(10) NOT NULL
+ ,REFERENCE_NO NUMBER(10) NOT NULL
+ ,TAB_NAME VARCHAR2(30) NOT NULL
+ ,PRIMARY_KEY NUMBER(10) NOT NULL
+ ,COL_NAME VARCHAR2(30) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE REF_LINK IS 'Associates any piece of data (row or column) with a given reference.'
+/
+
+COMMENT ON COLUMN REF_LINK.REF_LINK_NO IS 'Assigned unique identifier for an associated reference. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN REF_LINK.REFERENCE_NO IS 'Unique identifier for a reference. Foreign key to the reference table.'
+/
+
+COMMENT ON COLUMN REF_LINK.TAB_NAME IS 'Name of table linked to a reference.'
+/
+
+COMMENT ON COLUMN REF_LINK.PRIMARY_KEY IS 'Primary key for the row linked to a reference.'
+/
+
+COMMENT ON COLUMN REF_LINK.COL_NAME IS 'Name of the column linked to a reference.'
+/
+
+COMMENT ON COLUMN REF_LINK.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN REF_LINK.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'PARAGRAPH'
+CREATE TABLE PARAGRAPH
+ (PARAGRAPH_NO NUMBER(10) NOT NULL
+ ,PARAGRAPH_TEXT VARCHAR2(3970) NOT NULL
+ ,DATE_EDITED DATE DEFAULT SYSDATE NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE PARAGRAPH IS 'Contains paragraphs that summarize the literature for a particular feature.'
+/
+
+COMMENT ON COLUMN PARAGRAPH.PARAGRAPH_NO IS 'Assigned unique identifier for a paragraph. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN PARAGRAPH.PARAGRAPH_TEXT IS 'Text of the paragraph.'
+/
+
+COMMENT ON COLUMN PARAGRAPH.DATE_EDITED IS 'Date the paragraph was last significantly edited.'
+/
+
+COMMENT ON COLUMN PARAGRAPH.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN PARAGRAPH.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'FEAT_PROPERTY'
+CREATE TABLE FEAT_PROPERTY
+ (FEAT_PROPERTY_NO NUMBER(10) NOT NULL
+ ,FEATURE_NO NUMBER(10) NOT NULL
+ ,SOURCE VARCHAR2(40) NOT NULL
+ ,PROPERTY_TYPE VARCHAR2(40) NOT NULL
+ ,PROPERTY_VALUE VARCHAR2(2000) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE FEAT_PROPERTY IS 'Contains additional information about a feature in the form of tag-value pairs.'
+/
+
+COMMENT ON COLUMN FEAT_PROPERTY.FEAT_PROPERTY_NO IS 'Assigned unique identifier for a row in the feat_property table. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN FEAT_PROPERTY.FEATURE_NO IS 'Unique identifier for a feature. Foreign key to the feature table.'
+/
+
+COMMENT ON COLUMN FEAT_PROPERTY.SOURCE IS 'Source of the attribute or tag associated with the feature (coded).'
+/
+
+COMMENT ON COLUMN FEAT_PROPERTY.PROPERTY_TYPE IS 'The attribute or tag associated with the feature (coded).'
+/
+
+COMMENT ON COLUMN FEAT_PROPERTY.PROPERTY_VALUE IS 'The value associated with the feature property or attribute. May be a coded value.'
+/
+
+COMMENT ON COLUMN FEAT_PROPERTY.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN FEAT_PROPERTY.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'GO_PATH'
+CREATE TABLE GO_PATH
+ (GO_PATH_NO NUMBER(10) NOT NULL
+ ,ANCESTOR_GO_NO NUMBER(10) NOT NULL
+ ,CHILD_GO_NO NUMBER(10) NOT NULL
+ ,GENERATION NUMBER(2) NOT NULL
+ ,RELATIONSHIP_TYPE VARCHAR2(40)
+ ,ANCESTOR_PATH VARCHAR2(240) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 100M
+   NEXT 100M
+ )
+ TABLESPACE DATA3
+/
+
+COMMENT ON TABLE GO_PATH IS 'Contains the structure of the Gene Onotology, the parent:child relationships between the terms.'
+/
+
+COMMENT ON COLUMN GO_PATH.GO_PATH_NO IS 'Assigned unique identifier for a row in the go_path table. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN GO_PATH.ANCESTOR_GO_NO IS 'Unique identifier assigned to the ancestor go term. Foreign key to the go table.'
+/
+
+COMMENT ON COLUMN GO_PATH.CHILD_GO_NO IS 'Unique identifier assigned for a child go term. Foreign key to the go table.'
+/
+
+COMMENT ON COLUMN GO_PATH.GENERATION IS 'The number of generations between the parent and child term; for example, for a  grandchild:grandparent relationship, the generation = 2.'
+/
+
+COMMENT ON COLUMN GO_PATH.RELATIONSHIP_TYPE IS 'Type of relationship between the parent and child (coded).'
+/
+
+COMMENT ON COLUMN GO_PATH.ANCESTOR_PATH IS 'A list of all GOIDs corresponding to all the GO terms in between the ancestor and the child, separated by ::.'
+/
+
+PROMPT Creating Table 'FEAT_RELATIONSHIP'
+CREATE TABLE FEAT_RELATIONSHIP
+ (FEAT_RELATIONSHIP_NO NUMBER(10) NOT NULL
+ ,PARENT_FEATURE_NO NUMBER(10) NOT NULL
+ ,CHILD_FEATURE_NO NUMBER(10) NOT NULL
+ ,RELATIONSHIP_TYPE VARCHAR2(40) NOT NULL
+ ,RANK NUMBER(10)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE FEAT_RELATIONSHIP IS 'Describes the relationship between two features.'
+/
+
+COMMENT ON COLUMN FEAT_RELATIONSHIP.FEAT_RELATIONSHIP_NO IS 'Assigned unique identifier for a feature relationship. Oracle generated sequential number'
+/
+
+COMMENT ON COLUMN FEAT_RELATIONSHIP.PARENT_FEATURE_NO IS 'Unique identifier for the parent feature. Foreign key to the feature table.'
+/
+
+COMMENT ON COLUMN FEAT_RELATIONSHIP.CHILD_FEATURE_NO IS 'Unique identifier for the child feature. Foreign key to the feature table..'
+/
+
+COMMENT ON COLUMN FEAT_RELATIONSHIP.RELATIONSHIP_TYPE IS 'The type of feature relationship (coded).'
+/
+
+COMMENT ON COLUMN FEAT_RELATIONSHIP.RANK IS 'The rank or order of the feature.'
+/
+
+COMMENT ON COLUMN FEAT_RELATIONSHIP.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN FEAT_RELATIONSHIP.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'COLL_URL'
+CREATE TABLE COLL_URL
+ (COLL_URL_NO NUMBER(10) NOT NULL
+ ,COLLEAGUE_NO NUMBER(10) NOT NULL
+ ,URL_NO NUMBER(10) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE COLL_URL IS 'Linking table between the colleague and url tables.'
+/
+
+COMMENT ON COLUMN COLL_URL.COLL_URL_NO IS 'Assigned unique identifier for a row in the coll_url table. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN COLL_URL.COLLEAGUE_NO IS 'Unique identifier for a colleague. Foreign key to the colleague table.'
+/
+
+COMMENT ON COLUMN COLL_URL.URL_NO IS 'Unique identifier assigned to a URL.  Foreign key to the url table.'
+/
+
+PROMPT Creating Table 'PHENO_ANNOTATION'
+CREATE TABLE PHENO_ANNOTATION
+ (PHENO_ANNOTATION_NO NUMBER(10) NOT NULL
+ ,FEATURE_NO NUMBER(10) NOT NULL
+ ,PHENOTYPE_NO NUMBER(10) NOT NULL
+ ,EXPERIMENT_NO NUMBER(10)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE PHENO_ANNOTATION IS 'Linking table between the feature and phenotype tables.'
+/
+
+COMMENT ON COLUMN PHENO_ANNOTATION.PHENO_ANNOTATION_NO IS 'Assigned unique identifier for a feature-phenotype annotation. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN PHENO_ANNOTATION.FEATURE_NO IS 'Unique identifier for a feature. Foreign key to the feature table.'
+/
+
+COMMENT ON COLUMN PHENO_ANNOTATION.PHENOTYPE_NO IS 'Unique identifier for a phenotype. Foreign key to the phenotype table.'
+/
+
+COMMENT ON COLUMN PHENO_ANNOTATION.EXPERIMENT_NO IS 'Unique identifier for an experiment. Foreign key to the experiment table.'
+/
+
+COMMENT ON COLUMN PHENO_ANNOTATION.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN PHENO_ANNOTATION.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'DG_FEAT'
+CREATE TABLE DG_FEAT
+ (DG_FEAT_NO NUMBER(10) NOT NULL
+ ,DATASET_GROUP_NO NUMBER(10) NOT NULL
+ ,FEATURE_NO NUMBER(10) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE DG_FEAT IS 'Linking table between the dataset_group and feature tables.'
+/
+
+COMMENT ON COLUMN DG_FEAT.DG_FEAT_NO IS 'Assigned unique identifier for a row in the dg_feat table. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN DG_FEAT.DATASET_GROUP_NO IS 'Unique identifier for dataset group. Foreign key to the dataset_group table.'
+/
+
+COMMENT ON COLUMN DG_FEAT.FEATURE_NO IS 'Unique identifier for a feature. Foreign key to the feature table.'
+/
+
+PROMPT Creating Table 'REF_TYPE'
+CREATE TABLE REF_TYPE
+ (REF_TYPE_NO NUMBER(10) NOT NULL
+ ,SOURCE VARCHAR2(40) NOT NULL
+ ,REF_TYPE VARCHAR2(40) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE REF_TYPE IS 'Contains NCBI and SGD codes for publication/reference types.'
+/
+
+COMMENT ON COLUMN REF_TYPE.REF_TYPE_NO IS 'Assigned unique identifier for a reference type. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN REF_TYPE.SOURCE IS 'Source of the reference type (coded).'
+/
+
+COMMENT ON COLUMN REF_TYPE.REF_TYPE IS 'Type of publication (NCBI PT) or SGD defined (coded).'
+/
+
+COMMENT ON COLUMN REF_TYPE.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN REF_TYPE.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'FEAT_ALIAS'
+CREATE TABLE FEAT_ALIAS
+ (FEAT_ALIAS_NO NUMBER(10) NOT NULL
+ ,FEATURE_NO NUMBER(10) NOT NULL
+ ,ALIAS_NO NUMBER(10) NOT NULL
+ ,USED_FOR_SEARCH VARCHAR2(1) DEFAULT 'Y' NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE FEAT_ALIAS IS 'Linking table between the alias and feature tables.'
+/
+
+COMMENT ON COLUMN FEAT_ALIAS.FEAT_ALIAS_NO IS 'Assigned unique identifier for a row in the feat_alias table. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN FEAT_ALIAS.FEATURE_NO IS 'Unique identifier for a feature. Foreign key to the feature table.'
+/
+
+COMMENT ON COLUMN FEAT_ALIAS.ALIAS_NO IS 'Unique identifier for an alias. Foreign key to the alias table.'
+/
+
+COMMENT ON COLUMN FEAT_ALIAS.USED_FOR_SEARCH IS 'Whether this name is used for external search programs (coded).'
+/
+
+COMMENT ON COLUMN FEAT_ALIAS.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN FEAT_ALIAS.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'FEAT_TWOPT'
+CREATE TABLE FEAT_TWOPT
+ (FEAT_TWOPT_NO NUMBER(10) NOT NULL
+ ,FEATURE_NO NUMBER(10) NOT NULL
+ ,TWO_POINT_NO NUMBER(10) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE FEAT_TWOPT IS 'Linking table between feature and two_point tables.'
+/
+
+COMMENT ON COLUMN FEAT_TWOPT.FEAT_TWOPT_NO IS 'Assigned unique identifier for a row in the feat_twopt table. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN FEAT_TWOPT.FEATURE_NO IS 'Unique identifier for a feature. Foreign key to the feature table.'
+/
+
+COMMENT ON COLUMN FEAT_TWOPT.TWO_POINT_NO IS 'Unique identifier for a two point result. Foreign key to the two_point table.'
+/
+
+PROMPT Creating Table 'DATASET_GROUP'
+CREATE TABLE DATASET_GROUP
+ (DATASET_GROUP_NO NUMBER(10) NOT NULL
+ ,DATASET_NO NUMBER(10) NOT NULL
+ ,SOURCE VARCHAR2(40) NOT NULL
+ ,DESCRIPTION VARCHAR2(240)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE DATASET_GROUP IS 'This table is used to associate features into an expression group.  An expression group can be regulated by one or more regulators, which in turn can be a feature itself.'
+/
+
+COMMENT ON COLUMN DATASET_GROUP.DATASET_GROUP_NO IS 'Assigned unique identifier for a dataset group. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN DATASET_GROUP.DATASET_NO IS 'Unique identifier for each expression dataset. Foreign key to the dataset table.'
+/
+
+COMMENT ON COLUMN DATASET_GROUP.SOURCE IS 'Source of the dataset group.'
+/
+
+COMMENT ON COLUMN DATASET_GROUP.DESCRIPTION IS 'The description of the dataset group (eg. ribosomal proteins).'
+/
+
+COMMENT ON COLUMN DATASET_GROUP.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN DATASET_GROUP.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'GUS_SCAFFOLD'
+CREATE TABLE GUS_SCAFFOLD
+ (GUS_SCAFFOLD_NO NUMBER(10) NOT NULL
+ ,SCAFFOLD_NAME VARCHAR2(40) NOT NULL
+ ,TAXON_ID NUMBER(10) NOT NULL
+ ,LENGTH NUMBER(10) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE GUS_SCAFFOLD IS 'The scaffold (or super-contig) table assembles the contigs in order.'
+/
+
+COMMENT ON COLUMN GUS_SCAFFOLD.GUS_SCAFFOLD_NO IS 'Assigned unique identifier for a scaffold. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN GUS_SCAFFOLD.SCAFFOLD_NAME IS 'The name of the scaffold.'
+/
+
+COMMENT ON COLUMN GUS_SCAFFOLD.TAXON_ID IS 'Unique identifier for an organism by NCBI.  Foreign key to the taxonomy table.'
+/
+
+COMMENT ON COLUMN GUS_SCAFFOLD.LENGTH IS 'The length of the scaffold.'
+/
+
+COMMENT ON COLUMN GUS_SCAFFOLD.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN GUS_SCAFFOLD.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'REFERENCE'
+CREATE TABLE REFERENCE
+ (REFERENCE_NO NUMBER(10) NOT NULL
+ ,SOURCE VARCHAR2(40) NOT NULL
+ ,STATUS VARCHAR2(40) NOT NULL
+ ,PDF_STATUS VARCHAR2(40) NOT NULL
+ ,DBXREF_ID VARCHAR2(40) NOT NULL
+ ,CITATION VARCHAR2(480) NOT NULL
+ ,YEAR NUMBER(4) NOT NULL
+ ,PUBMED NUMBER(10)
+ ,DATE_PUBLISHED VARCHAR2(40)
+ ,DATE_REVISED NUMBER(8)
+ ,ISSUE VARCHAR2(40)
+ ,PAGE VARCHAR2(40)
+ ,VOLUME VARCHAR2(40)
+ ,TITLE VARCHAR2(400)
+ ,JOURNAL_NO NUMBER(10)
+ ,BOOK_NO NUMBER(10)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE REFERENCE IS 'Contains references for data in the database, which can be from a book, journal, personal communication, etc.'
+/
+
+COMMENT ON COLUMN REFERENCE.REFERENCE_NO IS 'Assigned unique identifier for a reference. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN REFERENCE.SOURCE IS 'Source of the reference (coded).'
+/
+
+COMMENT ON COLUMN REFERENCE.STATUS IS 'Status of the reference (coded).'
+/
+
+COMMENT ON COLUMN REFERENCE.PDF_STATUS IS 'Indicates whether there is a full-text paper for that reference. Coded: Y(yes, has PDF), YT(yes, PDF text conversion), YF(yes PDF, failed text conversion), N(no PDF), NAA(no PDF automatically), NAM(no PDF manually), NAP(not applicable).'
+/
+
+COMMENT ON COLUMN REFERENCE.DBXREF_ID IS 'Primary DBXREF_ID for the reference.'
+/
+
+COMMENT ON COLUMN REFERENCE.CITATION IS 'Full citation of the reference.'
+/
+
+COMMENT ON COLUMN REFERENCE.YEAR IS 'Year of publication or communication.'
+/
+
+COMMENT ON COLUMN REFERENCE.PUBMED IS 'PubMed ID from NCBI.'
+/
+
+COMMENT ON COLUMN REFERENCE.DATE_PUBLISHED IS 'Date the reference was published.'
+/
+
+COMMENT ON COLUMN REFERENCE.DATE_REVISED IS 'Date the reference was revised.'
+/
+
+COMMENT ON COLUMN REFERENCE.ISSUE IS 'Issue of the publication.'
+/
+
+COMMENT ON COLUMN REFERENCE.PAGE IS 'Pagination of the reference (characters separated by a dash).'
+/
+
+COMMENT ON COLUMN REFERENCE.VOLUME IS 'Volume of the  publication.'
+/
+
+COMMENT ON COLUMN REFERENCE.TITLE IS 'Title of the publication or communication.'
+/
+
+COMMENT ON COLUMN REFERENCE.JOURNAL_NO IS 'Unique identifier for a journal. Foreign key to the journal table.'
+/
+
+COMMENT ON COLUMN REFERENCE.BOOK_NO IS 'Unique identifier for a book. Foreign key to the book table.'
+/
+
+COMMENT ON COLUMN REFERENCE.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN REFERENCE.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'TWO_POINT'
+CREATE TABLE TWO_POINT
+ (TWO_POINT_NO NUMBER(10) NOT NULL
+ ,TWO_POINT_NAME VARCHAR2(30) NOT NULL
+ ,PARENTAL_DITYPE NUMBER(4)
+ ,NONPARENTAL_DITYPE NUMBER(3)
+ ,TETRATYPE NUMBER(4)
+ ,FIRST_DIVISION NUMBER(4)
+ ,SECOND_DIVISION NUMBER(4)
+ ,DISTANCE NUMBER(6,2)
+ ,STD_ERR NUMBER(5,2)
+ ,INTERFERENCE NUMBER(3,2)
+ ,INTERFERENCE_STD_ERR NUMBER(3,2)
+ ,REMARK VARCHAR2(240)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE TWO_POINT IS 'Contains two point data submitted to the database.'
+/
+
+COMMENT ON COLUMN TWO_POINT.TWO_POINT_NO IS 'Assigned unique identifier for two point result data. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN TWO_POINT.TWO_POINT_NAME IS 'Two point data name.'
+/
+
+COMMENT ON COLUMN TWO_POINT.PARENTAL_DITYPE IS 'Number of parental ditypes from the cross.'
+/
+
+COMMENT ON COLUMN TWO_POINT.NONPARENTAL_DITYPE IS 'Number of non-parental ditypes from the cross.'
+/
+
+COMMENT ON COLUMN TWO_POINT.TETRATYPE IS 'Number of tetratypes from the cross.'
+/
+
+COMMENT ON COLUMN TWO_POINT.FIRST_DIVISION IS 'Number of First Division segregants.'
+/
+
+COMMENT ON COLUMN TWO_POINT.SECOND_DIVISION IS 'Number of Second Division segregants.'
+/
+
+COMMENT ON COLUMN TWO_POINT.DISTANCE IS 'Distance between markers in centimorgans (cM), positive or negative float.'
+/
+
+COMMENT ON COLUMN TWO_POINT.STD_ERR IS 'Standard error in distance, in centimorgans (cM).'
+/
+
+COMMENT ON COLUMN TWO_POINT.INTERFERENCE IS 'Interference effect from the cross.'
+/
+
+COMMENT ON COLUMN TWO_POINT.INTERFERENCE_STD_ERR IS 'Standard error of the interference from the cross.'
+/
+
+COMMENT ON COLUMN TWO_POINT.REMARK IS 'Remarks about the cross.'
+/
+
+COMMENT ON COLUMN TWO_POINT.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN TWO_POINT.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'PROTEIN_DETAIL'
+CREATE TABLE PROTEIN_DETAIL
+ (PROTEIN_DETAIL_NO NUMBER(10) NOT NULL
+ ,PROTEIN_INFO_NO NUMBER(10) NOT NULL
+ ,PROTEIN_DETAIL_GROUP VARCHAR2(40) NOT NULL
+ ,PROTEIN_DETAIL_TYPE VARCHAR2(50) NOT NULL
+ ,PROTEIN_DETAIL_VALUE VARCHAR2(240) NOT NULL
+ ,PROTEIN_DETAIL_UNIT VARCHAR2(40)
+ ,MIN_COORD NUMBER(10)
+ ,MAX_COORD NUMBER(10)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 20
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE PROTEIN_DETAIL IS 'This table contains additional information about the protein encoded by a feature.  It is a tag/value type of table so that different types of protein information can be easily added.'
+/
+
+COMMENT ON COLUMN PROTEIN_DETAIL.PROTEIN_DETAIL_NO IS 'Assigned unique identifier for a protein detail or property. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN PROTEIN_DETAIL.PROTEIN_INFO_NO IS 'Unique identifier for protein information. Foreign key to the protein_info table.'
+/
+
+COMMENT ON COLUMN PROTEIN_DETAIL.PROTEIN_DETAIL_GROUP IS 'A category or group of associated protein details (Coded: Instability index, transmembrane domain, etc.).'
+/
+
+COMMENT ON COLUMN PROTEIN_DETAIL.PROTEIN_DETAIL_TYPE IS 'The type of information that is being recorded, eg. transmembrane domain.'
+/
+
+COMMENT ON COLUMN PROTEIN_DETAIL.PROTEIN_DETAIL_VALUE IS 'The value of the type of information that is being stored.  This may be a number, Y or N, or some other type of data, depending on the protein_detail_type.'
+/
+
+COMMENT ON COLUMN PROTEIN_DETAIL.PROTEIN_DETAIL_UNIT IS 'Units, if any, of the protein_detail_value.'
+/
+
+COMMENT ON COLUMN PROTEIN_DETAIL.MIN_COORD IS 'The minimum coordinate in terms of the amino acid sequence, relevant to the additional information.'
+/
+
+COMMENT ON COLUMN PROTEIN_DETAIL.MAX_COORD IS 'The maximum coordinate in terms of the amino acid sequence, relevant to the additional information.'
+/
+
+COMMENT ON COLUMN PROTEIN_DETAIL.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN PROTEIN_DETAIL.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'COLL_KW'
+CREATE TABLE COLL_KW
+ (COLL_KW_NO NUMBER(10) NOT NULL
+ ,COLLEAGUE_NO NUMBER(10) NOT NULL
+ ,KEYWORD_NO NUMBER(10) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE COLL_KW IS 'Linking table between the colleague and keyword tables.'
+/
+
+COMMENT ON COLUMN COLL_KW.COLL_KW_NO IS 'Assigned unique identifier for a row in the coll_kw table. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN COLL_KW.COLLEAGUE_NO IS 'Unique identifier for a colleague. Foreign key to the colleague table.'
+/
+
+COMMENT ON COLUMN COLL_KW.KEYWORD_NO IS 'Unique identifier for a keyword. Foreign key to the keyword table.'
+/
+
+PROMPT Creating Table 'EXPT_PROPERTY'
+CREATE TABLE EXPT_PROPERTY
+ (EXPT_PROPERTY_NO NUMBER(10) NOT NULL
+ ,PROPERTY_TYPE VARCHAR2(40) NOT NULL
+ ,PROPERTY_VALUE VARCHAR2(2000) NOT NULL
+ ,PROPERTY_DESCRIPTION VARCHAR2(240)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE EXPT_PROPERTY IS 'Contains properties or attributes associated with an experiment.'
+/
+
+COMMENT ON COLUMN EXPT_PROPERTY.EXPT_PROPERTY_NO IS 'Assigned unique identifier for an experiment property. Oracle generated sequential number'
+/
+
+COMMENT ON COLUMN EXPT_PROPERTY.PROPERTY_TYPE IS 'The type of experiment attribute or property (coded).'
+/
+
+COMMENT ON COLUMN EXPT_PROPERTY.PROPERTY_VALUE IS 'The actual experiment attribute or property value. May be a coded value.'
+/
+
+COMMENT ON COLUMN EXPT_PROPERTY.PROPERTY_DESCRIPTION IS 'Description associated with an experiment property.'
+/
+
+COMMENT ON COLUMN EXPT_PROPERTY.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN EXPT_PROPERTY.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'REF_REFTYPE'
+CREATE TABLE REF_REFTYPE
+ (REF_REFTYPE_NO NUMBER(10) NOT NULL
+ ,REFERENCE_NO NUMBER(10) NOT NULL
+ ,REF_TYPE_NO NUMBER(10) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE REF_REFTYPE IS 'Linking table between the reference and ref_type tables.'
+/
+
+COMMENT ON COLUMN REF_REFTYPE.REF_REFTYPE_NO IS 'Assigned unique identifier for a row in the ref_reftype table. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN REF_REFTYPE.REFERENCE_NO IS 'Unique identifier for a reference. Foreign key to the reference table.'
+/
+
+COMMENT ON COLUMN REF_REFTYPE.REF_TYPE_NO IS 'Unique identifier for a ref_type. Foreign key to the ref_type table.'
+/
+
+PROMPT Creating Table 'DELETE_LOG'
+CREATE TABLE DELETE_LOG
+ (DELETE_LOG_NO NUMBER(10) NOT NULL
+ ,TAB_NAME VARCHAR2(30) NOT NULL
+ ,PRIMARY_KEY NUMBER(10) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ ,DELETED_ROW VARCHAR2(4000) NOT NULL
+ ,DESCRIPTION VARCHAR2(240)
+ )
+ PCTUSED 70
+ PCTFREE 5
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 100M
+   NEXT 100M
+ )
+ TABLESPACE DATA3
+/
+
+COMMENT ON TABLE DELETE_LOG IS 'Contains an entry for deleted rows in the database. This table is populated by triggers.'
+/
+
+COMMENT ON COLUMN DELETE_LOG.DELETE_LOG_NO IS 'Assigned unique identifier for a deleted row.  Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN DELETE_LOG.TAB_NAME IS 'Table name.'
+/
+
+COMMENT ON COLUMN DELETE_LOG.PRIMARY_KEY IS 'Primary key of the row deleted.'
+/
+
+COMMENT ON COLUMN DELETE_LOG.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN DELETE_LOG.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+COMMENT ON COLUMN DELETE_LOG.DELETED_ROW IS 'Concatenation of all columns in the row deleted.'
+/
+
+COMMENT ON COLUMN DELETE_LOG.DESCRIPTION IS 'Reason why the row was deleted.'
+/
+
+PROMPT Creating Table 'DATASET_SAMPLE'
+CREATE TABLE DATASET_SAMPLE
+ (DATASET_SAMPLE_NO NUMBER(10) NOT NULL
+ ,DATASET_NO NUMBER(10) NOT NULL
+ ,SAMPLE_NAME VARCHAR2(100) NOT NULL
+ ,SAMPLE_ORDER NUMBER(3) NOT NULL
+ ,IS_ON_GRAPH VARCHAR2(1) NOT NULL
+ ,SAMPLE_UNIT VARCHAR2(10)
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE DATASET_SAMPLE IS 'Contains the sample (or experiment) description.'
+/
+
+COMMENT ON COLUMN DATASET_SAMPLE.DATASET_SAMPLE_NO IS 'Assigned unique identifier for a dataset sample. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN DATASET_SAMPLE.DATASET_NO IS 'Unique identifier for each expression dataset. Foreign key to the dataset table.'
+/
+
+COMMENT ON COLUMN DATASET_SAMPLE.SAMPLE_NAME IS 'The sample or experiment description (e.g., heat shock 27 degrees 5 minutes).'
+/
+
+COMMENT ON COLUMN DATASET_SAMPLE.SAMPLE_ORDER IS 'The order of the particular sample/experiment relative to all the other experiments/samples over the course of the dataset.'
+/
+
+COMMENT ON COLUMN DATASET_SAMPLE.IS_ON_GRAPH IS 'Whether the sample is on the line graph display (coded).'
+/
+
+COMMENT ON COLUMN DATASET_SAMPLE.SAMPLE_UNIT IS 'The unit of the sample (e.g., minutes).'
+/
+
+PROMPT Creating Table 'DBXREF_URL'
+CREATE TABLE DBXREF_URL
+ (DBXREF_URL_NO NUMBER(10) NOT NULL
+ ,DBXREF_NO NUMBER(10) NOT NULL
+ ,URL_NO NUMBER(10) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE DBXREF_URL IS 'Linking table between the dbxref and url tables.'
+/
+
+COMMENT ON COLUMN DBXREF_URL.DBXREF_URL_NO IS 'Assigned unique identifier for a row in the dbxref_url table. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN DBXREF_URL.DBXREF_NO IS 'Unique identifier for an database cross reference. Foreign key to the dbxref table.'
+/
+
+COMMENT ON COLUMN DBXREF_URL.URL_NO IS 'Unique identifier assigned for a URL.  Foreign key to the url table.'
+/
+
+PROMPT Creating Table 'REF_URL'
+CREATE TABLE REF_URL
+ (REF_URL_NO NUMBER(10) NOT NULL
+ ,REFERENCE_NO NUMBER(10) NOT NULL
+ ,URL_NO NUMBER(10) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE REF_URL IS 'Linking table between the reference and url tables.'
+/
+
+COMMENT ON COLUMN REF_URL.REF_URL_NO IS 'Assigned unique identifier for a row in the ref_url table. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN REF_URL.REFERENCE_NO IS 'Unique identifier for a reference. Foreign key to the reference table.'
+/
+
+COMMENT ON COLUMN REF_URL.URL_NO IS 'Unique identifier for each URL.  Foreign key to the url table.'
+/
+
+PROMPT Creating Table 'SAGE_TAG_LOCATION'
+CREATE TABLE SAGE_TAG_LOCATION
+ (SAGE_TAG_LOCATION_NO NUMBER(10) NOT NULL
+ ,SAGE_TAG_SEQ VARCHAR2(16) NOT NULL
+ ,CHROMOSOME NUMBER(2) NOT NULL
+ ,START_COORD NUMBER(10) NOT NULL
+ ,STRAND VARCHAR2(1) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE SAGE_TAG_LOCATION IS 'Contains SAGE tag information.'
+/
+
+COMMENT ON COLUMN SAGE_TAG_LOCATION.SAGE_TAG_LOCATION_NO IS 'Assigned unique identifier for a SAGE tag location. Oracle sequence generated number.'
+/
+
+COMMENT ON COLUMN SAGE_TAG_LOCATION.SAGE_TAG_SEQ IS 'Sequence of the SAGE tag. Foreign key to the sage_tag table.'
+/
+
+COMMENT ON COLUMN SAGE_TAG_LOCATION.CHROMOSOME IS 'Chromosome number.'
+/
+
+COMMENT ON COLUMN SAGE_TAG_LOCATION.START_COORD IS 'Starting basepair coordinate of the SAGE tag.'
+/
+
+COMMENT ON COLUMN SAGE_TAG_LOCATION.STRAND IS 'Strand where the tag is located, W(Watson) or C(Crick).'
+/
+
+COMMENT ON COLUMN SAGE_TAG_LOCATION.DATE_CREATED IS 'Date the record was entered into the databse.'
+/
+
+COMMENT ON COLUMN SAGE_TAG_LOCATION.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'GO'
+CREATE TABLE GO
+ (GO_NO NUMBER(10) NOT NULL
+ ,GOID NUMBER(10) NOT NULL
+ ,GO_TERM VARCHAR2(240) NOT NULL
+ ,GO_ASPECT VARCHAR2(40) NOT NULL
+ ,GO_DEFINITION VARCHAR2(2000)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 20
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE GO IS 'Contains terms that comprise the Gene Ontology (GO), but not the relationships between them.'
+/
+
+COMMENT ON COLUMN GO.GO_NO IS 'Assigned unique identifier assigned to a goid. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN GO.GOID IS 'GO number assigned by GO software.'
+/
+
+COMMENT ON COLUMN GO.GO_TERM IS 'Term or word in the Gene Ontology.'
+/
+
+COMMENT ON COLUMN GO.GO_ASPECT IS 'Aspect of the GO term (coded: F=function, P=process, C=component).'
+/
+
+COMMENT ON COLUMN GO.GO_DEFINITION IS 'Definition for the GO term.'
+/
+
+COMMENT ON COLUMN GO.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN GO.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'CVTERM_SYNONYM'
+CREATE TABLE CVTERM_SYNONYM
+ (CVTERM_SYNONYM_NO NUMBER(10) NOT NULL
+ ,CV_TERM_NO NUMBER(10) NOT NULL
+ ,TERM_SYNONYM VARCHAR2(1024) NOT NULL
+ ,SYNONYM_TYPE VARCHAR2(40) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE CVTERM_SYNONYM IS 'Contains synonyms or aliases for a controlled vocabulary term.'
+/
+
+COMMENT ON COLUMN CVTERM_SYNONYM.CVTERM_SYNONYM_NO IS 'Assigned unique identifier for a controlled vocabulary term synonym.  Oracle sequence generated number.'
+/
+
+COMMENT ON COLUMN CVTERM_SYNONYM.CV_TERM_NO IS 'Assigned unique identifier for a controlled vocabulary term. Foreign key to the cv_term table.'
+/
+
+COMMENT ON COLUMN CVTERM_SYNONYM.TERM_SYNONYM IS 'The cv term synonym.'
+/
+
+COMMENT ON COLUMN CVTERM_SYNONYM.SYNONYM_TYPE IS 'The type of synonym (Coded: synonym, related_synonym).'
+/
+
+COMMENT ON COLUMN CVTERM_SYNONYM.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN CVTERM_SYNONYM.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'DBUSER'
+CREATE TABLE DBUSER
+ (DBUSER_NO NUMBER(10) NOT NULL
+ ,USERID VARCHAR2(12) NOT NULL
+ ,FIRST_NAME VARCHAR2(40) NOT NULL
+ ,LAST_NAME VARCHAR2(40) NOT NULL
+ ,STATUS VARCHAR2(40) NOT NULL
+ ,EMAIL VARCHAR2(100) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE DBUSER IS 'Contains information about database users, who are either curators or programers.'
+/
+
+COMMENT ON COLUMN DBUSER.DBUSER_NO IS 'Assigned unique identifier for a database user.  Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN DBUSER.USERID IS 'Assigned unique identifier for non-public user. Usually their UNIX login name.'
+/
+
+COMMENT ON COLUMN DBUSER.FIRST_NAME IS 'First name of the database user.'
+/
+
+COMMENT ON COLUMN DBUSER.LAST_NAME IS 'Last name of the database user.'
+/
+
+COMMENT ON COLUMN DBUSER.STATUS IS 'Status of the user (coded).'
+/
+
+COMMENT ON COLUMN DBUSER.EMAIL IS 'E-mail address of the database user.'
+/
+
+COMMENT ON COLUMN DBUSER.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+PROMPT Creating Table 'REF_RELATIONSHIP'
+CREATE TABLE REF_RELATIONSHIP
+ (REF_RELATIONSHIP_NO NUMBER(10) NOT NULL
+ ,REFERENCE_NO NUMBER(10) NOT NULL
+ ,RELATED_REF_NO NUMBER(10) NOT NULL
+ ,DESCRIPTION VARCHAR2(240)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE REF_RELATIONSHIP IS 'Contains information about published errata and comments about references from NCBI.'
+/
+
+COMMENT ON COLUMN REF_RELATIONSHIP.REF_RELATIONSHIP_NO IS 'Assigned unique identifier for a reference relationship. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN REF_RELATIONSHIP.REFERENCE_NO IS 'Unique identifier for a reference. Foreign key to the reference table.'
+/
+
+COMMENT ON COLUMN REF_RELATIONSHIP.RELATED_REF_NO IS 'Unique identifier for the related reference. Foreign key to the reference table.'
+/
+
+COMMENT ON COLUMN REF_RELATIONSHIP.DESCRIPTION IS 'Text of the comment or erratum.'
+/
+
+COMMENT ON COLUMN REF_RELATIONSHIP.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN REF_RELATIONSHIP.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'CVTERM_RELATIONSHIP'
+CREATE TABLE CVTERM_RELATIONSHIP
+ (CVTERM_RELATIONSHIP_NO NUMBER(10) NOT NULL
+ ,CHILD_CV_TERM_NO NUMBER(10) NOT NULL
+ ,PARENT_CV_TERM_NO NUMBER(10) NOT NULL
+ ,RELATIONSHIP_TYPE VARCHAR2(40) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE CVTERM_RELATIONSHIP IS 'Stores the relationship between two controlled vocabulary terms: Parent (object) and Child (subject) terms.  The controlled vocabulary can be recreated entirely from the CVTERM_RELATIONSHIP table.'
+/
+
+COMMENT ON COLUMN CVTERM_RELATIONSHIP.CVTERM_RELATIONSHIP_NO IS 'Assigned unique identifier for a cv_term relationship. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN CVTERM_RELATIONSHIP.CHILD_CV_TERM_NO IS 'Unique identifier for a child/subject controlled vocabulary term. Foreign key to the cv_term table.'
+/
+
+COMMENT ON COLUMN CVTERM_RELATIONSHIP.PARENT_CV_TERM_NO IS 'Unique identifier for a parent controlled vocabulary term. Foreign key to the cv_term table.'
+/
+
+COMMENT ON COLUMN CVTERM_RELATIONSHIP.RELATIONSHIP_TYPE IS 'The type of cvterm relationship (coded).'
+/
+
+COMMENT ON COLUMN CVTERM_RELATIONSHIP.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN CVTERM_RELATIONSHIP.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'AUTHOR_EDITOR'
+CREATE TABLE AUTHOR_EDITOR
+ (AUTHOR_EDITOR_NO NUMBER(10) NOT NULL
+ ,AUTHOR_NO NUMBER(10) NOT NULL
+ ,REFERENCE_NO NUMBER(10) NOT NULL
+ ,AUTHOR_ORDER NUMBER(4) NOT NULL
+ ,AUTHOR_TYPE VARCHAR2(40) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE AUTHOR_EDITOR IS 'Contains information about the type and order of authors for a given reference.'
+/
+
+COMMENT ON COLUMN AUTHOR_EDITOR.AUTHOR_EDITOR_NO IS 'Assigned unique identifier for each author or editor for a reference. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN AUTHOR_EDITOR.AUTHOR_NO IS 'Unique identifier for an author. Foreign key to the author table.'
+/
+
+COMMENT ON COLUMN AUTHOR_EDITOR.REFERENCE_NO IS 'Unique identifier for a reference. Foreign key to the reference table.'
+/
+
+COMMENT ON COLUMN AUTHOR_EDITOR.AUTHOR_ORDER IS 'Order in which an author is in the list of authors for a particular reference.'
+/
+
+COMMENT ON COLUMN AUTHOR_EDITOR.AUTHOR_TYPE IS 'Type of author (coded).'
+/
+
+PROMPT Creating Table 'BOOK'
+CREATE TABLE BOOK
+ (BOOK_NO NUMBER(10) NOT NULL
+ ,TITLE VARCHAR2(400) NOT NULL
+ ,VOLUME_TITLE VARCHAR2(400)
+ ,ISBN VARCHAR2(20)
+ ,TOTAL_PAGES NUMBER(5)
+ ,PUBLISHER VARCHAR2(100)
+ ,PUBLISHER_LOCATION VARCHAR2(100)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE BOOK IS 'Contains information for a book reference.'
+/
+
+COMMENT ON COLUMN BOOK.BOOK_NO IS 'Assigned unique identifier for a book. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN BOOK.TITLE IS 'Title of the book.'
+/
+
+COMMENT ON COLUMN BOOK.VOLUME_TITLE IS 'Title of the book volume.'
+/
+
+COMMENT ON COLUMN BOOK.ISBN IS 'Interantional Standard Book Number.'
+/
+
+COMMENT ON COLUMN BOOK.TOTAL_PAGES IS 'Total number of pages in the book.'
+/
+
+COMMENT ON COLUMN BOOK.PUBLISHER IS 'Publisher of the book.'
+/
+
+COMMENT ON COLUMN BOOK.PUBLISHER_LOCATION IS 'Location of the book publisher.'
+/
+
+COMMENT ON COLUMN BOOK.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN BOOK.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'INTERACTION'
+CREATE TABLE INTERACTION
+ (INTERACTION_NO NUMBER(10) NOT NULL
+ ,INTERACTION_TYPE VARCHAR2(40) NOT NULL
+ ,EXPERIMENT_TYPE VARCHAR2(40) NOT NULL
+ ,ANNOTATION_TYPE VARCHAR2(40) NOT NULL
+ ,SOURCE VARCHAR2(40) NOT NULL
+ ,MODIFICATION VARCHAR2(240) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE INTERACTION IS 'Contains data about interactions between any two proteins.'
+/
+
+COMMENT ON COLUMN INTERACTION.INTERACTION_NO IS 'Assigned unique identifier for an interaction. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN INTERACTION.INTERACTION_TYPE IS 'Type of interaction (Coded).'
+/
+
+COMMENT ON COLUMN INTERACTION.EXPERIMENT_TYPE IS 'The type of experiment conducted that produced the interaction (coded).'
+/
+
+COMMENT ON COLUMN INTERACTION.ANNOTATION_TYPE IS 'Type or method of interaction annotation (coded).'
+/
+
+COMMENT ON COLUMN INTERACTION.SOURCE IS 'Source of the interaction (coded).'
+/
+
+COMMENT ON COLUMN INTERACTION.MODIFICATION IS 'Post translational modification, if any.'
+/
+
+COMMENT ON COLUMN INTERACTION.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN INTERACTION.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'DATASET_DISPLAY'
+CREATE TABLE DATASET_DISPLAY
+ (DATASET_DISPLAY_NO NUMBER(10) NOT NULL
+ ,DATASET_NO NUMBER(10) NOT NULL
+ ,DISPLAY_PARAMETER VARCHAR2(100) NOT NULL
+ ,PARAMETER_VALUE VARCHAR2(240) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE DATASET_DISPLAY IS 'This table stores parameters for the display of datasets.'
+/
+
+COMMENT ON COLUMN DATASET_DISPLAY.DATASET_DISPLAY_NO IS 'Assigned unique identifier for a displayed dataset. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN DATASET_DISPLAY.DATASET_NO IS 'Unique identifier for each expression dataset. Foreign key to the dataset table.'
+/
+
+COMMENT ON COLUMN DATASET_DISPLAY.DISPLAY_PARAMETER IS 'The display parameter, for example BLOCKSIZE or XAXIS_TITLE for expression datasets.'
+/
+
+COMMENT ON COLUMN DATASET_DISPLAY.PARAMETER_VALUE IS 'The value of the parameter.  For example, display_parameter may be XAXIS_TITLE, and the parameter_value would be "TIME (MINUTES)".'
+/
+
+COMMENT ON COLUMN DATASET_DISPLAY.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN DATASET_DISPLAY.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'FEAT_INTERACT'
+CREATE TABLE FEAT_INTERACT
+ (FEAT_INTERACT_NO NUMBER(10) NOT NULL
+ ,FEATURE_NO NUMBER(10) NOT NULL
+ ,INTERACTION_NO NUMBER(10) NOT NULL
+ ,ACTION VARCHAR2(40) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE FEAT_INTERACT IS 'Linking table between the feature and interaction tables.'
+/
+
+COMMENT ON COLUMN FEAT_INTERACT.FEAT_INTERACT_NO IS 'Assigned unique identifier for a feature interaction. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN FEAT_INTERACT.FEATURE_NO IS 'Unique identifier for a feature. Foreign key to the feature table.'
+/
+
+COMMENT ON COLUMN FEAT_INTERACT.INTERACTION_NO IS 'Unique identifier for an feature interaction. Foreign key to the interaction table.'
+/
+
+COMMENT ON COLUMN FEAT_INTERACT.ACTION IS 'Describes what action the feature is taking while in the interaction (coded).'
+/
+
+COMMENT ON COLUMN FEAT_INTERACT.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN FEAT_INTERACT.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'COLL_RELATIONSHIP'
+CREATE TABLE COLL_RELATIONSHIP
+ (COLL_RELATIONSHIP_NO NUMBER(10) NOT NULL
+ ,COLLEAGUE_NO NUMBER(10) NOT NULL
+ ,ASSOCIATE_NO NUMBER(10) NOT NULL
+ ,RELATIONSHIP_TYPE VARCHAR2(40) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE COLL_RELATIONSHIP IS 'Contains relationships between colleagues.'
+/
+
+COMMENT ON COLUMN COLL_RELATIONSHIP.COLL_RELATIONSHIP_NO IS 'Assigned unique identifier for a colleague relationship. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN COLL_RELATIONSHIP.COLLEAGUE_NO IS 'Unique identifier for a colleague who is an associate of another colleague. Foreign key to the colleague table.'
+/
+
+COMMENT ON COLUMN COLL_RELATIONSHIP.ASSOCIATE_NO IS 'Unique identifier for a colleague who is an associate of another colleague. Foreign key to the colleague table.'
+/
+
+COMMENT ON COLUMN COLL_RELATIONSHIP.RELATIONSHIP_TYPE IS 'Type of colleague relationship (coded).'
+/
+
+COMMENT ON COLUMN COLL_RELATIONSHIP.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN COLL_RELATIONSHIP.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'GUS_FEAT_CONTIG'
+CREATE TABLE GUS_FEAT_CONTIG
+ (GUS_FEAT_CONTIG_NO NUMBER(10) NOT NULL
+ ,GUS_FEATURE_NO NUMBER(10) NOT NULL
+ ,GUS_CONTIG_NO NUMBER(10) NOT NULL
+ ,MIN_COORD NUMBER(10) NOT NULL
+ ,MAX_COORD NUMBER(10) NOT NULL
+ ,STRAND VARCHAR2(1) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE GUS_FEAT_CONTIG IS 'Linking table between features and contigs.'
+/
+
+COMMENT ON COLUMN GUS_FEAT_CONTIG.GUS_FEAT_CONTIG_NO IS 'Assigned unique identifier for a row in the feat_contig table.  Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN GUS_FEAT_CONTIG.GUS_FEATURE_NO IS 'Unique identifier for a feature. Foreign key to the gus_feature table.'
+/
+
+COMMENT ON COLUMN GUS_FEAT_CONTIG.GUS_CONTIG_NO IS 'Unique identifier for a contig. Foreign key to the gus_contig table.'
+/
+
+COMMENT ON COLUMN GUS_FEAT_CONTIG.MIN_COORD IS 'The minimum coordinate of the feature, relative to it''s location on the contig.'
+/
+
+COMMENT ON COLUMN GUS_FEAT_CONTIG.MAX_COORD IS 'The maximum coordinate of the feature, relative to it''s location on the contig.'
+/
+
+COMMENT ON COLUMN GUS_FEAT_CONTIG.STRAND IS 'Strand on which the GUS contig is located (coded).'
+/
+
+PROMPT Creating Table 'PROTEIN_INFO'
+CREATE TABLE PROTEIN_INFO
+ (PROTEIN_INFO_NO NUMBER(10) NOT NULL
+ ,FEATURE_NO NUMBER(10) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ ,MOLECULAR_WEIGHT NUMBER(7)
+ ,PI NUMBER(4,2)
+ ,CAI NUMBER(4,3)
+ ,PROTEIN_LENGTH NUMBER(5)
+ ,N_TERM_SEQ VARCHAR2(7)
+ ,C_TERM_SEQ VARCHAR2(7)
+ ,CODON_BIAS NUMBER(4,3)
+ ,FOP_SCORE NUMBER(4,3)
+ ,GRAVY_SCORE NUMBER(7,6)
+ ,AROMATICITY_SCORE NUMBER(7,6)
+ ,ALA NUMBER(4)
+ ,ARG NUMBER(4)
+ ,ASN NUMBER(4)
+ ,ASP NUMBER(4)
+ ,CYS NUMBER(4)
+ ,GLN NUMBER(4)
+ ,GLU NUMBER(4)
+ ,GLY NUMBER(4)
+ ,HIS NUMBER(4)
+ ,ILE NUMBER(4)
+ ,LEU NUMBER(4)
+ ,LYS NUMBER(4)
+ ,MET NUMBER(4)
+ ,PHE NUMBER(4)
+ ,PRO NUMBER(4)
+ ,THR NUMBER(4)
+ ,SER NUMBER(4)
+ ,TRP NUMBER(4)
+ ,TYR NUMBER(4)
+ ,VAL NUMBER(4)
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE PROTEIN_INFO IS 'Contains protein information about features.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.PROTEIN_INFO_NO IS 'Assigned unique identifier for a protein. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.FEATURE_NO IS 'Unique identifier for a feature. Foreign key to the feature table.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.MOLECULAR_WEIGHT IS 'Molecular weight of the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.PI IS 'PI of the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.CAI IS 'Codon adaptation index.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.PROTEIN_LENGTH IS 'Length of the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.N_TERM_SEQ IS 'N terminal sequence of protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.C_TERM_SEQ IS 'C terminal sequence of the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.CODON_BIAS IS 'Codon bias of the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.FOP_SCORE IS 'Frequency of optimal codons, which is the ratio of optimal codons to synonymous codons.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.GRAVY_SCORE IS 'General average hydropathicity score for the hypothetical translated gene product.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.AROMATICITY_SCORE IS 'Frequency of aromatic amino acids (Phe, Tyr, Trp) in the hypothetical translated gene product.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.ALA IS 'Number of alanines in the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.ARG IS 'Number of arginines in the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.ASN IS 'Number of asparagines in the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.ASP IS 'Number of aspartic acids in the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.CYS IS 'Number of cysteines in the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.GLN IS 'Number of glutamines in the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.GLU IS 'Number of glutamic acids in the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.GLY IS 'Number of glycines in the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.HIS IS 'Number of histidines in the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.ILE IS 'Number of isoleucines in the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.LEU IS 'Number of leucines in the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.LYS IS 'Number of lycines in the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.MET IS 'Number of methionines in the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.PHE IS 'Number of phenylalanines in the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.PRO IS 'Number of prolines in the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.THR IS 'Number of threonines in the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.SER IS 'Number of serines in the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.TRP IS 'Number of tryptophans in the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.TYR IS 'Number of tyrosines in the protein.'
+/
+
+COMMENT ON COLUMN PROTEIN_INFO.VAL IS 'Number of valines in the protein.'
+/
+
+PROMPT Creating Table 'SEQ'
+CREATE TABLE SEQ
+ (SEQ_NO NUMBER(10) NOT NULL
+ ,FEATURE_NO NUMBER(10) NOT NULL
+ ,SEQ_VERSION DATE NOT NULL
+ ,SEQ_TYPE VARCHAR2(40) NOT NULL
+ ,SOURCE VARCHAR2(40) NOT NULL
+ ,IS_CURRENT VARCHAR2(1) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ ,SEQ_LENGTH NUMBER(10) NOT NULL
+ ,FTP_FILE VARCHAR2(240)
+ ,RESIDUES CLOB NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 100M
+   NEXT 100M
+ )
+ TABLESPACE DATA3
+ LOB (residues) store as seq_residues_lob
+   (tablespace LOB1
+    enable storage in row
+    storage (initial 50M next 50M pctincrease 0)
+    chunk 8k
+    nocache nologging
+    pctversion 10)
+/
+
+COMMENT ON TABLE SEQ IS 'Contains the old and new versions of a feature sequence.'
+/
+
+COMMENT ON COLUMN SEQ.SEQ_NO IS 'Assigned unique identifier for a feature sequence. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN SEQ.FEATURE_NO IS 'Unique identifier for a feature. Foreign key to the feature table.'
+/
+
+COMMENT ON COLUMN SEQ.SEQ_VERSION IS 'The version, expressed as a date (e.g., 2005-12-05), of the sequence.'
+/
+
+COMMENT ON COLUMN SEQ.SEQ_TYPE IS 'Type of sequence (coded).'
+/
+
+COMMENT ON COLUMN SEQ.SOURCE IS 'Source of the sequence (coded).'
+/
+
+COMMENT ON COLUMN SEQ.IS_CURRENT IS 'Whether the sequence is the most current version (coded)'
+/
+
+COMMENT ON COLUMN SEQ.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN SEQ.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+COMMENT ON COLUMN SEQ.SEQ_LENGTH IS 'The sequence length, in nucleotide or amino acid residues.'
+/
+
+COMMENT ON COLUMN SEQ.FTP_FILE IS 'The full pathname to the most granular fasta file on the FTP site that contains this sequence.'
+/
+
+COMMENT ON COLUMN SEQ.RESIDUES IS 'The actual nucleotide or amino acid residues of the sequence.'
+/
+
+PROMPT Creating Table 'DBXREF'
+CREATE TABLE DBXREF
+ (DBXREF_NO NUMBER(10) NOT NULL
+ ,SOURCE VARCHAR2(40) NOT NULL
+ ,DBXREF_TYPE VARCHAR2(40) NOT NULL
+ ,DBXREF_ID VARCHAR2(40) NOT NULL
+ ,DBXREF_NAME VARCHAR2(240)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 20
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE DBXREF IS 'Contains all external database IDs (eg., PIR, Swiss-Prot) for various components in the database.'
+/
+
+COMMENT ON COLUMN DBXREF.DBXREF_NO IS 'Assigned unique identifier for an database cross reference. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN DBXREF.SOURCE IS 'Source of the database identifier (coded.).'
+/
+
+COMMENT ON COLUMN DBXREF.DBXREF_TYPE IS 'Type of database identifier (coded).'
+/
+
+COMMENT ON COLUMN DBXREF.DBXREF_ID IS 'Database identifier assigned by another database.'
+/
+
+COMMENT ON COLUMN DBXREF.DBXREF_NAME IS 'Long name or description of the other database identifier.'
+/
+
+COMMENT ON COLUMN DBXREF.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN DBXREF.CREATED_BY IS 'Userid of the person wno entered the record into the database.'
+/
+
+PROMPT Creating Table 'PDB_ALIGNMENT'
+CREATE TABLE PDB_ALIGNMENT
+ (PDB_ALIGNMENT_NO NUMBER(10) NOT NULL
+ ,QUERY_SEQ_NO NUMBER(10) NOT NULL
+ ,TARGET_SEQ_NO NUMBER(10) NOT NULL
+ ,METHOD VARCHAR2(40) NOT NULL
+ ,MATRIX VARCHAR2(40) NOT NULL
+ ,QUERY_MIN_COORD NUMBER(10) NOT NULL
+ ,QUERY_MAX_COORD NUMBER(10) NOT NULL
+ ,TARGET_MIN_COORD NUMBER(10) NOT NULL
+ ,TARGET_MAX_COORD NUMBER(10) NOT NULL
+ ,PCT_ALIGNED NUMBER(5,2) NOT NULL
+ ,PCT_IDENTICAL NUMBER(5,2) NOT NULL
+ ,PCT_SIMILAR NUMBER(5,2) NOT NULL
+ ,SCORE NUMBER(8,3) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE PDB_ALIGNMENT IS 'Contains information about how two sequences (yeast and a PDB homolog) are aligned.'
+/
+
+COMMENT ON COLUMN PDB_ALIGNMENT.PDB_ALIGNMENT_NO IS 'Assigned unique identifier for a PDB alignment. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN PDB_ALIGNMENT.QUERY_SEQ_NO IS 'Unique identifier for the query sequence. Foreign key to the pdb_sequence table.'
+/
+
+COMMENT ON COLUMN PDB_ALIGNMENT.TARGET_SEQ_NO IS 'Unique identifier for a target sequence. Foreign key to the pdb_sequence table.'
+/
+
+COMMENT ON COLUMN PDB_ALIGNMENT.METHOD IS 'Method used to align the sequences (coded).'
+/
+
+COMMENT ON COLUMN PDB_ALIGNMENT.MATRIX IS 'Matrix used to align the sequences (coded).'
+/
+
+COMMENT ON COLUMN PDB_ALIGNMENT.QUERY_MIN_COORD IS 'Query alignment minimum basepair coordinate.'
+/
+
+COMMENT ON COLUMN PDB_ALIGNMENT.QUERY_MAX_COORD IS 'Query alignment maximum basepair coordinate.'
+/
+
+COMMENT ON COLUMN PDB_ALIGNMENT.TARGET_MIN_COORD IS 'Target alignment minimumt basepair coordinate.'
+/
+
+COMMENT ON COLUMN PDB_ALIGNMENT.TARGET_MAX_COORD IS 'Target alignment maximum basepair coordinate.'
+/
+
+COMMENT ON COLUMN PDB_ALIGNMENT.PCT_ALIGNED IS 'Percent alignment.'
+/
+
+COMMENT ON COLUMN PDB_ALIGNMENT.PCT_IDENTICAL IS 'Percent identity.'
+/
+
+COMMENT ON COLUMN PDB_ALIGNMENT.PCT_SIMILAR IS 'Percent similarity.'
+/
+
+COMMENT ON COLUMN PDB_ALIGNMENT.SCORE IS 'Alignment score.'
+/
+
+COMMENT ON COLUMN PDB_ALIGNMENT.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN PDB_ALIGNMENT.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'GO_QUALIFIER'
+CREATE TABLE GO_QUALIFIER
+ (GO_QUALIFIER_NO NUMBER(10) NOT NULL
+ ,GO_REF_NO NUMBER(10) NOT NULL
+ ,QUALIFIER VARCHAR2(40) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE GO_QUALIFIER IS 'Contains GO qualifiers (e.g., contributes to, colocalizes with).'
+/
+
+COMMENT ON COLUMN GO_QUALIFIER.GO_QUALIFIER_NO IS 'Assigned unique identifier for a go qualifier. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN GO_QUALIFIER.GO_REF_NO IS 'Unique identifier for a GO reference association. Foreign key to the go_ref table.'
+/
+
+COMMENT ON COLUMN GO_QUALIFIER.QUALIFIER IS 'The qualifier for a GO annotation (coded).'
+/
+
+PROMPT Creating Table 'GO_SET'
+CREATE TABLE GO_SET
+ (GO_SET_NO NUMBER(10) NOT NULL
+ ,GO_NO NUMBER(10) NOT NULL
+ ,GO_SET_NAME VARCHAR2(40) NOT NULL
+ ,GENOME_COUNT NUMBER(8) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE GO_SET IS 'Stores information about groups of GOIDs.  Used for defining GO Slims.'
+/
+
+COMMENT ON COLUMN GO_SET.GO_SET_NO IS 'Assigned unique identifier for a set of go terms. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN GO_SET.GO_NO IS 'Unique identifier assigned to a goid. Foreign key to the go table.'
+/
+
+COMMENT ON COLUMN GO_SET.GO_SET_NAME IS 'The name of the go set (coded).'
+/
+
+COMMENT ON COLUMN GO_SET.GENOME_COUNT IS 'Number of times the go_term is found in the genome.'
+/
+
+COMMENT ON COLUMN GO_SET.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN GO_SET.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'AUTHOR'
+CREATE TABLE AUTHOR
+ (AUTHOR_NO NUMBER(10) NOT NULL
+ ,AUTHOR_NAME VARCHAR2(60) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE AUTHOR IS 'Contains names of authors for a reference.'
+/
+
+COMMENT ON COLUMN AUTHOR.AUTHOR_NO IS 'Assigned unique identifier for an author. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN AUTHOR.AUTHOR_NAME IS 'Author name, usually in PubMed format.'
+/
+
+COMMENT ON COLUMN AUTHOR.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN AUTHOR.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'REGULATOR'
+CREATE TABLE REGULATOR
+ (REGULATOR_NO NUMBER(10) NOT NULL
+ ,SOURCE VARCHAR2(100) NOT NULL
+ ,CONDITION VARCHAR2(50)
+ ,FEATURE_NO NUMBER(10)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE REGULATOR IS 'Contains information about regulators, which regulate the expression of a group of features.'
+/
+
+COMMENT ON COLUMN REGULATOR.REGULATOR_NO IS 'Assigned unique identifier for a regulator. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN REGULATOR.SOURCE IS 'The source of the regulator.'
+/
+
+COMMENT ON COLUMN REGULATOR.CONDITION IS 'The regulator may be a condition, such as "heat shock", rather than a feature.'
+/
+
+COMMENT ON COLUMN REGULATOR.FEATURE_NO IS 'Unique identifier for a feature. Foreign key to the feature table.'
+/
+
+COMMENT ON COLUMN REGULATOR.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN REGULATOR.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'URL'
+CREATE TABLE URL
+ (URL_NO NUMBER(10) NOT NULL
+ ,SOURCE VARCHAR2(40) NOT NULL
+ ,URL_TYPE VARCHAR2(40) NOT NULL
+ ,URL VARCHAR2(480) NOT NULL
+ ,SUBSTITUTION_VALUE VARCHAR2(30)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE URL IS 'Contains information about URLs linked to information in the database.'
+/
+
+COMMENT ON COLUMN URL.URL_NO IS 'Assigned unique identifier assigned to a URL.  Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN URL.SOURCE IS 'Database or Institution providing the URL (coded).'
+/
+
+COMMENT ON COLUMN URL.URL_TYPE IS 'Type of URL (coded).'
+/
+
+COMMENT ON COLUMN URL.URL IS 'Actual URL of the particular site.'
+/
+
+COMMENT ON COLUMN URL.SUBSTITUTION_VALUE IS 'Table which contains the value that is substituted in the template URL.'
+/
+
+COMMENT ON COLUMN URL.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN URL.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'REF_CURATION'
+CREATE TABLE REF_CURATION
+ (REF_CURATION_NO NUMBER(10) NOT NULL
+ ,REFERENCE_NO NUMBER(10) NOT NULL
+ ,CURATION_TASK VARCHAR2(40) NOT NULL
+ ,FEATURE_NO NUMBER(10)
+ ,CURATOR_COMMENT VARCHAR2(2000)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE REF_CURATION IS 'Captures curation tasks associated with paper triage. Only contains current tasks, not tasks already done.'
+/
+
+COMMENT ON COLUMN REF_CURATION.REF_CURATION_NO IS 'Assigned unique identifier for a reference curation task. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN REF_CURATION.REFERENCE_NO IS 'Assigned unique identifier for a reference. Foreign key to the reference table.'
+/
+
+COMMENT ON COLUMN REF_CURATION.CURATION_TASK IS 'The type of curation task (coded).'
+/
+
+COMMENT ON COLUMN REF_CURATION.FEATURE_NO IS 'Assigned unique identifier for a feature.  Foreign key to the feature table.'
+/
+
+COMMENT ON COLUMN REF_CURATION.CURATOR_COMMENT IS 'A note or curator comment associated with the curation task.'
+/
+
+COMMENT ON COLUMN REF_CURATION.DATE_CREATED IS 'Date the record was entered to the database.'
+/
+
+COMMENT ON COLUMN REF_CURATION.CREATED_BY IS 'Person who first entered the record into the database.'
+/
+
+PROMPT Creating Table 'FEAT_ANNOTATION'
+CREATE TABLE FEAT_ANNOTATION
+ (FEATURE_NO NUMBER(10) NOT NULL
+ ,QUALIFIER VARCHAR2(40)
+ ,FEAT_ATTRIBUTE VARCHAR2(40)
+ ,NAME_DESCRIPTION VARCHAR2(100)
+ ,HEADLINE VARCHAR2(240)
+ ,GENETIC_POSITION NUMBER(5,2)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE FEAT_ANNOTATION IS 'Contains annotation associated with a single feature.'
+/
+
+COMMENT ON COLUMN FEAT_ANNOTATION.FEATURE_NO IS 'Unique identifier for a feature.  Foreign key to the feature table.'
+/
+
+COMMENT ON COLUMN FEAT_ANNOTATION.QUALIFIER IS 'The gene name categorization. (coded: dubious, uncharacterized, verified).'
+/
+
+COMMENT ON COLUMN FEAT_ANNOTATION.FEAT_ATTRIBUTE IS 'Miscellaneous attributes associated with a feature. Coded.'
+/
+
+COMMENT ON COLUMN FEAT_ANNOTATION.NAME_DESCRIPTION IS 'Description of the gene name acronym.'
+/
+
+COMMENT ON COLUMN FEAT_ANNOTATION.HEADLINE IS 'Description or headline of the feature.'
+/
+
+COMMENT ON COLUMN FEAT_ANNOTATION.GENETIC_POSITION IS 'Genetic position of the locus.'
+/
+
+COMMENT ON COLUMN FEAT_ANNOTATION.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN FEAT_ANNOTATION.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'GO_SYNONYM'
+CREATE TABLE GO_SYNONYM
+ (GO_SYNONYM_NO NUMBER(10) NOT NULL
+ ,GO_SYNONYM VARCHAR2(996) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE GO_SYNONYM IS 'Contains synonyms for GO terms.'
+/
+
+COMMENT ON COLUMN GO_SYNONYM.GO_SYNONYM_NO IS 'Assigned unique identifier for a GO synonym. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN GO_SYNONYM.GO_SYNONYM IS 'Description of the GO synonym.'
+/
+
+COMMENT ON COLUMN GO_SYNONYM.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN GO_SYNONYM.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'SAGE_EXPRESSION'
+CREATE TABLE SAGE_EXPRESSION
+ (SAGE_EXPRESSION_NO NUMBER(10) NOT NULL
+ ,SAGE_TAG_SEQ VARCHAR2(16) NOT NULL
+ ,CONDITION VARCHAR2(40) NOT NULL
+ ,EXP_VALUE NUMBER(7) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE SAGE_EXPRESSION IS 'Contains expression values for a particular condition for each SAGE tag.'
+/
+
+COMMENT ON COLUMN SAGE_EXPRESSION.SAGE_EXPRESSION_NO IS 'Assigned unique identifier for each SAGE tag condition value. Oracle sequence generated number.'
+/
+
+COMMENT ON COLUMN SAGE_EXPRESSION.SAGE_TAG_SEQ IS 'Sequence of the SAGE tag.'
+/
+
+COMMENT ON COLUMN SAGE_EXPRESSION.CONDITION IS 'Condition under which expression was examined (eg. G2/M, S, etc)'
+/
+
+COMMENT ON COLUMN SAGE_EXPRESSION.EXP_VALUE IS 'Expression value of the SAGE tag.'
+/
+
+COMMENT ON COLUMN SAGE_EXPRESSION.DATE_CREATED IS 'Date a record was entered into the database.'
+/
+
+COMMENT ON COLUMN SAGE_EXPRESSION.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'ALIAS'
+CREATE TABLE ALIAS
+ (ALIAS_NO NUMBER(10) NOT NULL
+ ,ALIAS_NAME VARCHAR2(480) NOT NULL
+ ,ALIAS_TYPE VARCHAR2(40) NOT NULL
+ ,DESCRIPTION VARCHAR2(240)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE ALIAS IS 'Contains other names or aliases for the standard name used to describe a feature or gene.'
+/
+
+COMMENT ON COLUMN ALIAS.ALIAS_NO IS 'Assigned unique identifier for an alias. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN ALIAS.ALIAS_NAME IS 'Alternative name for a feature or gene.'
+/
+
+COMMENT ON COLUMN ALIAS.ALIAS_TYPE IS 'The type of alias for the gene or feature (coded).'
+/
+
+COMMENT ON COLUMN ALIAS.DESCRIPTION IS 'A description associated with a particular name.'
+/
+
+COMMENT ON COLUMN ALIAS.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN ALIAS.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'SEQ_CHANGE_ARCHIVE'
+CREATE TABLE SEQ_CHANGE_ARCHIVE
+ (SEQ_CHANGE_ARCHIVE_NO NUMBER(10) NOT NULL
+ ,SEQ_NO NUMBER(10) NOT NULL
+ ,SEQ_CHANGE_TYPE VARCHAR2(40) NOT NULL
+ ,CHANGE_MIN_COORD NUMBER(10) NOT NULL
+ ,CHANGE_MAX_COORD NUMBER(10) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ ,OLD_SEQ VARCHAR2(2000)
+ ,NEW_SEQ VARCHAR2(2000)
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE SEQ_CHANGE_ARCHIVE IS 'Contains the changes made to root feature sequences (chromosome and contigs).  Each sequence in the seq table is associated with one or more individual sequence changes.'
+/
+
+COMMENT ON COLUMN SEQ_CHANGE_ARCHIVE.SEQ_CHANGE_ARCHIVE_NO IS 'Assigned unique identifier for a DNA sequence change. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN SEQ_CHANGE_ARCHIVE.SEQ_NO IS 'Unique identifier for the old DNA sequence. Foreign key to the seq table.'
+/
+
+COMMENT ON COLUMN SEQ_CHANGE_ARCHIVE.SEQ_CHANGE_TYPE IS 'The type of sequence change (coded).'
+/
+
+COMMENT ON COLUMN SEQ_CHANGE_ARCHIVE.CHANGE_MIN_COORD IS 'Minimum coordinate of the sequence change.'
+/
+
+COMMENT ON COLUMN SEQ_CHANGE_ARCHIVE.CHANGE_MAX_COORD IS 'Maximum coordinate of the sequence change.'
+/
+
+COMMENT ON COLUMN SEQ_CHANGE_ARCHIVE.DATE_CREATED IS 'Date the record was entered into the database. Equals the seq_version of the new sequence.'
+/
+
+COMMENT ON COLUMN SEQ_CHANGE_ARCHIVE.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+COMMENT ON COLUMN SEQ_CHANGE_ARCHIVE.OLD_SEQ IS 'The actual previous DNA sequence.'
+/
+
+COMMENT ON COLUMN SEQ_CHANGE_ARCHIVE.NEW_SEQ IS 'The actual new DNA sequence.'
+/
+
+PROMPT Creating Table 'DBXREF_REF'
+CREATE TABLE DBXREF_REF
+ (DBXREF_REF_NO NUMBER(10) NOT NULL
+ ,DBXREF_NO NUMBER(10) NOT NULL
+ ,REFERENCE_NO NUMBER(10) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE DBXREF_REF IS 'Linking table between the dbxref and reference tables.'
+/
+
+COMMENT ON COLUMN DBXREF_REF.DBXREF_REF_NO IS 'Assigned unique identifier for a row in the dbxref_ref table. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN DBXREF_REF.DBXREF_NO IS 'Unique identifier for an database cross reference. Foreign key to the dbxref table.'
+/
+
+COMMENT ON COLUMN DBXREF_REF.REFERENCE_NO IS 'Unique identifier for a reference. Foreign key to the reference table.'
+/
+
+PROMPT Creating Table 'FEAT_LOCATION'
+CREATE TABLE FEAT_LOCATION
+ (FEAT_LOCATION_NO NUMBER(10) NOT NULL
+ ,FEATURE_NO NUMBER(10) NOT NULL
+ ,SEQ_NO NUMBER(10) NOT NULL
+ ,ROOTSEQ_NO NUMBER(10) NOT NULL
+ ,COORD_VERSION DATE NOT NULL
+ ,MIN_COORD NUMBER(10) NOT NULL
+ ,MAX_COORD NUMBER(10) NOT NULL
+ ,STRAND VARCHAR2(1) NOT NULL
+ ,IS_CURRENT VARCHAR2(1) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE FEAT_LOCATION IS 'Contains information for all feature locations (stop and start coordinates).  This table contains both current and archival coordinates.'
+/
+
+COMMENT ON COLUMN FEAT_LOCATION.FEAT_LOCATION_NO IS 'Assigned unique identifier for a feature sequence annotation. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN FEAT_LOCATION.FEATURE_NO IS 'Unique identifier for this feature location. Foreign key to the feature table.'
+/
+
+COMMENT ON COLUMN FEAT_LOCATION.SEQ_NO IS 'Unique identifier for the sequence associated with this feature location. Foreign key to the seq table.'
+/
+
+COMMENT ON COLUMN FEAT_LOCATION.ROOTSEQ_NO IS 'Unique identifier for the root sequence (e.g., chromosome) associated with this feature location. Foreign key to the seq table.'
+/
+
+COMMENT ON COLUMN FEAT_LOCATION.COORD_VERSION IS 'Date the feature was identified at this location (min and max coordinates).'
+/
+
+COMMENT ON COLUMN FEAT_LOCATION.MIN_COORD IS 'Minimum coordinate of the feature location, regardless of strand.'
+/
+
+COMMENT ON COLUMN FEAT_LOCATION.MAX_COORD IS 'Maximum coordinate of the feature location, regardless of strand.'
+/
+
+COMMENT ON COLUMN FEAT_LOCATION.STRAND IS 'DNA strand on which the feature is located (coded).'
+/
+
+COMMENT ON COLUMN FEAT_LOCATION.IS_CURRENT IS 'Whether this feature location is the current version (coded).'
+/
+
+COMMENT ON COLUMN FEAT_LOCATION.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN FEAT_LOCATION.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'GUS_SEQ'
+CREATE TABLE GUS_SEQ
+ (GUS_SEQ_NO NUMBER(10) NOT NULL
+ ,SEQ_TYPE VARCHAR2(40) NOT NULL
+ ,SEQ_VERSION DATE NOT NULL
+ ,GUS_FEATURE_NO NUMBER(10)
+ ,GUS_CONTIG_NO NUMBER(10)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ ,LENGTH NUMBER(10) NOT NULL
+ ,RESIDUES CLOB NOT NULL
+ )
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 100M
+   NEXT 100M
+ )
+ TABLESPACE DATA3
+ LOB (residues) store as gus_seq_residues_lob
+   (tablespace LOB1
+    enable storage in row
+    storage (initial 50M next 50M pctincrease 0)
+    chunk 8k
+    nocache nologging
+    pctversion 10)
+/
+
+COMMENT ON TABLE GUS_SEQ IS 'Stores the DNA and protein sequence for any feature or contig.'
+/
+
+COMMENT ON COLUMN GUS_SEQ.GUS_SEQ_NO IS 'Assigned unique identifier for a sequence. Oracle generated sequential number.'
+/
+
+COMMENT ON TABLE GUS_SEQ IS 'Stores the DNA and protein sequence for any feature or contig.'
+/
+
+COMMENT ON COLUMN GUS_SEQ.GUS_SEQ_NO IS 'Assigned unique identifier for a sequence. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN GUS_SEQ.SEQ_TYPE IS 'The type of sequence (eg. protein, genomic DNA, etc) (coded).'
+/
+
+COMMENT ON COLUMN GUS_SEQ.SEQ_VERSION IS 'The version of the sequence, which is the date.'
+/
+
+COMMENT ON COLUMN GUS_SEQ.GUS_FEATURE_NO IS 'Unique identifier for a feature. Foreign key to the gus_feature table.'
+/
+
+COMMENT ON COLUMN GUS_SEQ.GUS_CONTIG_NO IS 'Unique identifier for a contig. Foreign key to the gus_contig table.'
+/
+
+COMMENT ON COLUMN GUS_SEQ.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN GUS_SEQ.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+COMMENT ON COLUMN GUS_SEQ.LENGTH IS 'The length of the sequence in basepairs.'
+/
+
+COMMENT ON COLUMN GUS_SEQ.RESIDUES IS 'The actual sequence data; a CLOB.'
+/
+
+PROMPT Creating Table 'GO_GOSYN'
+CREATE TABLE GO_GOSYN
+ (GO_GOSYN_NO NUMBER(10) NOT NULL
+ ,GO_NO NUMBER(10) NOT NULL
+ ,GO_SYNONYM_NO NUMBER(10) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE GO_GOSYN IS 'Linking table between the go and go_synonym tables.'
+/
+
+COMMENT ON COLUMN GO_GOSYN.GO_GOSYN_NO IS 'Assigned unique identifier for a row in the go_gosyn table. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN GO_GOSYN.GO_NO IS 'Unique identifier assigned to a goid. Foreign key to the go table.'
+/
+
+COMMENT ON COLUMN GO_GOSYN.GO_SYNONYM_NO IS 'Unique identifier for a GO synonym. Foreign key to the go_synonym table.'
+/
+
+PROMPT Creating Table 'GO_ANNOTATION'
+CREATE TABLE GO_ANNOTATION
+ (GO_ANNOTATION_NO NUMBER(10) NOT NULL
+ ,GO_NO NUMBER(10) NOT NULL
+ ,FEATURE_NO NUMBER(10) NOT NULL
+ ,GO_EVIDENCE VARCHAR2(40) NOT NULL
+ ,ANNOTATION_TYPE VARCHAR2(40) NOT NULL
+ ,SOURCE VARCHAR2(40) NOT NULL
+ ,DATE_LAST_REVIEWED DATE DEFAULT SYSDATE NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 20
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE GO_ANNOTATION IS 'Contains information about go annotations.  Linking table between the go and feature tables.'
+/
+
+COMMENT ON COLUMN GO_ANNOTATION.GO_ANNOTATION_NO IS 'Assigned unique identifier for a go annoation. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN GO_ANNOTATION.GO_NO IS 'Unique identifier assigned to a goid. Foreign key to the go table.'
+/
+
+COMMENT ON COLUMN GO_ANNOTATION.FEATURE_NO IS 'Unique identifier for a feature. Foreign key to the feature table.'
+/
+
+COMMENT ON COLUMN GO_ANNOTATION.GO_EVIDENCE IS 'Evidence for the go annotation (coded.).'
+/
+
+COMMENT ON COLUMN GO_ANNOTATION.ANNOTATION_TYPE IS 'The type or class of GO annotation (coded).'
+/
+
+COMMENT ON COLUMN GO_ANNOTATION.SOURCE IS 'The source of the GO annotation (coded).'
+/
+
+COMMENT ON COLUMN GO_ANNOTATION.DATE_LAST_REVIEWED IS 'Date a curator last reviewed the GO annotation.'
+/
+
+COMMENT ON COLUMN GO_ANNOTATION.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN GO_ANNOTATION.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'GENE_RESERVATION'
+CREATE TABLE GENE_RESERVATION
+ (FEATURE_NO NUMBER(10) NOT NULL
+ ,RESERVATION_DATE DATE DEFAULT SYSDATE NOT NULL
+ ,EXPIRATION_DATE DATE DEFAULT SYSDATE + 365 NOT NULL
+ ,RESERVED_GENE_NAME VARCHAR2(10)
+ ,DATE_STANDARDIZED DATE
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE GENE_RESERVATION IS 'Contains all gene name reservations.'
+/
+
+COMMENT ON COLUMN GENE_RESERVATION.FEATURE_NO IS 'Unique identifier for a feature. Foreign key to the feature table.'
+/
+
+COMMENT ON COLUMN GENE_RESERVATION.RESERVATION_DATE IS 'Date the gene reservation was made.'
+/
+
+COMMENT ON COLUMN GENE_RESERVATION.EXPIRATION_DATE IS 'Date the gene reservation expires.'
+/
+
+COMMENT ON COLUMN GENE_RESERVATION.RESERVED_GENE_NAME IS 'Reserved gene name.'
+/
+
+COMMENT ON COLUMN GENE_RESERVATION.DATE_STANDARDIZED IS 'Date the reserved gene name became standardized.'
+/
+
+COMMENT ON COLUMN GENE_RESERVATION.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN GENE_RESERVATION.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'GO_REF'
+CREATE TABLE GO_REF
+ (GO_REF_NO NUMBER(10) NOT NULL
+ ,REFERENCE_NO NUMBER(10) NOT NULL
+ ,GO_ANNOTATION_NO NUMBER(10) NOT NULL
+ ,HAS_QUALIFIER VARCHAR2(1) NOT NULL
+ ,HAS_SUPPORTING_EVIDENCE VARCHAR2(1) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE GO_REF IS 'Linking table between the go_annotation and reference tables.'
+/
+
+COMMENT ON COLUMN GO_REF.GO_REF_NO IS 'Assigned unique identifier for a GO reference association. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN GO_REF.REFERENCE_NO IS 'Unique identifier for a  reference. Foreign key to the reference table.'
+/
+
+COMMENT ON COLUMN GO_REF.GO_ANNOTATION_NO IS 'Unique identifier for a go annoation. Foreign key to the go_annotation table.'
+/
+
+COMMENT ON COLUMN GO_REF.HAS_QUALIFIER IS 'Whether this GO reference has a qualifier (coded).'
+/
+
+COMMENT ON COLUMN GO_REF.HAS_SUPPORTING_EVIDENCE IS 'Whether this GO reference has supporting evidence (coded).'
+/
+
+COMMENT ON COLUMN GO_REF.DATE_CREATED IS 'Date this record was entered into the database.'
+/
+
+COMMENT ON COLUMN GO_REF.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'CODE'
+CREATE TABLE CODE
+ (CODE_NO NUMBER(10) NOT NULL
+ ,TAB_NAME VARCHAR2(30) NOT NULL
+ ,COL_NAME VARCHAR2(30) NOT NULL
+ ,CODE_VALUE VARCHAR2(40) NOT NULL
+ ,DESCRIPTION VARCHAR2(240)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE CODE IS 'Contains values for coded columns used in the database.'
+/
+
+COMMENT ON COLUMN CODE.CODE_NO IS 'Assigned unique identifier for a code.  Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN CODE.TAB_NAME IS 'Table name associated with the coded value.'
+/
+
+COMMENT ON COLUMN CODE.COL_NAME IS 'Column name associated with the coded value.'
+/
+
+COMMENT ON COLUMN CODE.CODE_VALUE IS 'The actual code value.'
+/
+
+COMMENT ON COLUMN CODE.DESCRIPTION IS 'A description or explanation of the code value.'
+/
+
+COMMENT ON COLUMN CODE.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN CODE.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'COLLEAGUE'
+CREATE TABLE COLLEAGUE
+ (COLLEAGUE_NO NUMBER(10) NOT NULL
+ ,LAST_NAME VARCHAR2(40) NOT NULL
+ ,FIRST_NAME VARCHAR2(40) NOT NULL
+ ,SUFFIX VARCHAR2(40)
+ ,OTHER_LAST_NAME VARCHAR2(40)
+ ,PROFESSION VARCHAR2(100)
+ ,JOB_TITLE VARCHAR2(100)
+ ,INSTITUTION VARCHAR2(100)
+ ,ADDRESS1 VARCHAR2(60)
+ ,ADDRESS2 VARCHAR2(60)
+ ,ADDRESS3 VARCHAR2(60)
+ ,ADDRESS4 VARCHAR2(60)
+ ,ADDRESS5 VARCHAR2(60)
+ ,CITY VARCHAR2(100)
+ ,STATE VARCHAR2(40)
+ ,REGION VARCHAR2(40)
+ ,COUNTRY VARCHAR2(40)
+ ,POSTAL_CODE VARCHAR2(40)
+ ,WORK_PHONE VARCHAR2(40)
+ ,OTHER_PHONE VARCHAR2(40)
+ ,FAX VARCHAR2(40)
+ ,EMAIL VARCHAR2(100)
+ ,SOURCE VARCHAR2(40) NOT NULL
+ ,IS_PI VARCHAR2(1) NOT NULL
+ ,IS_CONTACT VARCHAR2(1) NOT NULL
+ ,DISPLAY_EMAIL VARCHAR2(1) NOT NULL
+ ,DATE_MODIFIED DATE DEFAULT SYSDATE NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE COLLEAGUE IS 'An individual who has submitted personal information to the database.'
+/
+
+COMMENT ON COLUMN COLLEAGUE.COLLEAGUE_NO IS 'Assigned unique identifier for a colleague. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN COLLEAGUE.LAST_NAME IS 'Colleague last name.'
+/
+
+COMMENT ON COLUMN COLLEAGUE.FIRST_NAME IS 'Colleague first name.'
+/
+
+COMMENT ON COLUMN COLLEAGUE.SUFFIX IS 'Colleague suffix (coded).'
+/
+
+COMMENT ON COLUMN COLLEAGUE.OTHER_LAST_NAME IS 'Other last name for the colleague (e.g., maiden name, etc.).'
+/
+
+COMMENT ON COLUMN COLLEAGUE.PROFESSION IS 'Colleague profession, such as "yeast molecular biologist."'
+/
+
+COMMENT ON COLUMN COLLEAGUE.JOB_TITLE IS 'Colleague postition, such as post-doc, staff scientist, principal investigator, etc.  This is a user-defined entry without a controlled vocabulary.'
+/
+
+COMMENT ON COLUMN COLLEAGUE.INSTITUTION IS 'Organization at which the colleague is employed.  This is user defined and can be a department, institute, company, etc.'
+/
+
+COMMENT ON COLUMN COLLEAGUE.ADDRESS1 IS 'First line of an address.'
+/
+
+COMMENT ON COLUMN COLLEAGUE.ADDRESS2 IS 'Second line of an address.'
+/
+
+COMMENT ON COLUMN COLLEAGUE.ADDRESS3 IS 'Third line of an address.'
+/
+
+COMMENT ON COLUMN COLLEAGUE.ADDRESS4 IS 'Fourth line of an address.'
+/
+
+COMMENT ON COLUMN COLLEAGUE.ADDRESS5 IS 'Fifth line of an address.'
+/
+
+COMMENT ON COLUMN COLLEAGUE.CITY IS 'City where colleague can be contacted'
+/
+
+COMMENT ON COLUMN COLLEAGUE.STATE IS 'US State or Canadian Province, chosen by the colleague from a coded list.'
+/
+
+COMMENT ON COLUMN COLLEAGUE.REGION IS 'Region or province for non-US colleagues'
+/
+
+COMMENT ON COLUMN COLLEAGUE.COUNTRY IS 'Colleague country.'
+/
+
+COMMENT ON COLUMN COLLEAGUE.POSTAL_CODE IS 'Colleague postal code.'
+/
+
+COMMENT ON COLUMN COLLEAGUE.WORK_PHONE IS 'Colleague work phone number.'
+/
+
+COMMENT ON COLUMN COLLEAGUE.OTHER_PHONE IS 'Additional phone number.'
+/
+
+COMMENT ON COLUMN COLLEAGUE.FAX IS 'Fax number.'
+/
+
+COMMENT ON COLUMN COLLEAGUE.EMAIL IS 'A fully qualified email address: name@domain.'
+/
+
+COMMENT ON COLUMN COLLEAGUE.SOURCE IS 'Source from which which the database obtained this colleague information (coded).'
+/
+
+COMMENT ON COLUMN COLLEAGUE.IS_PI IS 'Whether the colleague is a PI (coded).'
+/
+
+COMMENT ON COLUMN COLLEAGUE.IS_CONTACT IS 'Whether the colleague is a contact for SGD (coded).'
+/
+
+COMMENT ON COLUMN COLLEAGUE.DISPLAY_EMAIL IS 'Whether to display the colleague email address (coded).'
+/
+
+COMMENT ON COLUMN COLLEAGUE.DATE_MODIFIED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN COLLEAGUE.DATE_CREATED IS 'Date the colleague entry was created'
+/
+
+COMMENT ON COLUMN COLLEAGUE.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'LITGUIDE_FEAT'
+CREATE TABLE LITGUIDE_FEAT
+ (LITGUIDE_FEAT_NO NUMBER(10) NOT NULL
+ ,FEATURE_NO NUMBER(10) NOT NULL
+ ,LIT_GUIDE_NO NUMBER(10) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE LITGUIDE_FEAT IS 'Lnking table between the lit_guide and feature tables.'
+/
+
+COMMENT ON COLUMN LITGUIDE_FEAT.LITGUIDE_FEAT_NO IS 'Assigned unique identifier for a row in the litguide_feat table.  Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN LITGUIDE_FEAT.FEATURE_NO IS 'Unique identifier for a feature. Foreign key to the feature table.'
+/
+
+COMMENT ON COLUMN LITGUIDE_FEAT.LIT_GUIDE_NO IS 'Unique identifier for a reference literature topic. Foreign key to the lit_guide table.'
+/
+
+COMMENT ON COLUMN LITGUIDE_FEAT.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN LITGUIDE_FEAT.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'TAX_SYNONYM'
+CREATE TABLE TAX_SYNONYM
+ (TAX_SYNONYM_NO NUMBER(10) NOT NULL
+ ,TAXON_ID NUMBER(10) NOT NULL
+ ,TAX_SYNONYM VARCHAR2(240) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE TAX_SYNONYM IS 'This table store the synonyms of the taxonomy terms provided by NCBI.'
+/
+
+COMMENT ON COLUMN TAX_SYNONYM.TAX_SYNONYM_NO IS 'Assigned unique identifier for a taxonomy synonym.  Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN TAX_SYNONYM.TAXON_ID IS 'Unique identifier for a taxonomy term from NCBI. Foreign key to the taxonomy table.'
+/
+
+COMMENT ON COLUMN TAX_SYNONYM.TAX_SYNONYM IS 'Synonym of the taxonomy term; note that it may not be unique (eg. Yeast can be a synonym for Saccharomyce cerevisiae and pombe).  The Other Name field at NCBI.'
+/
+
+PROMPT Creating Table 'JOURNAL'
+CREATE TABLE JOURNAL
+ (JOURNAL_NO NUMBER(10) NOT NULL
+ ,FULL_NAME VARCHAR2(200)
+ ,ABBREVIATION VARCHAR2(140)
+ ,ISSN VARCHAR2(20)
+ ,ESSN VARCHAR2(20)
+ ,PUBLISHER VARCHAR2(100)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE JOURNAL IS 'Contains information about journals.'
+/
+
+COMMENT ON COLUMN JOURNAL.JOURNAL_NO IS 'Assigned unique identifier for a journal. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN JOURNAL.FULL_NAME IS 'Full name of the journal.'
+/
+
+COMMENT ON COLUMN JOURNAL.ABBREVIATION IS 'Journal abbreviation.'
+/
+
+COMMENT ON COLUMN JOURNAL.ISSN IS 'International Standard Serial Number.'
+/
+
+COMMENT ON COLUMN JOURNAL.ESSN IS 'Electronic Standard Serial Number'
+/
+
+COMMENT ON COLUMN JOURNAL.PUBLISHER IS 'Publisher of the journal.'
+/
+
+COMMENT ON COLUMN JOURNAL.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN JOURNAL.CREATED_BY IS 'Userid of the person who first entered the record into the database.'
+/
+
+PROMPT Creating Table 'DATASET'
+CREATE TABLE DATASET
+ (DATASET_NO NUMBER(10) NOT NULL
+ ,DATASET_NAME VARCHAR2(50) NOT NULL
+ ,DATASET_TYPE VARCHAR2(40) NOT NULL
+ ,SOURCE VARCHAR2(100) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE DATASET IS 'Contains information for displaying expression data.'
+/
+
+COMMENT ON COLUMN DATASET.DATASET_NO IS 'Assigned unique identifier for each expression dataset. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN DATASET.DATASET_NAME IS 'Name of the expression dataset (e.g., diauxic shift).'
+/
+
+COMMENT ON COLUMN DATASET.DATASET_TYPE IS 'The type of dataset (coded).'
+/
+
+COMMENT ON COLUMN DATASET.SOURCE IS 'Source of the expression dataset.'
+/
+
+COMMENT ON COLUMN DATASET.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN DATASET.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'ARCHIVE'
+CREATE TABLE ARCHIVE
+ (ARCHIVE_NO NUMBER(10) NOT NULL
+ ,FEATURE_NO NUMBER(10) NOT NULL
+ ,ARCHIVE_TYPE VARCHAR2(40) NOT NULL
+ ,OLD_VALUE VARCHAR2(40)
+ ,NEW_VALUE VARCHAR2(40) NOT NULL
+ ,DESCRIPTION VARCHAR2(240)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE ARCHIVE IS 'Contains the change history for important data types.'
+/
+
+COMMENT ON COLUMN ARCHIVE.ARCHIVE_NO IS 'Assigned unique identifier for the archival data.  Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN ARCHIVE.FEATURE_NO IS 'Assigned unique identifier for a feature. The feature primary key associated with the archival data.'
+/
+
+COMMENT ON COLUMN ARCHIVE.ARCHIVE_TYPE IS 'The name or type of the archival data. Coded (e.g., feature status, feature qualifier, gene name, etc.).'
+/
+
+COMMENT ON COLUMN ARCHIVE.OLD_VALUE IS 'The old or previous data value.'
+/
+
+COMMENT ON COLUMN ARCHIVE.NEW_VALUE IS 'The new data value.'
+/
+
+COMMENT ON COLUMN ARCHIVE.DESCRIPTION IS 'Description, if any, associated with the change history.'
+/
+
+COMMENT ON COLUMN ARCHIVE.DATE_CREATED IS 'Date the row was entered into the database. Equivalent to the date the change was made.'
+/
+
+COMMENT ON COLUMN ARCHIVE.CREATED_BY IS 'User who first entered the data.  Equivalent to the user who made the data change.'
+/
+
+PROMPT Creating Table 'SAMPLE_VALUE'
+CREATE TABLE SAMPLE_VALUE
+ (SAMPLE_VALUE_NO NUMBER(10) NOT NULL
+ ,DATASET_SAMPLE_NO NUMBER(10) NOT NULL
+ ,FEATURE_NO NUMBER(10) NOT NULL
+ ,SAMPLE_VALUE NUMBER(5,3) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 100M
+   NEXT 100M
+ )
+ TABLESPACE DATA3
+/
+
+COMMENT ON TABLE SAMPLE_VALUE IS 'This table stores the actual data for each expression dataset.'
+/
+
+COMMENT ON COLUMN SAMPLE_VALUE.SAMPLE_VALUE_NO IS 'Assigned unique identifier for a sample value. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN SAMPLE_VALUE.DATASET_SAMPLE_NO IS 'Unique identifier for a dataset sample. Foreign key to the dataset_sample table.'
+/
+
+COMMENT ON COLUMN SAMPLE_VALUE.FEATURE_NO IS 'Unique identifier for a feature. Foreign key to the feature table.'
+/
+
+COMMENT ON COLUMN SAMPLE_VALUE.SAMPLE_VALUE IS 'The actual data/result of the experiment.'
+/
+
+PROMPT Creating Table 'ALIGNMENT_SEQUENCE'
+CREATE TABLE ALIGNMENT_SEQUENCE
+ (ALIGNMENT_SEQUENCE_NO NUMBER(10) NOT NULL
+ ,TAB_NAME VARCHAR2(30) NOT NULL
+ ,PRIMARY_KEY NUMBER(10) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ ,QUERY_SEQ VARCHAR2(4000) NOT NULL
+ ,TARGET_SEQ VARCHAR2(4000) NOT NULL
+ ,ALIGNMENT_SYMBOL VARCHAR2(4000) NOT NULL
+ )
+ PCTUSED 70
+ PCTFREE 5
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 100M
+   NEXT 100M
+ )
+ TABLESPACE DATA3
+/
+
+COMMENT ON TABLE ALIGNMENT_SEQUENCE IS 'Raw sequence used in an alignment.'
+/
+
+COMMENT ON COLUMN ALIGNMENT_SEQUENCE.ALIGNMENT_SEQUENCE_NO IS 'Assigned unique identifier for an aligned sequence. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN ALIGNMENT_SEQUENCE.TAB_NAME IS 'Name of the table to which the raw sequence belongs.'
+/
+
+COMMENT ON COLUMN ALIGNMENT_SEQUENCE.PRIMARY_KEY IS 'Primary key of the table to which the raw sequence belongs.'
+/
+
+COMMENT ON COLUMN ALIGNMENT_SEQUENCE.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN ALIGNMENT_SEQUENCE.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+COMMENT ON COLUMN ALIGNMENT_SEQUENCE.QUERY_SEQ IS 'Raw query sequence.'
+/
+
+COMMENT ON COLUMN ALIGNMENT_SEQUENCE.TARGET_SEQ IS 'Raw target sequence.'
+/
+
+COMMENT ON COLUMN ALIGNMENT_SEQUENCE.ALIGNMENT_SYMBOL IS 'Symbols used to indicate the identity or similarity between two aligned sequences in a sequence alignment display.'
+/
+
+PROMPT Creating Table 'REF_TEMP'
+CREATE TABLE REF_TEMP
+ (REF_TEMP_NO NUMBER(10) NOT NULL
+ ,PUBMED NUMBER(10) NOT NULL
+ ,CITATION VARCHAR2(480) NOT NULL
+ ,FULLTEXT_URL VARCHAR2(480)
+ ,ABSTRACT VARCHAR2(4000)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE REF_TEMP IS 'Contains initial downloaded reference information before the assignment of a DBID. Curators triage these references and decide if they should be loaded into the reference or ref_bad tables.'
+/
+
+COMMENT ON COLUMN REF_TEMP.REF_TEMP_NO IS 'Assigned unique identifier for a temporary reference. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN REF_TEMP.PUBMED IS 'PMID of the reference from NCBI.'
+/
+
+COMMENT ON COLUMN REF_TEMP.CITATION IS 'Full citation, including authors, journal, title, etc.'
+/
+
+COMMENT ON COLUMN REF_TEMP.FULLTEXT_URL IS 'The URL to the full text paper, if available.'
+/
+
+COMMENT ON COLUMN REF_TEMP.ABSTRACT IS 'Abstract of the paper.'
+/
+
+COMMENT ON COLUMN REF_TEMP.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN REF_TEMP.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'FEAT_PARA'
+CREATE TABLE FEAT_PARA
+ (FEAT_PARA_NO NUMBER(10) NOT NULL
+ ,FEATURE_NO NUMBER(10) NOT NULL
+ ,PARAGRAPH_NO NUMBER(10) NOT NULL
+ ,PARAGRAPH_ORDER NUMBER(2) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE FEAT_PARA IS 'Linking table between the feature and paragraph tables.'
+/
+
+COMMENT ON COLUMN FEAT_PARA.FEAT_PARA_NO IS 'Assigned unique identifier for a feature-paragraph association. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN FEAT_PARA.FEATURE_NO IS 'Unique identifier for a feature. Foreign key to the feature table.'
+/
+
+COMMENT ON COLUMN FEAT_PARA.PARAGRAPH_NO IS 'Unique identifier for a paragraph. Foreign key to the paragraph table.'
+/
+
+COMMENT ON COLUMN FEAT_PARA.PARAGRAPH_ORDER IS 'Order of the paragraphs associated with the feature.'
+/
+
+PROMPT Creating Table 'REF_BAD'
+CREATE TABLE REF_BAD
+ (PUBMED NUMBER(10) NOT NULL
+ ,DBXREF_ID VARCHAR2(40)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 70
+ PCTFREE 5
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE REF_BAD IS 'Contains PubMed IDs for references that should not be associated with the database.'
+/
+
+COMMENT ON COLUMN REF_BAD.PUBMED IS 'PubMed identifier for a reference that should not be associated with the database or a given table record.'
+/
+
+COMMENT ON COLUMN REF_BAD.DBXREF_ID IS 'DBXREF_ID (DBID) of the reference if one was assigned prior to it being removed from the database.'
+/
+
+COMMENT ON COLUMN REF_BAD.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN REF_BAD.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'GUS_FEATURE'
+CREATE TABLE GUS_FEATURE
+ (GUS_FEATURE_NO NUMBER(10) NOT NULL
+ ,TAXON_ID NUMBER(10) NOT NULL
+ ,FEATURE_NAME VARCHAR2(40) NOT NULL
+ ,SOURCE VARCHAR2(40) NOT NULL
+ ,FEATURE_TYPE VARCHAR2(40)
+ ,CHROMOSOME NUMBER(2)
+ ,MIN_COORD NUMBER(10)
+ ,MAX_COORD NUMBER(10)
+ ,STRAND VARCHAR2(1)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE GUS_FEATURE IS 'This table stores genomic features for other species.'
+/
+
+COMMENT ON COLUMN GUS_FEATURE.GUS_FEATURE_NO IS 'Assigned unique identifier for a row in the gus_ feature table.  Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN GUS_FEATURE.TAXON_ID IS 'Unique identifier for an organism assigned by NCBI.  Foreign key to the taxonomy table.'
+/
+
+COMMENT ON COLUMN GUS_FEATURE.FEATURE_NAME IS 'Unique name for each species of the feature.'
+/
+
+COMMENT ON COLUMN GUS_FEATURE.SOURCE IS 'Source of the feature (eg. SGD, or MIT collaboration) (coded).'
+/
+
+COMMENT ON COLUMN GUS_FEATURE.FEATURE_TYPE IS 'The type of the feature (e.g., ORF, CDS, etc.) (coded).'
+/
+
+COMMENT ON COLUMN GUS_FEATURE.CHROMOSOME IS 'The chromosome on which the feature is located.'
+/
+
+COMMENT ON COLUMN GUS_FEATURE.MIN_COORD IS 'The minimum coordinate of a feature on the chromosome.'
+/
+
+COMMENT ON COLUMN GUS_FEATURE.MAX_COORD IS 'The maximum coordinate of a feature on the chromosome.'
+/
+
+COMMENT ON COLUMN GUS_FEATURE.STRAND IS 'Strand on which the GUS feature is located (coded).'
+/
+
+COMMENT ON COLUMN GUS_FEATURE.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN GUS_FEATURE.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'FEAT_CURATION'
+CREATE TABLE FEAT_CURATION
+ (FEAT_CURATION_NO NUMBER(10) NOT NULL
+ ,FEATURE_NO NUMBER(10) NOT NULL
+ ,CURATION_TASK VARCHAR2(40) NOT NULL
+ ,CURATOR_COMMENT VARCHAR2(2000)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE FEAT_CURATION IS 'Captures tasks associated with feature curation.  Contains both current and done curation tasks.'
+/
+
+COMMENT ON COLUMN FEAT_CURATION.FEAT_CURATION_NO IS 'Assigned unique identifier for a feature curation task.  Oracle sequence generated number.'
+/
+
+COMMENT ON COLUMN FEAT_CURATION.FEATURE_NO IS 'Assigned unique identifier for a feature. Foreign key to the feature table.'
+/
+
+COMMENT ON COLUMN FEAT_CURATION.CURATION_TASK IS 'The type of feature curation task (coded).'
+/
+
+COMMENT ON COLUMN FEAT_CURATION.CURATOR_COMMENT IS 'A note or curator comment about the feature curation task.'
+/
+
+COMMENT ON COLUMN FEAT_CURATION.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN FEAT_CURATION.CREATED_BY IS 'Person who first entered the record into the database.'
+/
+
+PROMPT Creating Table 'TAX_RELATIONSHIP'
+CREATE TABLE TAX_RELATIONSHIP
+ (TAX_RELATIONSHIP_NO NUMBER(10) NOT NULL
+ ,PARENT_TAXON_ID NUMBER(10) NOT NULL
+ ,CHILD_TAXON_ID NUMBER(10) NOT NULL
+ ,GENERATION NUMBER(2) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 100M
+   NEXT 100M
+ )
+ TABLESPACE DATA3
+/
+
+COMMENT ON TABLE TAX_RELATIONSHIP IS 'This table stores the structure of taxonomy classifications provided by NCBI.'
+/
+
+COMMENT ON COLUMN TAX_RELATIONSHIP.TAX_RELATIONSHIP_NO IS 'Assigned unique identifier for a taxonomy relationship. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN TAX_RELATIONSHIP.PARENT_TAXON_ID IS 'Unique identifier for a parent taxonomy term. Foreign key to the taxonomy table.'
+/
+
+COMMENT ON COLUMN TAX_RELATIONSHIP.CHILD_TAXON_ID IS 'Unique identifier for a child taxonomy term. Foreign key to the taxonomy table.'
+/
+
+COMMENT ON COLUMN TAX_RELATIONSHIP.GENERATION IS 'The generation between the parent and the child term.  For example, a direct parent:child relationship would be generation = 1, while a grandparent:grandchild relationship would be generation = 2.'
+/
+
+PROMPT Creating Table 'PDB_SEQUENCE'
+CREATE TABLE PDB_SEQUENCE
+ (PDB_SEQUENCE_NO NUMBER(10) NOT NULL
+ ,SEQUENCE_NAME VARCHAR2(50) NOT NULL
+ ,SOURCE VARCHAR2(40) NOT NULL
+ ,SEQUENCE_LENGTH NUMBER(10) NOT NULL
+ ,TAXON_ID NUMBER(10)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ ,NOTE VARCHAR2(960)
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE PDB_SEQUENCE IS 'Contains information about a biological sequence used for finding PDB homologs.'
+/
+
+COMMENT ON COLUMN PDB_SEQUENCE.PDB_SEQUENCE_NO IS 'Assigned unique identifier for a PDB sequence. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN PDB_SEQUENCE.SEQUENCE_NAME IS 'Name of the PDB sequence.'
+/
+
+COMMENT ON COLUMN PDB_SEQUENCE.SOURCE IS 'Source of the PDB sequence (coded).'
+/
+
+COMMENT ON COLUMN PDB_SEQUENCE.SEQUENCE_LENGTH IS 'Length of the sequence.'
+/
+
+COMMENT ON COLUMN PDB_SEQUENCE.TAXON_ID IS 'Unique identifier for a taxonomy term assigned by NCBI.  Foreign key to the taxonomy table.'
+/
+
+COMMENT ON COLUMN PDB_SEQUENCE.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN PDB_SEQUENCE.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+COMMENT ON COLUMN PDB_SEQUENCE.NOTE IS 'Comment about the PDB sequence.'
+/
+
+PROMPT Creating Table 'GUS_ALIGNMENT'
+CREATE TABLE GUS_ALIGNMENT
+ (GUS_ALIGNMENT_NO NUMBER(10) NOT NULL
+ ,GUS_QUERY_NO NUMBER(10) NOT NULL
+ ,GUS_TARGET_NO NUMBER(10) NOT NULL
+ ,ALIGNMENT_TYPE VARCHAR2(40) NOT NULL
+ ,METHOD VARCHAR2(40) NOT NULL
+ ,QUERY_MIN_COORD NUMBER(10)
+ ,QUERY_MAX_COORD NUMBER(10)
+ ,TARGET_MIN_COORD NUMBER(10)
+ ,TARGET_MAX_COORD NUMBER(10)
+ ,PCT_SIMILAR NUMBER(5,2)
+ ,PCT_ALIGNED NUMBER(5,2)
+ ,PCT_IDENTICAL NUMBER(5,2)
+ ,SCORE NUMBER(8,3)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE GUS_ALIGNMENT IS 'This table stores information about an alignment between two features.'
+/
+
+COMMENT ON COLUMN GUS_ALIGNMENT.GUS_ALIGNMENT_NO IS 'Assigned unique identifier for an alignment.  Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN GUS_ALIGNMENT.GUS_QUERY_NO IS 'Unique identifier for a feature used as the query sequence. Foreign key to the gus_feature table.'
+/
+
+COMMENT ON COLUMN GUS_ALIGNMENT.GUS_TARGET_NO IS 'Unique identifier for the feature used as the target sequence. Foreign key to the gus_feature table.'
+/
+
+COMMENT ON COLUMN GUS_ALIGNMENT.ALIGNMENT_TYPE IS 'Type of alignment (coded).'
+/
+
+COMMENT ON COLUMN GUS_ALIGNMENT.METHOD IS 'The method that was used to align the sequences (eg. WU-BLAST) (coded).'
+/
+
+COMMENT ON COLUMN GUS_ALIGNMENT.QUERY_MIN_COORD IS 'The minimum coordiinate of the query sequence alignment.'
+/
+
+COMMENT ON COLUMN GUS_ALIGNMENT.QUERY_MAX_COORD IS 'The maximum coordinate of the query sequence alignment.'
+/
+
+COMMENT ON COLUMN GUS_ALIGNMENT.TARGET_MIN_COORD IS 'The minimum coordiinate of the target sequence alignment.'
+/
+
+COMMENT ON COLUMN GUS_ALIGNMENT.TARGET_MAX_COORD IS 'The maxmimum coordinate of the target sequence alignment.'
+/
+
+COMMENT ON COLUMN GUS_ALIGNMENT.PCT_SIMILAR IS 'The percent of the sequence that is similar.'
+/
+
+COMMENT ON COLUMN GUS_ALIGNMENT.PCT_ALIGNED IS 'The percent of the sequence aligned.'
+/
+
+COMMENT ON COLUMN GUS_ALIGNMENT.PCT_IDENTICAL IS 'The percent of the sequence that is identical.'
+/
+
+COMMENT ON COLUMN GUS_ALIGNMENT.SCORE IS 'The value of the alignment score.'
+/
+
+COMMENT ON COLUMN GUS_ALIGNMENT.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN GUS_ALIGNMENT.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'COLL_FEAT'
+CREATE TABLE COLL_FEAT
+ (COLL_FEAT_NO NUMBER(10) NOT NULL
+ ,COLLEAGUE_NO NUMBER(10) NOT NULL
+ ,FEATURE_NO NUMBER(10) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE COLL_FEAT IS 'Linking table between the colleague and feature tables.'
+/
+
+COMMENT ON COLUMN COLL_FEAT.COLL_FEAT_NO IS 'Assigned unique identifier for a colleague-feature relationship.  Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN COLL_FEAT.COLLEAGUE_NO IS 'Unique identifier for a colleague. Foreign key to the colleague table.'
+/
+
+COMMENT ON COLUMN COLL_FEAT.FEATURE_NO IS 'Unique identifier for a feature. Foreign key to the feature table.'
+/
+
+PROMPT Creating Table 'SAGE_TAG'
+CREATE TABLE SAGE_TAG
+ (SAGE_TAG_SEQ VARCHAR2(16) NOT NULL
+ ,GENOME_HITS NUMBER(7)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE SAGE_TAG IS 'Contains the sequence for a particular SAGE tag.'
+/
+
+COMMENT ON COLUMN SAGE_TAG.SAGE_TAG_SEQ IS 'Sequence of the SAGE tag.'
+/
+
+COMMENT ON COLUMN SAGE_TAG.GENOME_HITS IS 'Number of tag hits in the genome.'
+/
+
+COMMENT ON COLUMN SAGE_TAG.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN SAGE_TAG.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'COLLEAGUE_REMARK'
+CREATE TABLE COLLEAGUE_REMARK
+ (COLLEAGUE_REMARK_NO NUMBER(10) NOT NULL
+ ,COLLEAGUE_NO NUMBER(10) NOT NULL
+ ,REMARK VARCHAR2(1500) NOT NULL
+ ,REMARK_TYPE VARCHAR2(40) NOT NULL
+ ,REMARK_DATE DATE NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE COLLEAGUE_REMARK IS 'Contains remarks or notes submitted by colleagues.'
+/
+
+COMMENT ON COLUMN COLLEAGUE_REMARK.COLLEAGUE_REMARK_NO IS 'Assigned unique identifier for a colleague remark. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN COLLEAGUE_REMARK.COLLEAGUE_NO IS 'Unique identifier for a colleague. Foreign key to the colleague table.'
+/
+
+COMMENT ON COLUMN COLLEAGUE_REMARK.REMARK IS 'Text of public remarks, research interests supplied by a colleague.'
+/
+
+COMMENT ON COLUMN COLLEAGUE_REMARK.REMARK_TYPE IS 'Type of colleague remark (coded).'
+/
+
+COMMENT ON COLUMN COLLEAGUE_REMARK.REMARK_DATE IS 'Date the remark was supplied to SGD by a colleague.'
+/
+
+COMMENT ON COLUMN COLLEAGUE_REMARK.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN COLLEAGUE_REMARK.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'GOREF_DBXREF'
+CREATE TABLE GOREF_DBXREF
+ (GOREF_DBXREF_NO NUMBER(10) NOT NULL
+ ,GO_REF_NO NUMBER(10) NOT NULL
+ ,DBXREF_NO NUMBER(10) NOT NULL
+ ,SUPPORT_TYPE VARCHAR2(40) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE GOREF_DBXREF IS 'Linking table between go_ref and dbxref tables.'
+/
+
+COMMENT ON COLUMN GOREF_DBXREF.GOREF_DBXREF_NO IS 'Assigned unique identifier for go supporting evidence.  Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN GOREF_DBXREF.GO_REF_NO IS 'Unique identifier for a GO reference association. Foreign key to the go_ref table.'
+/
+
+COMMENT ON COLUMN GOREF_DBXREF.DBXREF_NO IS 'Unique identifier for an database cross reference. Foreign key to dbxref table.'
+/
+
+COMMENT ON COLUMN GOREF_DBXREF.SUPPORT_TYPE IS 'The type of supporting evidence (coded).'
+/
+
+PROMPT Creating Table 'KEYWORD'
+CREATE TABLE KEYWORD
+ (KEYWORD_NO NUMBER(10) NOT NULL
+ ,KEYWORD VARCHAR2(100) NOT NULL
+ ,SOURCE VARCHAR2(40) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 500K
+   NEXT 500K
+ )
+ TABLESPACE DATA1
+/
+
+COMMENT ON TABLE KEYWORD IS 'Contains information about keywords or vocabulary terms defined by colleagues.'
+/
+
+COMMENT ON COLUMN KEYWORD.KEYWORD_NO IS 'Assigned unique identifier for a keyword. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN KEYWORD.KEYWORD IS 'Keyword.'
+/
+
+COMMENT ON COLUMN KEYWORD.SOURCE IS 'Source of the keyword (coded).'
+/
+
+COMMENT ON COLUMN KEYWORD.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN KEYWORD.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'FEATURE'
+CREATE TABLE FEATURE
+ (FEATURE_NO NUMBER(10) NOT NULL
+ ,TAXON_ID NUMBER(10) NOT NULL
+ ,DBXREF_ID VARCHAR2(40) NOT NULL
+ ,FEATURE_NAME VARCHAR2(40) NOT NULL
+ ,FEATURE_TYPE VARCHAR2(40) NOT NULL
+ ,SOURCE VARCHAR2(40) NOT NULL
+ ,STATUS VARCHAR2(40) NOT NULL
+ ,GENE_NAME VARCHAR2(10)
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 20
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE FEATURE IS 'Consists of features that are found in regions of sequences.'
+/
+
+COMMENT ON COLUMN FEATURE.FEATURE_NO IS 'Assigned unique identifier for a feature. Oracle generated sequential number.'
+/
+
+COMMENT ON COLUMN FEATURE.TAXON_ID IS 'Unique identifier for a taxonomy term assigned by NCBI.'
+/
+
+COMMENT ON COLUMN FEATURE.DBXREF_ID IS 'Primary DBID for a feature.'
+/
+
+COMMENT ON COLUMN FEATURE.FEATURE_NAME IS 'Name of the feature, such as ORF name, tRNA name, etc.'
+/
+
+COMMENT ON COLUMN FEATURE.FEATURE_TYPE IS 'The type of the feature, based on the Sequence Ontology (SO) (coded).'
+/
+
+COMMENT ON COLUMN FEATURE.SOURCE IS 'Source of the feature (coded).'
+/
+
+COMMENT ON COLUMN FEATURE.STATUS IS 'The status of the gene (coded).'
+/
+
+COMMENT ON COLUMN FEATURE.GENE_NAME IS 'The name of the gene.'
+/
+
+COMMENT ON COLUMN FEATURE.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN FEATURE.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+
+PROMPT Creating Table 'TAXONOMY'
+CREATE TABLE TAXONOMY
+ (TAXON_ID NUMBER(10) NOT NULL
+ ,TAX_TERM VARCHAR2(240) NOT NULL
+ ,COMMON_NAME VARCHAR2(240)
+ ,RANK VARCHAR2(20) NOT NULL
+ ,DATE_CREATED DATE DEFAULT SYSDATE NOT NULL
+ ,CREATED_BY VARCHAR2(12) DEFAULT SUBSTR(USER,1,12) NOT NULL
+ )
+ PCTUSED 60
+ PCTFREE 10
+ STORAGE
+ (
+   PCTINCREASE 0
+   INITIAL 10M
+   NEXT 10M
+ )
+ TABLESPACE DATA2
+/
+
+COMMENT ON TABLE TAXONOMY IS 'This table stores taxonomy information from the NCBI.'
+/
+
+COMMENT ON COLUMN TAXONOMY.TAXON_ID IS 'Assigned unique identifier for a taxonomy term from NCBI.'
+/
+
+COMMENT ON COLUMN TAXONOMY.TAX_TERM IS 'The taxonomy term itself (eg. Saccharomyces cerevisiae).'
+/
+
+COMMENT ON COLUMN TAXONOMY.COMMON_NAME IS 'The preferred common name field from NCBI. Multiple common names are separated by a ''|''.'
+/
+
+COMMENT ON COLUMN TAXONOMY.RANK IS 'The rank of the term (NCBI rank field); for example, for Saccharomyces cerevisiae the rank = species.'
+/
+
+COMMENT ON COLUMN TAXONOMY.DATE_CREATED IS 'Date the record was entered into the database.'
+/
+
+COMMENT ON COLUMN TAXONOMY.CREATED_BY IS 'Userid of the person who entered the record into the database.'
+/
+

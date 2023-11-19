@@ -1,0 +1,1921 @@
+ORF	Name	Complex	PubMed_id	Method	GO_id	GO_term	Jaccard_Index
+YKR068C	BET3	TRAPP complex	10727015	"Affinity Capture-Western,Affinity Capture-MS"	GO:0030008	TRAPP complex	1
+YML077W	BET5	TRAPP complex
+YDR108W	GSG1	TRAPP complex
+YGR166W	KRE11	TRAPP complex
+YDR407C	TRS120	TRAPP complex
+YMR218C	TRS130	TRAPP complex
+YBR254C	TRS20	TRAPP complex
+YDR246W	TRS23	TRAPP complex
+YDR472W	TRS31	TRAPP complex
+YOR115C	TRS33	TRAPP complex
+YNL021W	HDA1	histone deacetylase complex	11287668	"Affinity Capture-Western,Reconstituted Complex"	GO:0000118	histone deacetylase complex	0.166666666666667
+YDR295C	HDA2	histone deacetylase complex
+YPR179C	HDA3	histone deacetylase complex
+YDR448W	ADA2	Ada2p/Gcn5p/Ada3 transcription activator complex	10490601	"Reconstituted Complex,Co-purification"	GO:0005671	Ada2/Gcn5/Ada3 transcription activator complex	1
+YOR023C	AHC1	Ada2p/Gcn5p/Ada3 transcription activator complex
+YGR252W	GCN5	Ada2p/Gcn5p/Ada3 transcription activator complex
+YPL254W	HFI1	Ada2p/Gcn5p/Ada3 transcription activator complex
+YDR176W	NGG1	Ada2p/Gcn5p/Ada3 transcription activator complex
+YJL065C	DLS1	chromatin accessibility complex	14673157	Affinity Capture-Western	GO:0008623	chromatin accessibility complex	1
+YDR121W	DPB4	chromatin accessibility complex
+YOR304W	ISW2	chromatin accessibility complex
+YGL133W	ITC1	chromatin accessibility complex
+YGL051W	MST27	Mst27p/Mst28p complex	12925749	Co-purification	-	-	0
+YAR033W	MST28	Mst27p/Mst28p complex
+YPL048W	CAM1	eEF1	3528160	Co-purification	GO:0005853	eukaryotic translation elongation factor 1 complex	0.8
+YAL003W	EFB1	eEF1
+YPR080W	TEF1	eEF1
+YBR118W	TEF2	eEF1
+YKL081W	TEF4	eEF1
+YJR060W	CBF1	Cbf1p/Met4p/Met28p complex	9171357	Reconstituted Complex	GO:0000776	kinetochore	0.0454545454545455
+YIR017C	MET28	Cbf1p/Met4p/Met28p complex
+YNL103W	MET4	Cbf1p/Met4p/Met28p complex
+YDL043C	PRP11	Prp9p/Prp11p/Prp21p complex(SF3a complex)	8211114	Affinity Capture-MS	GO:0005686	snRNP U2	0.25
+YJL203W	PRP21	Prp9p/Prp11p/Prp21p complex(SF3a complex)
+YDL030W	PRP9	Prp9p/Prp11p/Prp21p complex(SF3a complex)
+YIR017C	MET28	Met4p/Met28p/Met31p complex	9799240	"Two-hybrid,Reconstituted Complex"	-	-	0
+YPL038W	MET31	Met4p/Met28p/Met31p complex
+YNL103W	MET4	Met4p/Met28p/Met31p complex
+YJL085W	EXO70	Exocyst complex	8978675	Affinity Capture-MS	GO:0000145	exocyst	1
+YBR102C	EXO84	Exocyst complex
+YLR166C	SEC10	Exocyst complex
+YGL233W	SEC15	Exocyst complex
+YER008C	SEC3	Exocyst complex
+YDR166C	SEC5	Exocyst complex
+YIL068C	SEC6	Exocyst complex
+YPR055W	SEC8	Exocyst complex
+YER019C-A	SBH2	Ssh1p translocon complex	8612571	Affinity Capture-Western	GO:0005784	translocon complex	0.6
+YBR283C	SSH1	Ssh1p translocon complex
+YDR086C	SSS1	Ssh1p translocon complex
+YHR158C	KEL1	Kel1p/Kel2p complex	9786949	"Two-hybrid,Affinity Capture-Western"	-	-	0
+YGR238C	KEL2	Kel1p/Kel2p complex
+YDL175C	AIR2	TRAMP complex (Air2p)	15828860	"Affinity Capture-Western,Affinity Capture-MS"	GO:0031499	TRAMP complex	0.75
+YJL050W	MTR4	TRAMP complex (Air2p)
+YOL115W	PAP2	TRAMP complex (Air2p)
+YIL033C	BCY1	cAMP-dependent protein kinase	3036373	Biochemical Activity	GO:0005952	cAMP-dependent protein kinase complex	0.75
+YJL164C	TPK1	cAMP-dependent protein kinase
+YPL203W	TPK2	cAMP-dependent protein kinase
+YKL166C	TPK3	cAMP-dependent protein kinase
+YMR023C	MSS1	Mto1p/Mss1p complex	9774408	Co-purification	-	-	0
+YGL236C	MTO1	Mto1p/Mss1p complex
+YGR188C	BUB1	Bub1p/Bub3p complex	10837255	Affinity Capture-Western	GO:0033597	mitotic checkpoint complex	0.2
+YOR026W	BUB3	Bub1p/Bub3p complex
+YNL076W	MKS1	Mks1p/Rtg2p complex	14536080	Affinity Capture-Western	GO:0046695	SLIK (SAGA-like) complex	0.0555555555555556
+YGL252C	RTG2	Mks1p/Rtg2p complex
+YBR131W	CCZ1	Mon1p/Ccz1p complex	12364329	Affinity Capture-Western	-	-	0
+YGL124C	MON1	Mon1p/Ccz1p complex
+YIL062C	ARC15	Arp2/3 protein complex	10377407	"Affinity Capture-Western,Co-purification"	GO:0005885	Arp2/3 protein complex	1
+YLR370C	ARC18	Arp2/3 protein complex
+YKL013C	ARC19	Arp2/3 protein complex
+YNR035C	ARC35	Arp2/3 protein complex
+YBR234C	ARC40	Arp2/3 protein complex
+YDL029W	ARP2	Arp2/3 protein complex
+YJR065C	ARP3	Arp2/3 protein complex
+YDR013W	PSF1	GINS complex	12730134	"Two-hybrid,Affinity Capture-Western"	GO:0000811	GINS complex	1
+YJL072C	PSF2	GINS complex
+YOL146W	PSF3	GINS complex
+YDR489W	SLD5	GINS complex
+YOL090W	MSH2	MSH2p/MSH6p complex	8816473	Co-purification	GO:0032301	MutSalpha complex	1
+YDR097C	MSH6	MSH2p/MSH6p complex
+YNL072W	RNH201	ribonuclease H2 complex	14734815	Affinity Capture-MS	GO:0032299	ribonuclease H2 complex	1
+YDR279W	RNH202	ribonuclease H2 complex
+YLR154C	RNH203	ribonuclease H2 complex
+YBR045C	GIP1	Gip1p/Glc7p complex	8754819	"Two-hybrid,Affinity Capture-Western"	GO:0000164	protein phosphatase type 1 complex	0.285714285714286
+YER133W	GLC7	Gip1p/Glc7p complex
+YBR036C	CSG2	Sur1p/Csg2p complex	12954640	Affinity Capture-Western	-	-	0
+YPL057C	SUR1	Sur1p/Csg2p complex
+YER012W	PRE1	20S proteasome	9087403	Co-crystal Structure	GO:0019774	proteasome core complex, beta-subunit complex	0.5
+YOR362C	PRE10	20S proteasome
+YPR103W	PRE2	20S proteasome
+YJL001W	PRE3	20S proteasome
+YFR050C	PRE4	20S proteasome
+YMR314W	PRE5	20S proteasome
+YOL038W	PRE6	20S proteasome
+YBL041W	PRE7	20S proteasome
+YML092C	PRE8	20S proteasome
+YGR135W	PRE9	20S proteasome
+YOR157C	PUP1	20S proteasome
+YGR253C	PUP2	20S proteasome
+YER094C	PUP3	20S proteasome
+YGL011C	SCL1	20S proteasome
+YLR270W	DCS1	Dcs1p/Dcs2 heterodimer	16963086	Affinity Capture-Western	GO:0000932	cytoplasmic mRNA processing body	0.133333333333333
+YOR173W	DCS2	Dcs1p/Dcs2 heterodimer
+YOR210W	RPB10	DNA-directed RNA polymerase II complex	2070414	Co-crystal Structure	GO:0005665	DNA-directed RNA polymerase II, core complex	1
+YOL005C	RPB11	DNA-directed RNA polymerase II complex
+YOR151C	RPB2	DNA-directed RNA polymerase II complex
+YIL021W	RPB3	DNA-directed RNA polymerase II complex
+YJL140W	RPB4	DNA-directed RNA polymerase II complex
+YBR154C	RPB5	DNA-directed RNA polymerase II complex
+YDR404C	RPB7	DNA-directed RNA polymerase II complex
+YOR224C	RPB8	DNA-directed RNA polymerase II complex
+YGL070C	RPB9	DNA-directed RNA polymerase II complex
+YHR143W-A	RPC10	DNA-directed RNA polymerase II complex
+YDL140C	RPO21	DNA-directed RNA polymerase II complex
+YPR187W	RPO26	DNA-directed RNA polymerase II complex
+YPL194W	DDC1	Rad17p/Ddc1p/Mec3p complex	12672803	Affinity Capture-Western	-	-	0
+YLR288C	MEC3	Rad17p/Ddc1p/Mec3p complex
+YOR368W	RAD17	Rad17p/Ddc1p/Mec3p complex
+YBR123C	TFC1	transcription factor TFIIIC complex	6370678	Co-purification	GO:0000127	transcription factor TFIIIC complex	1
+YAL001C	TFC3	transcription factor TFIIIC complex
+YGR047C	TFC4	transcription factor TFIIIC complex
+YDR362C	TFC6	transcription factor TFIIIC complex
+YOR110W	TFC7	transcription factor TFIIIC complex
+YPL007C	TFC8	transcription factor TFIIIC complex
+YBL008W	HIR1	HIR complex	16303565	Affinity Capture-MS	GO:0000417	HIR complex	1
+YOR038C	HIR2	HIR complex
+YJR140C	HIR3	HIR complex
+YBR215W	HPC2	HIR complex
+YKL112W	ABF1	nucleotide-excision repair factor 4 complex	15226437	Affinity Capture-Western	GO:0000113	nucleotide-excision repair factor 4 complex	1
+YPL046C	ELC1	nucleotide-excision repair factor 4 complex
+YBR114W	RAD16	nucleotide-excision repair factor 4 complex
+YJR052W	RAD7	nucleotide-excision repair factor 4 complex
+YLR233C	EST1	Telomerase	10898986	Affinity Capture-Western	GO:0005697	telomerase holoenzyme complex	0.75
+YLR318W	EST2	Telomerase
+YIL009C-A	EST3	Telomerase
+YOL124C	TRM11	adoMet-dependent tRNA methyltransferase (Mtase) Complex	15899842	Affinity Capture-Western	-	-	0
+YNR046W	TRM112	adoMet-dependent tRNA methyltransferase (Mtase) Complex
+YBR112C	CYC8	Sko1p/Cyc8p/Tup1 repressor complex	12086627	Affinity Capture-Western	GO:0017053	transcriptional repressor complex	0.666666666666667
+YNL167C	SKO1	Sko1p/Cyc8p/Tup1 repressor complex
+YCR084C	TUP1	Sko1p/Cyc8p/Tup1 repressor complex
+YDL116W	NUP84	Nup84p complex	10747086	Affinity Capture-Western	GO:0005643	nuclear pore	0.122448979591837
+YJR042W	NUP85	Nup84p complex
+YKL057C	NUP120	Nup84p complex
+YGL092W	NUP145	Nup84p complex
+YLR208W	SEC13	Nup84p complex
+YGL100W	SEH1	Nup84p complex
+YML065W	ORC1	Origin recognition complex	1579162	Co-purification	GO:0005664	nuclear origin of replication recognition complex	1
+YBR060C	ORC2	Origin recognition complex
+YLL004W	ORC3	Origin recognition complex
+YPR162C	ORC4	Origin recognition complex
+YNL261W	ORC5	Origin recognition complex
+YHR118C	ORC6	Origin recognition complex
+YAL010C	MDM10	mitochondrial sorting and assembly machinery complex	17410204	Affinity Capture-Western	GO:0001401	mitochondrial sorting and assembly machinery complex	1
+YHR083W	SAM35	mitochondrial sorting and assembly machinery complex
+YMR060C	SAM37	mitochondrial sorting and assembly machinery complex
+YNL026W	SAM50	mitochondrial sorting and assembly machinery complex
+YMR167W	MLH1	Mlh1p/Mlh3p complex	10570173	"Two-hybrid,Affinity Capture-Western"	GO:0032390	MutLbeta complex	1
+YPL164C	MLH3	Mlh1p/Mlh3p complex
+YEL027W	CUP5	"H+-transporting ATPase, vacuolar"	11592965	"Co-localization, Biochemical Activity"	GO:0000221	vacuolar proton-transporting V-type ATPase, V1 domain	0.615384615384615
+YHR026W	PPA1	"H+-transporting ATPase, vacuolar"
+YDL185W	TFP1	"H+-transporting ATPase, vacuolar"
+YPL234C	TFP3	"H+-transporting ATPase, vacuolar"
+YHR039C-A	VMA10	"H+-transporting ATPase, vacuolar"
+YPR036W	VMA13	"H+-transporting ATPase, vacuolar"
+YBR127C	VMA2	"H+-transporting ATPase, vacuolar"
+YOR332W	VMA4	"H+-transporting ATPase, vacuolar"
+YKL080W	VMA5	"H+-transporting ATPase, vacuolar"
+YLR447C	VMA6	"H+-transporting ATPase, vacuolar"
+YGR020C	VMA7	"H+-transporting ATPase, vacuolar"
+YEL051W	VMA8	"H+-transporting ATPase, vacuolar"
+YOR270C	VPH1	"H+-transporting ATPase, vacuolar"
+YBR160W	CDC28	Cdc28p/Clb5p complex	8319908	Traceable author statement	GO:0000307	cyclin-dependent protein kinase holoenzyme complex	0.0666666666666667
+YPR120C	CLB5	Cdc28p/Clb5p complex
+YNL221C	POP1	nucleolar ribonuclease P complex	9620854	Affinity Capture-MS	GO:0005655	nucleolar ribonuclease P complex	0.9
+YNL282W	POP3	nucleolar ribonuclease P complex
+YBR257W	POP4	nucleolar ribonuclease P complex
+YAL033W	POP5	nucleolar ribonuclease P complex
+YGR030C	POP6	nucleolar ribonuclease P complex
+YBR167C	POP7	nucleolar ribonuclease P complex
+YBL018C	POP8	nucleolar ribonuclease P complex
+YIR015W	RPR2	nucleolar ribonuclease P complex
+YHR062C	RPP1	nucleolar ribonuclease P complex
+YLR163C	MAS1	mitochondrial processing peptidase complex	2905264	Co-purification	GO:0017087	mitochondrial processing peptidase complex	1
+YHR024C	MAS2	mitochondrial processing peptidase complex
+YKR020W	VPS51	GARP complex	12377769	Affinity Capture-MS	GO:0000938	GARP complex	1
+YDR484W	VPS52	GARP complex
+YJL029C	VPS53	GARP complex
+YDR027C	VPS54	GARP complex
+YGR092W	DBF2	Mob1p/Dbf2p complex	9528782	"Two-hybrid,Affinity Capture-Western,Reconstituted Complex"	-	-	0
+YIL106W	MOB1	Mob1p/Dbf2p complex
+YER173W	RAD24	DNA replication factor C complex (Rad24p)	12604797	Reconstituted Complex	GO:0005663	DNA replication factor C complex	0.833333333333333
+YJR068W	RFC2	DNA replication factor C complex (Rad24p)
+YNL290W	RFC3	DNA replication factor C complex (Rad24p)
+YOL094C	RFC4	DNA replication factor C complex (Rad24p)
+YBR087W	RFC5	DNA replication factor C complex (Rad24p)
+YNL230C	ELA1	Ela1p/Elc1p complex	10430890	Reconstituted Complex	GO:0031463	Cul3-RING ubiquitin ligase complex	0.4
+YPL046C	ELC1	Ela1p/Elc1p complex
+YPL002C	SNF8	ESCRT II complex	12194858	Co-purification	GO:0000814	ESCRT II complex	1
+YJR102C	VPS25	ESCRT II complex
+YLR417W	VPS36	ESCRT II complex
+YGL237C	HAP2	CCAAT-binding factor complex	9372932	Reconstituted Complex	GO:0016602	CCAAT-binding factor complex	1
+YBL021C	HAP3	CCAAT-binding factor complex
+YKL109W	HAP4	CCAAT-binding factor complex
+YOR358W	HAP5	CCAAT-binding factor complex
+YKR028W	SAP190	Sap190p/Sit4p complex	8649382	Affinity Capture-Western	-	-	0
+YDL047W	SIT4	Sap190p/Sit4p complex
+YER159C	BUR6	NC2 complex	8948634	Co-purification	-	-	0
+YDR397C	NCB2	NC2 complex
+YJL115W	ASF1	Rad53p/Asf1p complex	11172707	Affinity Capture-Western	GO:0005678	chromatin assembly complex	0.25
+YPL153C	RAD53	Rad53p/Asf1p complex
+YLR060W	FRS1	Phenylalaninine-tRNA-ligase	5473188	Co-purification	GO:0009328	phenylalanine-tRNA ligase complex	1
+YFL022C	FRS2	Phenylalaninine-tRNA-ligase
+YLR246W	ERF2	palmitoyltransferase complex	12193598	Affinity Capture-Western	GO:0031211	palmitoyltransferase complex	1
+YOL110W	SHR5	palmitoyltransferase complex
+YGL174W	BUD13	RES complex	15565172	Affinity Capture-MS	GO:0005686	snRNP U2	0.0714285714285714
+YLR016C	PML1	RES complex
+YIR005W	IST3	RES complex
+YNL221C	POP1	ribonuclease MRP complex	9620854	Affinity Capture-MS	GO:0000172	ribonuclease MRP complex	0.909090909090909
+YNL282W	POP3	ribonuclease MRP complex
+YBR257W	POP4	ribonuclease MRP complex
+YAL033W	POP5	ribonuclease MRP complex
+YGR030C	POP6	ribonuclease MRP complex
+YBR167C	POP7	ribonuclease MRP complex
+YBL018C	POP8	ribonuclease MRP complex
+YLR145W	RMP1	ribonuclease MRP complex
+YHR062C	RPP1	ribonuclease MRP complex
+YDR478W	SNM1	ribonuclease MRP complex
+YPL121C	MEI5	Mei5p/Sae3p complex	15620352	Affinity Capture-Western	-	-	0
+YHR079C-A	SAE3	Mei5p/Sae3p complex
+YDL181W	INH1	mitochondrial ATPase inhibitor complex	6200468	Co-purification	GO:0005753	mitochondrial proton-transporting ATP synthase complex	1
+YDL130W-A	STF1	mitochondrial ATPase inhibitor complex
+YGR008C	STF2	mitochondrial ATPase inhibitor complex
+YMR059W	SEN15	tRNA-intron endonuclease complex	9200603	"Two-hybrid,Affinity Capture-Western"	GO:0000214	tRNA-intron endonuclease complex	1
+YLR105C	SEN2	tRNA-intron endonuclease complex
+YAR008W	SEN34	tRNA-intron endonuclease complex
+YPL083C	SEN54	tRNA-intron endonuclease complex
+YDR137W	RGP1	guanyl-nucleotide exchange factor complex	10990452	Affinity Capture-Western	GO:0034066	Ric1p-Rgp1p complex	1
+YLR039C	RIC1	guanyl-nucleotide exchange factor complex
+YOR310C	NOP58	box C/D snoRNP complex	12215523	Affinity Capture-Western	GO:0032040	small-subunit processome	0.0833333333333333
+YDL014W	NOP1	box C/D snoRNP complex
+YEL026W	SNU13	box C/D snoRNP complex
+YLR197W	SIK1	box C/D snoRNP complex
+YPL178W	CBC2	commitment complex	2529976	Co-purification	GO:0005685	snRNP U1	0.772727272727273
+YLR116W	MSL5	commitment complex
+YKL074C	MUD2	commitment complex
+YMR125W	STO1	commitment complex
+YER029C	SMB1	commitment complex
+YGR074W	SMD1	commitment complex
+YLR275W	SMD2	commitment complex
+YLR147C	SMD3	commitment complex
+YOR159C	SME1	commitment complex
+YFL017W-A	SMX2	commitment complex
+YPR182W	SMX3	commitment complex
+YDL087C	LUC7	commitment complex
+YBR119W	MUD1	commitment complex
+YHR086W	NAM8	commitment complex
+YML046W	PRP39	commitment complex
+YKL012W	PRP40	commitment complex
+YDR235W	PRP42	commitment complex
+YIL061C	SNP1	commitment complex
+YDR240C	SNU56	commitment complex
+YGR013W	SNU71	commitment complex
+YLR298C	YHC1	commitment complex
+YPR144C	NOC4	Noc4p/Nop14p complex	12446671	Affinity Capture-Western	GO:0030692	Noc4p-Nop14p complex	1
+YDL148C	NOP14	Noc4p/Nop14p complex
+YPL049C	DIG1	Dig1p/Ste12p/Dig2p complex	10825185	Reconstituted Complex	-	-	0
+YDR480W	DIG2	Dig1p/Ste12p/Dig2p complex
+YHR084W	STE12	Dig1p/Ste12p/Dig2p complex
+YBR228W	SLX1	Slx1p/Slx4p complex	12832395	Co-purification	GO:0033557	Slx1-Slx4 complex	1
+YLR135W	SLX4	Slx1p/Slx4p complex
+YBL026W	LSM2	U6 snRNP complex	11720284	Affinity Capture-MS	GO:0005688	snRNP U6	0.888888888888889
+YLR438C-A	LSM3	U6 snRNP complex
+YER112W	LSM4	U6 snRNP complex
+YER146W	LSM5	U6 snRNP complex
+YDR378C	LSM6	U6 snRNP complex
+YNL147W	LSM7	U6 snRNP complex
+YJR022W	LSM8	U6 snRNP complex
+YMR268C	PRP24	U6 snRNP complex
+YDR075W	PPH3	histone H2A phosphatase complex	16299494	Affinity Capture-MS	-	-	0
+YNL201C	PSY2	histone H2A phosphatase complex
+YBL046W	PSY4	histone H2A phosphatase complex
+YAL010C	MDM10	Mdm12p/Mmm1p/Mdm10p complex	13679517	Affinity Capture-Western	GO:0032865	Mdm10/Mdm12/Mmm1 complex	1
+YOL009C	MDM12	Mdm12p/Mmm1p/Mdm10p complex
+YLL006W	MMM1	Mdm12p/Mmm1p/Mdm10p complex
+YML085C	TUB1	Tubulins	15321725	Two-hybrid	GO:0045298	tubulin complex	0.666666666666667
+YFL037W	TUB2	Tubulins
+YMR055C	BUB2	Bub2p/Bfa1p complex	11493673	Affinity Capture-Western	-	-	0
+YJR053W	BFA1	Bub2p/Bfa1p complex
+YNL102W	POL1	alpha DNA polymerase:primase complex	3888995	Co-purification	GO:0005658	alpha DNA polymerase:primase complex	1
+YBL035C	POL12	alpha DNA polymerase:primase complex
+YIR008C	PRI1	alpha DNA polymerase:primase complex
+YKL045W	PRI2	alpha DNA polymerase:primase complex
+YDR301W	CFT1	mRNA cleavage and polyadenylation specificity factor complex	12819204	Affinity Capture-MS	GO:0005847	mRNA cleavage and polyadenylation specificity factor complex	1
+YLR115W	CFT2	mRNA cleavage and polyadenylation specificity factor complex
+YJR093C	FIP1	mRNA cleavage and polyadenylation specificity factor complex
+YER133W	GLC7	mRNA cleavage and polyadenylation specificity factor complex
+YKL059C	MPE1	mRNA cleavage and polyadenylation specificity factor complex
+YKR002W	PAP1	mRNA cleavage and polyadenylation specificity factor complex
+YNL317W	PFS2	mRNA cleavage and polyadenylation specificity factor complex
+YAL043C	PTA1	mRNA cleavage and polyadenylation specificity factor complex
+YGR156W	PTI1	mRNA cleavage and polyadenylation specificity factor complex
+YDR195W	REF2	mRNA cleavage and polyadenylation specificity factor complex
+YNL222W	SSU72	mRNA cleavage and polyadenylation specificity factor complex
+YKL018W	SWD2	mRNA cleavage and polyadenylation specificity factor complex
+YOR179C	SYC1	mRNA cleavage and polyadenylation specificity factor complex
+YLR277C	YSH1	mRNA cleavage and polyadenylation specificity factor complex
+YPR107C	YTH1	mRNA cleavage and polyadenylation specificity factor complex
+YJR094C	IME1	Ume6p/Ime1p complex	8628320	Two-hybrid	GO:0000508	Rpd3L complex	0.0769230769230769
+YDR207C	UME6	Ume6p/Ime1p complex
+YDL042C	SIR2	chromatin silencing complex	15899856	Affinity Capture-Western	GO:0005677	chromatin silencing complex	0.6
+YLR442C	SIR3	chromatin silencing complex
+YDR227W	SIR4	chromatin silencing complex
+YHR005C-A	MRS11	mitochondrial intermembrane space protein transporter complex	9822593	"Affinity Capture-Western,Co-purification"	GO:0042719	mitochondrial intermembrane space protein transporter complex	0.5
+YEL020W-A	TIM9	mitochondrial intermembrane space protein transporter complex
+YOR026W	BUB3	mitotic checkpoint complex	11726501	Affinity Capture-Western	GO:0033597	mitotic checkpoint complex	1
+YGL116W	CDC20	mitotic checkpoint complex
+YJL030W	MAD2	mitotic checkpoint complex
+YJL013C	MAD3	mitotic checkpoint complex
+YPL147W	PXA1	Pxa1p/Pxa2p complex	8876235	Affinity Capture-Western	-	-	0
+YKL188C	PXA2	Pxa1p/Pxa2p complex
+YDR422C	SIP1	Snf1p/Snf4p/Sip1p complex	12393914	Affinity Capture-Western	GO:0031588	AMP-activated protein kinase complex	0.6
+YDR477W	SNF1	Snf1p/Snf4p/Sip1p complex
+YGL115W	SNF4	Snf1p/Snf4p/Sip1p complex
+YOR005C	DNL4	DNA ligase IV	17567543	Two-hybrid	GO:0032807	DNA ligase IV complex	0.666666666666667
+YGL090W	LIF1	DNA ligase IV
+YOR321W	PMT3	Protein O-mannosyltransferase(Pmt3p/Pmt5p)	12551906	Affinity Capture-Western	-	-	0
+YDL093W	PMT5	Protein O-mannosyltransferase(Pmt3p/Pmt5p)
+YGR009C	SEC9	SNARE complex	10048921	Co-crystal Structure	GO:0031201	SNARE complex	1
+YPL232W	SSO1	SNARE complex
+YAL030W	SNC1	SNARE complex
+YBR126C	TPS1	"alpha,alpha-trehalose-phosphate synthase complex (UDP-forming)"	9194697	Two-hybrid	GO:0005946	alpha,alpha-trehalose-phosphate synthase complex (UDP-forming)	1
+YDR074W	TPS2	"alpha,alpha-trehalose-phosphate synthase complex (UDP-forming)"
+YMR261C	TPS3	"alpha,alpha-trehalose-phosphate synthase complex (UDP-forming)"
+YML100W	TSL1	"alpha,alpha-trehalose-phosphate synthase complex (UDP-forming)"
+YFL039C	ACT1	Ino80p complex	10952318	"Affinity Capture-Western,Affinity Capture-MS"	GO:0031011	INO80 complex	1
+YJL081C	ARP4	Ino80p complex
+YNL059C	ARP5	Ino80p complex
+YOR141C	ARP8	Ino80p complex
+YFL013C	IES1	Ino80p complex
+YLR052W	IES3	Ino80p complex
+YOR189W	IES4	Ino80p complex
+YGL150C	INO80	Ino80p complex
+YDL002C	NHP10	Ino80p complex
+YDR190C	RVB1	Ino80p complex
+YPL235W	RVB2	Ino80p complex
+YPL129W	TAF14	Ino80p complex
+YLL010C	PSR1	Psr1p/Whi2p complex	12090248	"Two-hybrid,Affinity Capture-Western"	-	-	0
+YOR043W	WHI2	Psr1p/Whi2p complex
+YPL042C	SSN3	Kornberg's mediator (SRB) complex	15477388	"Affinity Capture-Western,Two-hybrid"	GO:0000119	mediator complex	0.730769230769231
+YNL025C	SSN8	Kornberg's mediator (SRB) complex
+YCR081W	SRB8	Kornberg's mediator (SRB) complex
+YDR443C	SSN2	Kornberg's mediator (SRB) complex
+YNR010W	CSE2	Kornberg's mediator (SRB) complex
+YOL051W	GAL11	Kornberg's mediator (SRB) complex
+YPR070W	MED1	Kornberg's mediator (SRB) complex
+YMR112C	MED11	Kornberg's mediator (SRB) complex
+YDL005C	MED2	Kornberg's mediator (SRB) complex
+YOR174W	MED4	Kornberg's mediator (SRB) complex
+YHR058C	MED6	Kornberg's mediator (SRB) complex
+YOL135C	MED7	Kornberg's mediator (SRB) complex
+YBR193C	MED8	Kornberg's mediator (SRB) complex
+YGL151W	NUT1	Kornberg's mediator (SRB) complex
+YPR168W	NUT2	Kornberg's mediator (SRB) complex
+YGL025C	PGD1	Kornberg's mediator (SRB) complex
+YLR071C	RGR1	Kornberg's mediator (SRB) complex
+YBL093C	ROX3	Kornberg's mediator (SRB) complex
+YNL236W	SIN4	Kornberg's mediator (SRB) complex
+YHR041C	SRB2	Kornberg's mediator (SRB) complex
+YER022W	SRB4	Kornberg's mediator (SRB) complex
+YGR104C	SRB5	Kornberg's mediator (SRB) complex
+YBR253W	SRB6	Kornberg's mediator (SRB) complex
+YDR308C	SRB7	Kornberg's mediator (SRB) complex
+YGL127C	SOH1	Kornberg's mediator (SRB) complex
+YER072W	VTC1	VTC heterotetrameric complex	11823419	Affinity Capture-MS	GO:0033254	vacuolar transporter chaperone complex	1
+YFL004W	VTC2	VTC heterotetrameric complex
+YPL019C	VTC3	VTC heterotetrameric complex
+YJL012C	VTC4	VTC heterotetrameric complex
+YJL002C	OST1	oligosaccharyl transferase complex	9435788	Affinity Capture-MS	GO:0008250	oligosaccharyltransferase complex	1
+YOR103C	OST2	oligosaccharyl transferase complex
+YOR085W	OST3	oligosaccharyl transferase complex
+YDL232W	OST4	oligosaccharyl transferase complex
+YGL226C-A	OST5	oligosaccharyl transferase complex
+YML019W	OST6	oligosaccharyl transferase complex
+YGL022W	STT3	oligosaccharyl transferase complex
+YMR149W	SWP1	oligosaccharyl transferase complex
+YEL002C	WBP1	oligosaccharyl transferase complex
+YLR226W	BUR2	Sgv1p/Bur2p complex	10982824	"Two-hybrid,Affinity Capture-Western"	-	-	0
+YPR161C	SGV1	Sgv1p/Bur2p complex
+YHR186C	KOG1	TORC 1 complex	14736892	"Affinity Capture-Western,Affinity Capture-MS"	GO:0031931	TORC1 complex	0.8
+YNL006W	LST8	TORC 1 complex
+YPL180W	TCO89	TORC 1 complex
+YJR066W	TOR1	TORC 1 complex
+YPR034W	ARP7	SWI/SNF complex	15506919	"Affinity Capture-Western,Affinity Capture-MS"	GO:0016514	SWI/SNF complex	1
+YMR033W	ARP9	SWI/SNF complex
+YGR275W	RTT102	SWI/SNF complex
+YDR073W	SNF11	SWI/SNF complex
+YNR023W	SNF12	SWI/SNF complex
+YOR290C	SNF2	SWI/SNF complex
+YBR289W	SNF5	SWI/SNF complex
+YHL025W	SNF6	SWI/SNF complex
+YPL016W	SWI1	SWI/SNF complex
+YJL176C	SWI3	SWI/SNF complex
+YPL129W	TAF14	SWI/SNF complex
+YFL049W	SWP82	SWI/SNF complex
+YDR054C	CDC34	SCF-CDC4 complex	10445024	"Affinity Capture-Western,Reconstituted Complex"	GO:0019005	SCF ubiquitin ligase complex	0.285714285714286
+YFL009W	CDC4	SCF-CDC4 complex
+YDL132W	CDC53	SCF-CDC4 complex
+YOR057W	SGT1	SCF-CDC4 complex
+YDR328C	SKP1	SCF-CDC4 complex
+YDL088C	ASM4	karyopherin docking subcomplex of the Nuclear Pore Complex (NPC)	9864357	Affinity Capture-Western	GO:0005643	nuclear pore	0.0612244897959184
+YBL079W	NUP170	karyopherin docking subcomplex of the Nuclear Pore Complex (NPC)
+YMR153W	NUP53	karyopherin docking subcomplex of the Nuclear Pore Complex (NPC)
+YDL102W	POL3	DNA polymerase delta complex	9677406	"Co-purification, Reconstituted Complex"	GO:0043625	delta DNA polymerase complex	1
+YJR006W	POL31	DNA polymerase delta complex
+YJR043C	POL32	DNA polymerase delta complex
+YOL139C	CDC33	eIF4F	8336723	Affinity Capture-Western	GO:0016281	eukaryotic translation initiation factor 4F complex	0.6
+YKR059W	TIF1	eIF4F
+YGR162W	TIF4631	eIF4F
+YDL013W	SLX5	Slx5p/Slx8p complex	17848550	Biochemical Activity	GO:0000151	ubiquitin ligase complex	0.2
+YER116C	SLX8	Slx5p/Slx8p complex
+YPR175W	DPB2	DNA polymerase epsilon complex	2406268	Co-purification	GO:0008622	epsilon DNA polymerase complex	0.8
+YBR278W	DPB3	DNA polymerase epsilon complex
+YDR121W	DPB4	DNA polymerase epsilon complex
+YNL262W	POL2	DNA polymerase epsilon complex
+YMR012W	CLU1	eIF3	10358023	"Affinity Capture-Western,Two-hybrid,Reconstituted Complex"	GO:0005852	eukaryotic translation initiation factor 3 complex	1
+YLR192C	HCR1	eIF3
+YMR309C	NIP1	eIF3
+YOR361C	PRT1	eIF3
+YBR079C	RPG1	eIF3
+YMR146C	TIF34	eIF3
+YDR429C	TIF35	eIF3
+YDR252W	BTT1	nascent polypeptide-associated complex	10219998	"Affinity Capture-Western,Co-purification"	GO:0005854	nascent polypeptide-associated complex	1
+YPL037C	EGD1	nascent polypeptide-associated complex
+YHR193C	EGD2	nascent polypeptide-associated complex
+YGL094C	PAN2	PAN complex	8816488	"Two-hybrid,Affinity Capture-Western,Co-purification"	GO:0031251	PAN complex	1
+YKL025C	PAN3	PAN complex
+YKL135C	APL2	AP-1 adaptor complex	10564262	Affinity Capture-Western	GO:0030121	AP-1 adaptor complex	1
+YPR029C	APL4	AP-1 adaptor complex
+YPL259C	APM1	AP-1 adaptor complex
+YHL019C	APM2	AP-1 adaptor complex
+YLR170C	APS1	AP-1 adaptor complex
+YMR284W	YKU70	Ku complex	8509423	Co-purification	GO:0043564	Ku70:Ku80 complex	1
+YMR106C	YKU80	Ku complex
+YDR159W	SAC3	Sac3p/Thp1p complex	12411502	Affinity Capture-Western	GO:0005643	nuclear pore	0.0408163265306122
+YOL072W	THP1	Sac3p/Thp1p complex
+YPL248C	GAL4	GAL4p/GAL80p complex	11179228	Reconstituted Complex	-	-	0
+YML051W	GAL80	GAL4p/GAL80p complex
+YIL072W	HOP1	Synaptonemal complex (SC)	10958662	Two-hybrid	-	-	0
+YLR263W	RED1	Synaptonemal complex (SC)
+YDR285W	ZIP1	Synaptonemal complex (SC)
+YGL249W	ZIP2	Synaptonemal complex (SC)
+YEL053C	MAK10	NatC complex	10504710	Affinity Capture-MS	GO:0031417	NatC complex	1
+YPR051W	MAK3	NatC complex
+YCR020C-A	MAK31	NatC complex
+YMR275C	BUL1	Rsp5p/Bul1 ubiquitin ligase complex	8668140	"Two-hybrid,Affinity Capture-Western"	GO:0000151	ubiquitin ligase complex	0.2
+YER125W	RSP5	Rsp5p/Bul1 ubiquitin ligase complex
+YOL149W	DCP1	Decapping Enzyme Complex	10508173	Affinity Capture-Western	GO:0000932	cytoplasmic mRNA processing body	0.133333333333333
+YNL118C	DCP2	Decapping Enzyme Complex
+YHR013C	ARD1	NatA complex	14517307	Affinity Capture-Western	GO:0031415	NatA complex	1
+YDL040C	NAT1	NatA complex
+YOR253W	NAT5	NatA complex
+YOR144C	ELG1	DNA replication factor C complex (Elg1p)	12912927	Affinity Capture-Western	GO:0031391	Elg1 RFC-like complex	1
+YJR068W	RFC2	DNA replication factor C complex (Elg1p)
+YNL290W	RFC3	DNA replication factor C complex (Elg1p)
+YOL094C	RFC4	DNA replication factor C complex (Elg1p)
+YBR087W	RFC5	DNA replication factor C complex (Elg1p)
+YML102W	CAC2	chromatin assembly complex	9030687	Co-purification	GO:0033186	CAF-1 complex	1
+YBR195C	MSI1	chromatin assembly complex
+YPR018W	RLF2	chromatin assembly complex
+YGL200C	EMP24	COPII	10359606	"Affinity Capture-Western,Co-purification"	GO:0030127	COPII vesicle coat	0.461538461538462
+YAR002C-A	ERP1	COPII
+YAL007C	ERP2	COPII
+YML012W	ERV25	COPII
+YAL042W	ERV46	COPII
+YPL218W	SAR1	COPII
+YLR208W	SEC13	COPII
+YPL085W	SEC16	COPII
+YPR181C	SEC23	COPII
+YIL109C	SEC24	COPII
+YDL195W	SEC31	COPII
+YFL005W	SEC4	Sro1p/Sec4p/Sec9p complex	16390997	"Affinity Capture-Western,Reconstituted Complex,Affinity Capture-MS"	GO:0031201	SNARE complex	0.2
+YGR009C	SEC9	Sro1p/Sec4p/Sec9p complex
+YPR032W	SRO7	Sro1p/Sec4p/Sec9p complex
+YDL056W	MBP1	MBF complex	8372350	Co-purification	-	-	0
+YLR182W	SWI6	MBF complex
+YDL132W	CDC53	nuclear ubiquitin ligase complex	14747994	Reconstituted Complex	GO:0019005	SCF ubiquitin ligase complex	0.307692307692308
+YJR090C	GRR1	nuclear ubiquitin ligase complex
+YOL133W	HRT1	nuclear ubiquitin ligase complex
+YDR328C	SKP1	nuclear ubiquitin ligase complex
+YBR091C	MRS5	mitochondrial inner membrane protein insertion complex	10637294	Affinity Capture-Western	GO:0042721	mitochondrial inner membrane protein insertion complex	1
+YOR297C	TIM18	mitochondrial inner membrane protein insertion complex
+YDL217C	TIM22	mitochondrial inner membrane protein insertion complex
+YJL054W	TIM54	mitochondrial inner membrane protein insertion complex
+YGL195W	GCN1	Gcn1p/Gcn20p complex	7621831	"Affinity Capture-Western, Two-hybrid"	GO:0022626	cytosolic ribosome	0.166666666666667
+YFR009W	GCN20	Gcn1p/Gcn20p complex
+YJL053W	PEP8	retromer complex	9700157	"Affinity Capture-Western,Reconstituted Complex,Co-purification"	GO:0030904	retromer complex	1
+YOR132W	VPS17	retromer complex
+YHR012W	VPS29	retromer complex
+YJL154C	VPS35	retromer complex
+YOR069W	VPS5	retromer complex
+YGL223C	COG1	Golgi transport complex	11703943	Affinity Capture-MS	GO:0017119	Golgi transport complex	1
+YGR120C	COG2	Golgi transport complex
+YER157W	COG3	Golgi transport complex
+YPR105C	COG4	Golgi transport complex
+YNL051W	COG5	Golgi transport complex
+YNL041C	COG6	Golgi transport complex
+YGL005C	COG7	Golgi transport complex
+YML071C	COG8	Golgi transport complex
+YGR098C	ESP1	Esp1p/Pds1p complex	9635435	Affinity Capture-Western	-	-	0
+YDR113C	PDS1	Esp1p/Pds1p complex
+YGR238C	KEL2	Kel1p/Kel2p/Lte1p complex	12234925	Affinity Capture-Western	-	-	0
+YHR158C	KEL1	Kel1p/Kel2p/Lte1p complex
+YAL024C	LTE1	Kel1p/Kel2p/Lte1p complex
+YBR009C	HHF1	Nucleosomal protein complex	9256430	Reconstituted Complex	GO:0000788	nuclear nucleosome	0.8
+YNL030W	HHF2	Nucleosomal protein complex
+YBR010W	HHT1	Nucleosomal protein complex
+YNL031C	HHT2	Nucleosomal protein complex
+YDR225W	HTA1	Nucleosomal protein complex
+YBL003C	HTA2	Nucleosomal protein complex
+YDR224C	HTB1	Nucleosomal protein complex
+YBL002W	HTB2	Nucleosomal protein complex
+YGL020C	GET1	GET complex	16269340	Affinity Capture-MS	GO:0043529	GET complex	1
+YER083C	GET2	GET complex
+YDL100C	GET3	GET complex
+YBR160W	CDC28	Cdc28p/Cln2p complex	2142620	Co-purification	GO:0000307	cyclin-dependent protein kinase holoenzyme complex	0.142857142857143
+YPL256C	CLN2	Cdc28p/Cln2p complex
+YJR063W	RPA12	DNA-directed RNA polymerase I complex	8334985	Co-crystal Structure	GO:0005736	DNA-directed RNA polymerase I complex	1
+YPR010C	RPA135	DNA-directed RNA polymerase I complex
+YDR156W	RPA14	DNA-directed RNA polymerase I complex
+YOR341W	RPA190	DNA-directed RNA polymerase I complex
+YJL148W	RPA34	DNA-directed RNA polymerase I complex
+YOR340C	RPA43	DNA-directed RNA polymerase I complex
+YNL248C	RPA49	DNA-directed RNA polymerase I complex
+YOR210W	RPB10	DNA-directed RNA polymerase I complex
+YBR154C	RPB5	DNA-directed RNA polymerase I complex
+YOR224C	RPB8	DNA-directed RNA polymerase I complex
+YHR143W-A	RPC10	DNA-directed RNA polymerase I complex
+YNL113W	RPC19	DNA-directed RNA polymerase I complex
+YPR110C	RPC40	DNA-directed RNA polymerase I complex
+YPR187W	RPO26	DNA-directed RNA polymerase I complex
+YAL051W	OAF1	OAF complex	9288897	Co-localization	-	-	0
+YOR363C	PIP2	OAF complex
+YBL099W	ATP1	F0/F1 ATP synthase (complex V)	9857174	Co-purification	GO:0000276	mitochondrial proton-transporting ATP synthase complex, coupling factor F(o)	0.5
+YLR295C	ATP14	F0/F1 ATP synthase (complex V)
+YPL271W	ATP15	F0/F1 ATP synthase (complex V)
+YDL004W	ATP16	F0/F1 ATP synthase (complex V)
+YDR377W	ATP17	F0/F1 ATP synthase (complex V)
+YML081C-A	ATP18	F0/F1 ATP synthase (complex V)
+YOL077W-A	ATP19	F0/F1 ATP synthase (complex V)
+YJR121W	ATP2	F0/F1 ATP synthase (complex V)
+YPR020W	ATP20	F0/F1 ATP synthase (complex V)
+YBR039W	ATP3	F0/F1 ATP synthase (complex V)
+YPL078C	ATP4	F0/F1 ATP synthase (complex V)
+YDR298C	ATP5	F0/F1 ATP synthase (complex V)
+Q0085	ATP6	F0/F1 ATP synthase (complex V)
+YKL016C	ATP7	F0/F1 ATP synthase (complex V)
+Q0080	ATP8	F0/F1 ATP synthase (complex V)
+YDL181W	INH1	F0/F1 ATP synthase (complex V)
+Q0130	OLI1	F0/F1 ATP synthase (complex V)
+YDR322C-A	TIM11	F0/F1 ATP synthase (complex V)
+YCR046C	IMG1	mitochondrial ribosomal large subunit	12392552	Affinity Capture-MS	GO:0005762	mitochondrial large ribosomal subunit	0.934782608695652
+YCR071C	IMG2	mitochondrial ribosomal large subunit
+YGL068W	MNP1	mitochondrial ribosomal large subunit
+YDR405W	MRP20	mitochondrial ribosomal large subunit
+YKL167C	MRP49	mitochondrial ribosomal large subunit
+YNL005C	MRP7	mitochondrial ribosomal large subunit
+YDR116C	MRPL1	mitochondrial ribosomal large subunit
+YNL284C	MRPL10	mitochondrial ribosomal large subunit
+YDL202W	MRPL11	mitochondrial ribosomal large subunit
+YKR006C	MRPL13	mitochondrial ribosomal large subunit
+YLR312W-A	MRPL15	mitochondrial ribosomal large subunit
+YBL038W	MRPL16	mitochondrial ribosomal large subunit
+YNL252C	MRPL17	mitochondrial ribosomal large subunit
+YNL185C	MRPL19	mitochondrial ribosomal large subunit
+YKR085C	MRPL20	mitochondrial ribosomal large subunit
+YNL177C	MRPL22	mitochondrial ribosomal large subunit
+YOR150W	MRPL23	mitochondrial ribosomal large subunit
+YMR193W	MRPL24	mitochondrial ribosomal large subunit
+YGR076C	MRPL25	mitochondrial ribosomal large subunit
+YBR282W	MRPL27	mitochondrial ribosomal large subunit
+YDR462W	MRPL28	mitochondrial ribosomal large subunit
+YMR024W	MRPL3	mitochondrial ribosomal large subunit
+YKL138C	MRPL31	mitochondrial ribosomal large subunit
+YCR003W	MRPL32	mitochondrial ribosomal large subunit
+YMR286W	MRPL33	mitochondrial ribosomal large subunit
+YDR322W	MRPL35	mitochondrial ribosomal large subunit
+YBR122C	MRPL36	mitochondrial ribosomal large subunit
+YBR268W	MRPL37	mitochondrial ribosomal large subunit
+YKL170W	MRPL38	mitochondrial ribosomal large subunit
+YML009C	MRPL39	mitochondrial ribosomal large subunit
+YLR439W	MRPL4	mitochondrial ribosomal large subunit
+YPL173W	MRPL40	mitochondrial ribosomal large subunit
+YMR225C	MRPL44	mitochondrial ribosomal large subunit
+YJL096W	MRPL49	mitochondrial ribosomal large subunit
+YNR022C	MRPL50	mitochondrial ribosomal large subunit
+YPR100W	MRPL51	mitochondrial ribosomal large subunit
+YHR147C	MRPL6	mitochondrial ribosomal large subunit
+YDR237W	MRPL7	mitochondrial ribosomal large subunit
+YJL063C	MRPL8	mitochondrial ribosomal large subunit
+YGR220C	MRPL9	mitochondrial ribosomal large subunit
+YEL050C	RML2	mitochondrial ribosomal large subunit
+YDR115W	YDR115W	mitochondrial ribosomal large subunit
+YML025C	YML6	mitochondrial ribosomal large subunit
+YPL183W-A	YPL183W-A	mitochondrial ribosomal large subunit
+YHR060W	VMA22	ER V-ATPase assembly complex	9660861	Co-purification	-	-	0
+YKL119C	VPH2	ER V-ATPase assembly complex
+YBR050C	REG2	Reg2p/Glc7p complex	8649403	"Affinity Capture-Western,Two-hybrid"	GO:0000164	protein phosphatase type 1 complex	0.285714285714286
+YER133W	GLC7	Reg2p/Glc7p complex
+YER029C	SMB1	U5 snRNP complex	11720284	Affinity Capture-MS	GO:0005682	snRNP U5	0.823529411764706
+YGR074W	SMD1	U5 snRNP complex
+YLR275W	SMD2	U5 snRNP complex
+YLR147C	SMD3	U5 snRNP complex
+YOR159C	SME1	U5 snRNP complex
+YFL017W-A	SMX2	U5 snRNP complex
+YPR182W	SMX3	U5 snRNP complex
+YKL173W	SNU114	U5 snRNP complex
+YBL074C	AAR2	U5 snRNP complex
+YER172C	BRR2	U5 snRNP complex
+YHR165C	PRP8	U5 snRNP complex
+YDR243C	PRP28	U5 snRNP complex
+YHR156C	LIN1	U5 snRNP complex
+YPR082C	DIB1	U5 snRNP complex
+YCR066W	RAD18	Rad6p/Rad18p complex	9287349	"Affinity Capture-Western,Reconstituted Complex"	GO:0000502	proteasome complex	0.0909090909090909
+YGL058W	RAD6	Rad6p/Rad18p complex
+YGL087C	MMS2	ubiquitin conjugating enzyme complex	10089880	"Reconstituted Complex,Co-purification"	GO:0031371	ubiquitin conjugating enzyme complex	1
+YDR092W	UBC13	ubiquitin conjugating enzyme complex
+YCR009C	RVS161	Rvs161p/Rvs167p complex	11096097	"Two-hybrid,Affinity Capture-Western"	-	-	0
+YDR388W	RVS167	Rvs161p/Rvs167p complex
+YML105C	SEC65	Signal recognition particle (SRP)	7925282	Co-purification	GO:0005786	signal recognition particle, endoplasmic reticulum targeting	0.857142857142857
+YDL092W	SRP14	Signal recognition particle (SRP)
+YKL122C	SRP21	Signal recognition particle (SRP)
+YPR088C	SRP54	Signal recognition particle (SRP)
+YPL243W	SRP68	Signal recognition particle (SRP)
+YPL210C	SRP72	Signal recognition particle (SRP)
+YMR042W	ARG80	ARGR complex	10632874	Two-hybrid	-	-	0
+YML099C	ARG81	ARGR complex
+YDR173C	ARG82	ARGR complex
+YMR043W	MCM1	ARGR complex
+YGL033W	HOP2	Hop2p/Mnd1p complex	11940665	Affinity Capture-Western	-	-	0
+YGL183C	MND1	Hop2p/Mnd1p complex
+YPL004C	LSP1	Eisosome	16496001	Affinity Capture-MS	GO:0032126	eisosome	1
+YGR086C	PIL1	Eisosome
+YIL142W	CCT2	chaperonin-containing T-complex	7908441	Co-purification	GO:0005832	chaperonin-containing T-complex	1
+YJL014W	CCT3	chaperonin-containing T-complex
+YDL143W	CCT4	chaperonin-containing T-complex
+YJR064W	CCT5	chaperonin-containing T-complex
+YDR188W	CCT6	chaperonin-containing T-complex
+YJL111W	CCT7	chaperonin-containing T-complex
+YJL008C	CCT8	chaperonin-containing T-complex
+YDR212W	TCP1	chaperonin-containing T-complex
+YDR138W	HPR1	THO complex	11060033	Affinity Capture-Western	GO:0000446	nucleoplasmic THO complex	1
+YML062C	MFT1	THO complex
+YNL139C	RLR1	THO complex
+YHR167W	THP2	THO complex
+YDR180W	SCC2	cohesin loading factor complex	10882066	Affinity Capture-MS	GO:0032116	cohesin loading complex	1
+YER147C	SCC4	cohesin loading factor complex
+YPL219W	PCL8	Pho85p/Pcl8p complex	9032248	Two-hybrid	GO:0000307	cyclin-dependent protein kinase holoenzyme complex	0.142857142857143
+YPL031C	PHO85	Pho85p/Pcl8p complex
+YKR054C	DYN1	cytoplasmic dynein complex	15642746	Affinity Capture-Western	GO:0005868	cytoplasmic dynein complex	1
+YDR424C	DYN2	cytoplasmic dynein complex
+YMR299C	DYN3	cytoplasmic dynein complex
+YDR488C	PAC11	cytoplasmic dynein complex
+YGL047W	ALG13	UDP-N-acetylglucosamine transferase complex	16100113	Co-purification	GO:0043541	UDP-N-acetylglucosamine transferase complex	1
+YBR070C	ALG14	UDP-N-acetylglucosamine transferase complex
+YLR398C	SKI2	Ski Complex	18042677	Affinity Capture-MS	-	-	0
+YPR189W	SKI3	Ski Complex
+YGL213C	SKI8	Ski Complex
+YPL129W	TAF14	transcription factor TFIIF complex	15896708	"Affinity Capture-Western,Two-hybrid,Reconstituted Complex"	GO:0005674	transcription factor TFIIF complex	1
+YGR186W	TFG1	transcription factor TFIIF complex
+YGR005C	TFG2	transcription factor TFIIF complex
+YJR033C	RAV1	RAVE complex	11283612	Affinity Capture-Western	GO:0043291	RAVE complex	1
+YDR202C	RAV2	RAVE complex
+YDR328C	SKP1	RAVE complex
+YPL094C	SEC62	Sec62p/Sec63p complex	2000150	Affinity Capture-Western	GO:0031207	Sec62/Sec63 complex	1
+YOR254C	SEC63	Sec62p/Sec63p complex
+YBR171W	SEC66	Sec62p/Sec63p complex
+YLR292C	SEC72	Sec62p/Sec63p complex
+YGR200C	ELP2	Elongator complex	11689709	Affinity Capture-MS	GO:0033588	Elongator holoenzyme complex	1
+YPL086C	ELP3	Elongator complex
+YPL101W	ELP4	Elongator complex
+YMR312W	ELP6	Elongator complex
+YHR187W	IKI1	Elongator complex
+YLR384C	IKI3	Elongator complex
+YJR082C	EAF6	NuA3 histone acetyltransferase complex	12077334	Affinity Capture-MS	GO:0033100	NuA3 histone acetyltransferase complex	1
+YBL052C	SAS3	NuA3 histone acetyltransferase complex
+YPL129W	TAF14	NuA3 histone acetyltransferase complex
+YOR064C	YNG1	NuA3 histone acetyltransferase complex
+YPR031W	NTO1	NuA3 histone acetyltransferase complex
+YBR128C	ATG14	phosphatidylinositol (PtdIns) 3-kinase complex (functions in autophagy)	11157979	"Affinity Capture-Western,Affinity Capture-MS"	-	-	0
+YBR097W	VPS15	phosphatidylinositol (PtdIns) 3-kinase complex (functions in autophagy)
+YPL120W	VPS30	phosphatidylinositol (PtdIns) 3-kinase complex (functions in autophagy)
+YLR240W	VPS34	phosphatidylinositol (PtdIns) 3-kinase complex (functions in autophagy)
+YER025W	GCD11	eIF2	8417348	Co-purification	GO:0005850	eukaryotic translation initiation factor 2 complex	1
+YJR007W	SUI2	eIF2
+YPL237W	SUI3	eIF2
+YGR181W	TIM13	Tim8p/Tim13p complex	12221072	Reconstituted Complex	GO:0042719	mitochondrial intermembrane space protein transporter complex	0.5
+YJR135W-A	TIM8	Tim8p/Tim13p complex
+YOR217W	RFC1	DNA replication factor C complex (Rcf1p)	7651383	Co-purification	GO:0005663	DNA replication factor C complex	0.833333333333333
+YJR068W	RFC2	DNA replication factor C complex (Rcf1p)
+YNL290W	RFC3	DNA replication factor C complex (Rcf1p)
+YOL094C	RFC4	DNA replication factor C complex (Rcf1p)
+YBR087W	RFC5	DNA replication factor C complex (Rcf1p)
+YIL125W	KGD1	mitochondrial oxoglutarate dehydrogenase complex	2072900	Co-purification	GO:0009353	mitochondrial oxoglutarate dehydrogenase complex	1
+YDR148C	KGD2	mitochondrial oxoglutarate dehydrogenase complex
+YFL018C	LPD1	mitochondrial oxoglutarate dehydrogenase complex
+YBR211C	AME1	COMA complex	14633972	"Affinity Capture-Western,Co-purification"	GO:0000817	COMA complex	1
+YPL018W	CTF19	COMA complex
+YDR318W	MCM21	COMA complex
+YGR179C	OKP1	COMA complex
+YOL076W	MDM20	NatB complex	12783868	Affinity Capture-Western	GO:0031416	NatB complex	1
+YPR131C	NAT3	NatB complex
+YBR109C	CMD1	SPB components	15872084	FRET	-	-	0
+YNL225C	CNM67	SPB components
+YOR373W	NUD1	SPB components
+YDR356W	SPC110	SPB components
+YPL124W	SPC29	SPB components
+YKL042W	SPC42	SPB components
+YAL047C	SPC72	SPB components
+YML029W	USA1	ubiquitin ligase ERAD-L complex	16873066	Affinity Capture-MS	GO:0000839	Hrd1p ubiquitin ligase ERAD-L complex	0.8
+YBR201W	DER1	ubiquitin ligase ERAD-L complex
+YDR057W	YOS9	ubiquitin ligase ERAD-L complex
+YOL013C	HRD1	ubiquitin ligase ERAD-L complex
+YLR207W	HRD3	ubiquitin ligase ERAD-L complex
+YGR206W	MVB12	ESCRT I complex	11511343	Affinity Capture-Western	GO:0000813	ESCRT I complex	1
+YLR119W	SRN2	ESCRT I complex
+YCL008C	STP22	ESCRT I complex
+YPL065W	VPS28	ESCRT I complex
+YPL001W	HAT1	HAT-B complex	14761951	Two-hybrid	GO:0000123	histone acetyltransferase complex	0.333333333333333
+YEL056W	HAT2	HAT-B complex
+YLL022C	HIF1	HAT-B complex
+YJL005W	CYR1	adenylyl cyclase complex	2455217	Affinity Capture-Western	-	-	0
+YNL138W	SRV2	adenylyl cyclase complex
+YDR265W	PEX10	RING finger peroxin complex	12667447	Affinity Capture-Western	-	-	0
+YMR026C	PEX12	RING finger peroxin complex
+YJL210W	PEX2	RING finger peroxin complex
+YMR108W	ILV2	acetolactate synthase complex	10213630	Reconstituted Complex	GO:0005948	acetolactate synthase complex	1
+YCL009C	ILV6	acetolactate synthase complex
+YGR132C	PHB1	prohibitin complex	15525670	Affinity Capture-Western	-	-	0
+YGR231C	PHB2	prohibitin complex
+YHL002W	HSE1	Hse1p/Vps27p complex	12055639	Affinity Capture-Western	GO:0033565	ESCRT-0 complex	1
+YNR006W	VPS27	Hse1p/Vps27p complex
+YGL190C	CDC55	protein phosphatase type 2A complex (Cdc55p)	10329624	Affinity Capture-Western	GO:0000159	protein phosphatase type 2A complex	0.5
+YDL134C	PPH21	protein phosphatase type 2A complex (Cdc55p)
+YAL016W	TPD3	protein phosphatase type 2A complex (Cdc55p)
+YOL096C	COQ3	Q-biosynthetic Coq polypeptide complex	15792955	"Affinity Capture-Western,Co-purification"	-	-	0
+YDR204W	COQ4	Q-biosynthetic Coq polypeptide complex
+YBR160W	CDC28	Cdc28p/Clb1p complex	8319908	Traceable author statement	GO:0000307	cyclin-dependent protein kinase holoenzyme complex	0.0666666666666667
+YGR108W	CLB1	Cdc28p/Clb1p complex
+YER172C	BRR2	U4/U6 x U5 tri-snRNP complex	11720284	Affinity Capture-MS	GO:0046540	U4/U6 x U5 tri-snRNP complex	0.875
+YPR082C	DIB1	U4/U6 x U5 tri-snRNP complex
+YBL026W	LSM2	U4/U6 x U5 tri-snRNP complex
+YLR438C-A	LSM3	U4/U6 x U5 tri-snRNP complex
+YER112W	LSM4	U4/U6 x U5 tri-snRNP complex
+YER146W	LSM5	U4/U6 x U5 tri-snRNP complex
+YDR378C	LSM6	U4/U6 x U5 tri-snRNP complex
+YNL147W	LSM7	U4/U6 x U5 tri-snRNP complex
+YJR022W	LSM8	U4/U6 x U5 tri-snRNP complex
+YGR006W	PRP18	U4/U6 x U5 tri-snRNP complex
+YDR473C	PRP3	U4/U6 x U5 tri-snRNP complex
+YGR091W	PRP31	U4/U6 x U5 tri-snRNP complex
+YGR075C	PRP38	U4/U6 x U5 tri-snRNP complex
+YPR178W	PRP4	U4/U6 x U5 tri-snRNP complex
+YBR055C	PRP6	U4/U6 x U5 tri-snRNP complex
+YHR165C	PRP8	U4/U6 x U5 tri-snRNP complex
+YER029C	SMB1	U4/U6 x U5 tri-snRNP complex
+YGR074W	SMD1	U4/U6 x U5 tri-snRNP complex
+YLR275W	SMD2	U4/U6 x U5 tri-snRNP complex
+YLR147C	SMD3	U4/U6 x U5 tri-snRNP complex
+YOR159C	SME1	U4/U6 x U5 tri-snRNP complex
+YFL017W-A	SMX2	U4/U6 x U5 tri-snRNP complex
+YPR182W	SMX3	U4/U6 x U5 tri-snRNP complex
+YKL173W	SNU114	U4/U6 x U5 tri-snRNP complex
+YEL026W	SNU13	U4/U6 x U5 tri-snRNP complex
+YDL098C	SNU23	U4/U6 x U5 tri-snRNP complex
+YOR308C	SNU66	U4/U6 x U5 tri-snRNP complex
+YBR152W	SPP381	U4/U6 x U5 tri-snRNP complex
+YCL044C	MGR1	i-AAA complex	16267274	"Affinity Capture-Western,Co-purification"	GO:0031942	i-AAA complex	1
+YPR024W	YME1	i-AAA complex
+YOL090W	MSH2	MSH2p/MSH3p complex	8805366	Reconstituted Complex	GO:0032302	MutSbeta complex	1
+YCR092C	MSH3	MSH2p/MSH3p complex
+YFR028C	CDC14	RENT complex	10219244	Affinity Capture-Western	GO:0030869	RENT complex	1
+YJL076W	NET1	RENT complex
+YDL042C	SIR2	RENT complex
+YJL088W	ARG3	Car1p/Arg3p complex	2404017	Co-purification	-	-	0
+YPL111W	CAR1	Car1p/Arg3p complex
+YJL041W	NSP1	Nsp1p/Nup82p complex	7559750	Affinity Capture-Western	GO:0005643	nuclear pore	0.0408163265306122
+YJL061W	NUP82	Nsp1p/Nup82p complex
+YJL071W	ARG2	"Arg2p/Arg5,6p complex"	11553611	Affinity Capture-Western	-	-	0
+YER069W	"ARG5,6"	"Arg2p/Arg5,6p complex"
+YGR063C	SPT4	DSIF complex	9450930	Affinity Capture-Western	GO:0032044	DSIF complex	1
+YML010W	SPT5	DSIF complex
+YLR342W	FKS1	"1,3-beta-glucan synthase complex (Fks1p/Rho1p)"	8602515	Co-purification	GO:0000148	1,3-beta-glucan synthase complex	0.666666666666667
+YPR165W	RHO1	"1,3-beta-glucan synthase complex (Fks1p/Rho1p)"
+YOR207C	RET1	DNA-directed RNA polymerase III complex	10066472	Affinity Capture-Western	GO:0005666	DNA-directed RNA polymerase III complex	1
+YOR210W	RPB10	DNA-directed RNA polymerase III complex
+YBR154C	RPB5	DNA-directed RNA polymerase III complex
+YOR224C	RPB8	DNA-directed RNA polymerase III complex
+YHR143W-A	RPC10	DNA-directed RNA polymerase III complex
+YDR045C	RPC11	DNA-directed RNA polymerase III complex
+YJL011C	RPC17	DNA-directed RNA polymerase III complex
+YNL113W	RPC19	DNA-directed RNA polymerase III complex
+YKL144C	RPC25	DNA-directed RNA polymerase III complex
+YNL151C	RPC31	DNA-directed RNA polymerase III complex
+YNR003C	RPC34	DNA-directed RNA polymerase III complex
+YKR025W	RPC37	DNA-directed RNA polymerase III complex
+YPR110C	RPC40	DNA-directed RNA polymerase III complex
+YDL150W	RPC53	DNA-directed RNA polymerase III complex
+YPR190C	RPC82	DNA-directed RNA polymerase III complex
+YPR187W	RPO26	DNA-directed RNA polymerase III complex
+YOR116C	RPO31	DNA-directed RNA polymerase III complex
+YML069W	POB3	FACT complex	9705338	Co-purification	GO:0035101	FACT complex	1
+YGL207W	SPT16	FACT complex
+YNL085W	MKT1	Mtk1p/Pbp1p complex	15082763	Two-hybrid	GO:0005844	polysome	0.142857142857143
+YGR178C	PBP1	Mtk1p/Pbp1p complex
+YGR240C	PFK1	6-phosphofructokinase complex	9559541	Reconstituted Complex	GO:0005945	6-phosphofructokinase complex	1
+YMR205C	PFK2	6-phosphofructokinase complex
+YMR078C	CTF18	DNA replication factor C complex (Ctf18p/Ctf8p/dcc1p)	11389843	Affinity Capture-Western	GO:0031390	Ctf18 RFC-like complex	1
+YHR191C	CTF8	DNA replication factor C complex (Ctf18p/Ctf8p/dcc1p)
+YCL016C	DCC1	DNA replication factor C complex (Ctf18p/Ctf8p/dcc1p)
+YJR068W	RFC2	DNA replication factor C complex (Ctf18p/Ctf8p/dcc1p)
+YNL290W	RFC3	DNA replication factor C complex (Ctf18p/Ctf8p/dcc1p)
+YOL094C	RFC4	DNA replication factor C complex (Ctf18p/Ctf8p/dcc1p)
+YBR087W	RFC5	DNA replication factor C complex (Ctf18p/Ctf8p/dcc1p)
+YER038C	KRE29	smc5p-Smc6p complex	15738391	"Biochemical Activity,Affinity Capture-MS"	GO:0030915	Smc5-Smc6 complex	1
+YEL019C	MMS21	smc5p-Smc6p complex
+YLR007W	NSE1	smc5p-Smc6p complex
+YDR288W	NSE3	smc5p-Smc6p complex
+YDL105W	NSE4	smc5p-Smc6p complex
+YML023C	NSE5	smc5p-Smc6p complex
+YOL034W	SMC5	smc5p-Smc6p complex
+YLR383W	SMC6	smc5p-Smc6p complex
+YER030W	CHZ1	Chz1p/Htz1p/Htb1p complex	17289584	"Affinity Capture-Western,Affinity Capture-MS"	GO:0005678	chromatin assembly complex	0.5
+YDR224C	HTB1	Chz1p/Htz1p/Htb1p complex
+YOL012C	HTZ1	Chz1p/Htz1p/Htb1p complex
+YNL039W	BDP1	transcription factor TFIIIB complex	1458536	Reconstituted Complex	GO:0000126	transcription factor TFIIIB complex	1
+YGR246C	BRF1	transcription factor TFIIIB complex
+YER148W	SPT15	transcription factor TFIIIB complex
+YNR038W	DBP6	Npa2p-containing subcomplex	17145778	Affinity Capture-Western	GO:0030687	preribosome, large subunit precursor	0.25
+YOL144W	NOP8	Npa2p-containing subcomplex
+YLR221C	RSA3	Npa2p-containing subcomplex
+YKL014C	URB1	Npa2p-containing subcomplex
+YJR041C	URB2	Npa2p-containing subcomplex
+Q0105	COB	"Cytochrome bc1 complex (Ubiquinol-cytochrome c reductase complex, complex III)"	10873857	Co-crystal Structure	GO:0005750	mitochondrial respiratory chain complex III	1
+YBL045C	COR1	"Cytochrome bc1 complex (Ubiquinol-cytochrome c reductase complex, complex III)"
+YOR065W	CYT1	"Cytochrome bc1 complex (Ubiquinol-cytochrome c reductase complex, complex III)"
+YHR001W-A	QCR10	"Cytochrome bc1 complex (Ubiquinol-cytochrome c reductase complex, complex III)"
+YPR191W	QCR2	"Cytochrome bc1 complex (Ubiquinol-cytochrome c reductase complex, complex III)"
+YFR033C	QCR6	"Cytochrome bc1 complex (Ubiquinol-cytochrome c reductase complex, complex III)"
+YDR529C	QCR7	"Cytochrome bc1 complex (Ubiquinol-cytochrome c reductase complex, complex III)"
+YJL166W	QCR8	"Cytochrome bc1 complex (Ubiquinol-cytochrome c reductase complex, complex III)"
+YGR183C	QCR9	"Cytochrome bc1 complex (Ubiquinol-cytochrome c reductase complex, complex III)"
+YEL024W	RIP1	"Cytochrome bc1 complex (Ubiquinol-cytochrome c reductase complex, complex III)"
+YFR040W	SAP155	Sap155p/Sit4p complex	8649382	Affinity Capture-Western	-	-	0
+YDL047W	SIT4	Sap155p/Sit4p complex
+YNL062C	GCD10	Gcd10p/Gcd14p complex	10779558	Co-purification	GO:0031515	tRNA (m1A) methyltransferase complex	1
+YJL125C	GCD14	Gcd10p/Gcd14p complex
+YHR098C	SFB3	Sfb3p/Sec23p complex	10330397	"Two-hybrid,Affinity Capture-Western"	GO:0030127	COPII vesicle coat	0.25
+YPR181C	SEC23	Sfb3p/Sec23p complex
+YFR030W	MET10	sulfite reductase complex (NADPH)	7788524	Co-purification	GO:0009337	sulfite reductase complex (NADPH)	1
+YJR137C	ECM17	sulfite reductase complex (NADPH)
+YBL016W	FUS3	STE5-MAPK complex	8062390	"Two-hybrid,Co-purification"	-	-	0
+YLR362W	STE11	STE5-MAPK complex
+YDR103W	STE5	STE5-MAPK complex
+YDL159W	STE7	STE5-MAPK complex
+YMR058W	FET3	Permease-Oxidase Complex	8599111	Biochemical Activity	GO:0033573	high affinity iron permease complex	1
+YER145C	FTR1	Permease-Oxidase Complex
+YER017C	AFG3	m-AAA complex	8681382	Affinity Capture-Western	GO:0005745	m-AAA complex	1
+YMR089C	YTA12	m-AAA complex
+YKL139W	CTK1	carboxy-terminal domain protein kinase complex	7565723	Co-purification	GO:0032806	carboxy-terminal domain protein kinase complex	1
+YJL006C	CTK2	carboxy-terminal domain protein kinase complex
+YML112W	CTK3	carboxy-terminal domain protein kinase complex
+YBR160W	CDC28	Cdc28p/Clb6p complex	8319908	Traceable author statement	GO:0000307	cyclin-dependent protein kinase holoenzyme complex	0.0666666666666667
+YGR109C	CLB6	Cdc28p/Clb6p complex
+YPL050C	MNN9	"alpha-1,6-mannosyltransferase complex(Van1p/Mnn9p)"	12235155	Affinity Capture-Western	GO:0000136	alpha-1,6-mannosyltransferase complex	0.333333333333333
+YML115C	VAN1	"alpha-1,6-mannosyltransferase complex(Van1p/Mnn9p)"
+YDL017W	CDC7	Cdc7p/Dbf4p complex	8474449	"Two-hybrid,Reconstituted Complex"	GO:0031431	Dbf4-dependent protein kinase complex	1
+YDR052C	DBF4	Cdc7p/Dbf4p complex
+YER070W	RNR1	ribonucleoside-diphosphate reductase complex	10716984	Reconstituted Complex	GO:0005971	ribonucleoside-diphosphate reductase complex	0.75
+YJL026W	RNR2	ribonucleoside-diphosphate reductase complex
+YGR180C	RNR4	ribonucleoside-diphosphate reductase complex
+YGR163W	GTR2	EGO complex	15989961	"Affinity Capture-Western,Two-hybrid"	-	-	0
+YKR007W	MEH1	EGO complex
+YBR077C	SLM4	EGO complex
+YHR172W	SPC97	gamma-tubulin complex	9384578	Affinity Capture-Western	GO:0000928	gamma-tubulin small complex, spindle pole body	1
+YNL126W	SPC98	gamma-tubulin complex
+YLR212C	TUB4	gamma-tubulin complex
+YNL084C	END3	"actin cytoskeleton-regulatory complex, Pan1p/Sla1p/End3p complex"	10594004	"Two-hybrid,Affinity Capture-Western"	-	-	0
+YIR006C	PAN1	"actin cytoskeleton-regulatory complex, Pan1p/Sla1p/End3p complex"
+YBL007C	SLA1	"actin cytoskeleton-regulatory complex, Pan1p/Sla1p/End3p complex"
+YDR221W	GTB1	Rot2p/Gtb1p complex	16373354	"Affinity Capture-Western,Co-purification"	GO:0017177	alpha-glucosidase II complex	1
+YBR229C	ROT2	Rot2p/Gtb1p complex
+YMR095C	SNO1	Sno1p/Snz1p complex	14764090	Reconstituted Complex	-	-	0
+YMR096W	SNZ1	Sno1p/Snz1p complex
+YNL233W	BNI4	Bni4p/Glc7p complex	12529424	"Two-hybrid,Affinity Capture-Western"	GO:0000164	protein phosphatase type 1 complex	0.125
+YER133W	GLC7	Bni4p/Glc7p complex
+YMR192W	GYL1	Gyl1p/Gyp5p complex	15331637	"Affinity Capture-Western, Co-localization"	-	-	0
+YPL249C	GYP5	Gyl1p/Gyp5p complex
+YGR134W	CAF130	CCR4-NOT core complex	11733989	"Affinity Capture-Western, Affinity Capture-MS"	GO:0030015	CCR4-NOT core complex	0.777777777777778
+YNL288W	CAF40	CCR4-NOT core complex
+YAL021C	CCR4	CCR4-NOT core complex
+YDL165W	CDC36	CCR4-NOT core complex
+YCR093W	CDC39	CCR4-NOT core complex
+YER068W	MOT2	CCR4-NOT core complex
+YIL038C	NOT3	CCR4-NOT core complex
+YPR072W	NOT5	CCR4-NOT core complex
+YNR052C	POP2	CCR4-NOT core complex
+YOR106W	VAM3	Vam3p/Vam7 vacuolar tSNARE complex	9710615	Affinity Capture-Western	-	-	0
+YGL212W	VAM7	Vam3p/Vam7 vacuolar tSNARE complex
+YLR088W	GAA1	GPI-anchor transamidase complex	15075373	Affinity Capture-Western	GO:0042765	GPI-anchor transamidase complex	1
+YLR459W	GAB1	GPI-anchor transamidase complex
+YHR188C	GPI16	GPI-anchor transamidase complex
+YDR434W	GPI17	GPI-anchor transamidase complex
+YDR331W	GPI8	GPI-anchor transamidase complex
+YNL037C	IDH1	Isocitrate dehydrogenase	11042198	Two-hybrid	GO:0005962	mitochondrial isocitrate dehydrogenase complex (NAD+)	1
+YOR136W	IDH2	Isocitrate dehydrogenase
+YKL182W	FAS1	fatty acid synthase complex	350874	Co-purification	GO:0005835	fatty acid synthase complex	1
+YPL231W	FAS2	fatty acid synthase complex
+YGL155W	CDC43	CAAX-protein geranylgeranyltransferase complex	1400380	Co-purification	GO:0005953	CAAX-protein geranylgeranyltransferase complex	1
+YKL019W	RAM2	CAAX-protein geranylgeranyltransferase complex
+YMR224C	MRE11	MRX complex	9845372	Affinity Capture-Western	GO:0030870	Mre11 complex	1
+YNL250W	RAD50	MRX complex
+YDR369C	XRS2	MRX complex
+YCR086W	CSM1	Csm1p/Lrs4p complex	12689592	Affinity Capture-Western	GO:0033551	monopolin complex	0.5
+YDR439W	LRS4	Csm1p/Lrs4p complex
+YLL002W	RTT109	Rtt109p/Vps75p complex	17369253	Affinity Capture-Western	-	-	0
+YNL246W	VPS75	Rtt109p/Vps75p complex
+Q0115	BI3	Bi3 ribonucleoprotein complex	12924947	Protein-RNA	-	-	0
+YIR021W	MRS1	Bi3 ribonucleoprotein complex
+YJL090C	DPB11	Dpb11p/Sld2p complex	9742127	"Two-hybrid,Affinity Capture-Western"	GO:0008622	epsilon DNA polymerase complex	0.166666666666667
+YKL108W	SLD2	Dpb11p/Sld2p complex
+YKL185W	ASH1	Rpd3L complex	16286007	Affinity Capture-MS	GO:0000508	Rpd3L complex	1
+YPL181W	CTI6	Rpd3L complex
+YAL013W	DEP1	Rpd3L complex
+YNL097C	PHO23	Rpd3L complex
+YNL330C	RPD3	Rpd3L complex
+YBR095C	RXT2	Rpd3L complex
+YDL076C	RXT3	Rpd3L complex
+YMR263W	SAP30	Rpd3L complex
+YIL084C	SDS3	Rpd3L complex
+YOL004W	SIN3	Rpd3L complex
+YPL139C	UME1	Rpd3L complex
+YDR207C	UME6	Rpd3L complex
+YPL213W	LEA1	U2 snRNP complex	11804584	Affinity Capture-MS	GO:0005686	snRNP U2	0.578947368421053
+YIR009W	MSL1	U2 snRNP complex
+YML049C	RSE1	U2 snRNP complex
+YMR288W	HSH155	U2 snRNP complex
+YIR005W	IST3	U2 snRNP complex
+YOR319W	HSH49	U2 snRNP complex
+YDL030W	PRP9	U2 snRNP complex
+YDL043C	PRP11	U2 snRNP complex
+YJL203W	PRP21	U2 snRNP complex
+YMR240C	CUS1	U2 snRNP complex
+YNL286W	CUS2	U2 snRNP complex
+YER029C	SMB1	U2 snRNP complex
+YGR074W	SMD1	U2 snRNP complex
+YLR275W	SMD2	U2 snRNP complex
+YLR147C	SMD3	U2 snRNP complex
+YOR159C	SME1	U2 snRNP complex
+YFL017W-A	SMX2	U2 snRNP complex
+YPR182W	SMX3	U2 snRNP complex
+Q0045	COX1	Cytochrome c oxidase (complex IV)	7851399	Co-purification	GO:0005751	mitochondrial respiratory chain complex IV	0.916666666666667
+YLR038C	COX12	Cytochrome c oxidase (complex IV)
+YGL191W	COX13	Cytochrome c oxidase (complex IV)
+Q0250	COX2	Cytochrome c oxidase (complex IV)
+Q0275	COX3	Cytochrome c oxidase (complex IV)
+YGL187C	COX4	Cytochrome c oxidase (complex IV)
+YNL052W	COX5A	Cytochrome c oxidase (complex IV)
+YHR051W	COX6	Cytochrome c oxidase (complex IV)
+YMR256C	COX7	Cytochrome c oxidase (complex IV)
+YLR395C	COX8	Cytochrome c oxidase (complex IV)
+YDL067C	COX9	Cytochrome c oxidase (complex IV)
+YJR005W	APL1	AP-2 adaptor complex	10564262	Affinity Capture-Western	GO:0030122	AP-2 adaptor complex	1
+YBL037W	APL3	AP-2 adaptor complex
+YOL062C	APM4	AP-2 adaptor complex
+YJR058C	APS2	AP-2 adaptor complex
+YLR418C	CDC73	Cdc73p/Paf1p complex	11884586	"Affinity Capture-Western,Affinity Capture-MS"	GO:0016593	Cdc73/Paf1 complex	1
+YOL145C	CTR9	Cdc73p/Paf1p complex
+YDR138W	HPR1	Cdc73p/Paf1p complex
+YOR123C	LEO1	Cdc73p/Paf1p complex
+YBR279W	PAF1	Cdc73p/Paf1p complex
+YGL244W	RTF1	Cdc73p/Paf1p complex
+YAL021C	CCR4	Cdc73p/Paf1p complex
+YOL078W	AVO1	TORC 2 complex	15689497	"Affinity Capture-Western,Reconstituted Complex"	GO:0031932	TORC2 complex	1
+YMR068W	AVO2	TORC 2 complex
+YJL058C	BIT61	TORC 2 complex
+YNL006W	LST8	TORC 2 complex
+YIL105C	SLM1	TORC 2 complex
+YNL047C	SLM2	TORC 2 complex
+YKL203C	TOR2	TORC 2 complex
+YER093C	TSC11	TORC 2 complex
+YDR019C	GCV1	glycine cleavage complex	10187845	Traceable author statement	GO:0005960	glycine cleavage complex	1
+YMR189W	GCV2	glycine cleavage complex
+YAL044C	GCV3	glycine cleavage complex
+YFL018C	LPD1	glycine cleavage complex
+YPL075W	GCR1	GCR complex	1508187	Two-hybrid	-	-	0
+YNL199C	GCR2	GCR complex
+YIR010W	DSN1	MIND complex	14633972	"Affinity Capture-Western,Co-purification"	GO:0000818	nuclear MIS12/MIND type complex	1
+YAL034W-A	MTW1	MIND complex
+YJR112W	NNF1	MIND complex
+YPL233W	NSL1	MIND complex
+YAR007C	RFA1	DNA replication factor A complex	2554144	Co-purification	GO:0005662	DNA replication factor A complex	1
+YNL312W	RFA2	DNA replication factor A complex
+YJL173C	RFA3	DNA replication factor A complex
+YOR232W	MGE1	PAM complex	16107694	Affinity Capture-MS	GO:0001405	presequence translocase-associated import motor	0.857142857142857
+YJL104W	PAM16	PAM complex
+YKR065C	PAM17	PAM complex
+YLR008C	PAM18	PAM complex
+YJR045C	SSC1	PAM complex
+YIL022W	TIM44	PAM complex
+YKL052C	ASK1	DASH complex	15640796	Co-purification	GO:0042729	DASH complex	1
+YDR016C	DAD1	DASH complex
+YKR083C	DAD2	DASH complex
+YBR233W-A	DAD3	DASH complex
+YDR320C-A	DAD4	DASH complex
+YGR113W	DAM1	DASH complex
+YGL061C	DUO1	DASH complex
+YKL138C-A	HSK3	DASH complex
+YDR201W	SPC19	DASH complex
+YKR037C	SPC34	DASH complex
+YDR255C	RMD5	FBP degradation complex	16554755	Affinity Capture-MS	-	-	0
+YCL039W	GID7	FBP degradation complex
+YMR135C	GID8	FBP degradation complex
+YBR105C	VID24	FBP degradation complex
+YIL017C	VID28	FBP degradation complex
+YGL227W	VID30	FBP degradation complex
+YIL097W	FYV10	FBP degradation complex
+YDL176W	YDL176W	FBP degradation complex
+YDR076W	RAD55	other DNA repair complexes	9159392	Reconstituted Complex	GO:0033062	Rhp55-Rhp57 complex	1
+YDR004W	RAD57	other DNA repair complexes
+YDR028C	REG1	Reg1p/Glc7p complex	8846786	"Two-hybrid,Affinity Capture-Western"	GO:0000164	protein phosphatase type 1 complex	0.285714285714286
+YER133W	GLC7	Reg1p/Glc7p complex
+YOR303W	CPA1	carbamoyl-phosphate synthase complex	8626695	Traceable author statement	GO:0005951	carbamoyl-phosphate synthase complex	1
+YJR109C	CPA2	carbamoyl-phosphate synthase complex
+YML111W	BUL2	Rsp5p/Bul2 ubiquitin ligase complex	9931424	"Two-hybrid,Affinity Capture-Western"	GO:0000151	ubiquitin ligase complex	0.2
+YER125W	RSP5	Rsp5p/Bul2 ubiquitin ligase complex
+Q0120	BI4	Bi4p/Nam2p complex	11142386	Two-hybrid	-	-	0
+YLR382C	NAM2	Bi4p/Nam2p complex
+YMR287C	DSS1	degradosome	12426313	Affinity Capture-MS	-	-	0
+YPL029W	SUV3	degradosome
+YGR262C	BUD32	EKC/KEOPS protein complex	16564010	"Affinity Capture-Western,Affinity Capture-MS"	GO:0000408	EKC/KEOPS protein complex	1
+YML036W	CGI121	EKC/KEOPS protein complex
+YJL184W	GON7	EKC/KEOPS protein complex
+YKR038C	KAE1	EKC/KEOPS protein complex
+YKR095W-A	PCC1	EKC/KEOPS protein complex
+YLR075W	RPL10	cytoplasmic ribosomal large subunit	11983894	Affinity Capture-MS	GO:0022625	cytosolic large ribosomal subunit	0.941860465116279
+YPR102C	RPL11A	cytoplasmic ribosomal large subunit
+YGR085C	RPL11B	cytoplasmic ribosomal large subunit
+YEL054C	RPL12A	cytoplasmic ribosomal large subunit
+YDR418W	RPL12B	cytoplasmic ribosomal large subunit
+YDL082W	RPL13A	cytoplasmic ribosomal large subunit
+YMR142C	RPL13B	cytoplasmic ribosomal large subunit
+YKL006W	RPL14A	cytoplasmic ribosomal large subunit
+YHL001W	RPL14B	cytoplasmic ribosomal large subunit
+YLR029C	RPL15A	cytoplasmic ribosomal large subunit
+YMR121C	RPL15B	cytoplasmic ribosomal large subunit
+YIL133C	RPL16A	cytoplasmic ribosomal large subunit
+YNL069C	RPL16B	cytoplasmic ribosomal large subunit
+YKL180W	RPL17A	cytoplasmic ribosomal large subunit
+YJL177W	RPL17B	cytoplasmic ribosomal large subunit
+YOL120C	RPL18A	cytoplasmic ribosomal large subunit
+YNL301C	RPL18B	cytoplasmic ribosomal large subunit
+YBR084C-A	RPL19A	cytoplasmic ribosomal large subunit
+YBL027W	RPL19B	cytoplasmic ribosomal large subunit
+YPL220W	RPL1A	cytoplasmic ribosomal large subunit
+YGL135W	RPL1B	cytoplasmic ribosomal large subunit
+YMR242C	RPL20A	cytoplasmic ribosomal large subunit
+YOR312C	RPL20B	cytoplasmic ribosomal large subunit
+YBR191W	RPL21A	cytoplasmic ribosomal large subunit
+YPL079W	RPL21B	cytoplasmic ribosomal large subunit
+YLR061W	RPL22A	cytoplasmic ribosomal large subunit
+YFL034C-A	RPL22B	cytoplasmic ribosomal large subunit
+YBL087C	RPL23A	cytoplasmic ribosomal large subunit
+YER117W	RPL23B	cytoplasmic ribosomal large subunit
+YGL031C	RPL24A	cytoplasmic ribosomal large subunit
+YGR148C	RPL24B	cytoplasmic ribosomal large subunit
+YOL127W	RPL25	cytoplasmic ribosomal large subunit
+YLR344W	RPL26A	cytoplasmic ribosomal large subunit
+YGR034W	RPL26B	cytoplasmic ribosomal large subunit
+YHR010W	RPL27A	cytoplasmic ribosomal large subunit
+YDR471W	RPL27B	cytoplasmic ribosomal large subunit
+YGL103W	RPL28	cytoplasmic ribosomal large subunit
+YFR032C-A	RPL29	cytoplasmic ribosomal large subunit
+YFR031C-A	RPL2A	cytoplasmic ribosomal large subunit
+YIL018W	RPL2B	cytoplasmic ribosomal large subunit
+YOR063W	RPL3	cytoplasmic ribosomal large subunit
+YGL030W	RPL30	cytoplasmic ribosomal large subunit
+YDL075W	RPL31A	cytoplasmic ribosomal large subunit
+YLR406C	RPL31B	cytoplasmic ribosomal large subunit
+YBL092W	RPL32	cytoplasmic ribosomal large subunit
+YPL143W	RPL33A	cytoplasmic ribosomal large subunit
+YOR234C	RPL33B	cytoplasmic ribosomal large subunit
+YER056C-A	RPL34A	cytoplasmic ribosomal large subunit
+YIL052C	RPL34B	cytoplasmic ribosomal large subunit
+YDL191W	RPL35A	cytoplasmic ribosomal large subunit
+YDL136W	RPL35B	cytoplasmic ribosomal large subunit
+YMR194W	RPL36A	cytoplasmic ribosomal large subunit
+YPL249C-A	RPL36B	cytoplasmic ribosomal large subunit
+YLR185W	RPL37A	cytoplasmic ribosomal large subunit
+YDR500C	RPL37B	cytoplasmic ribosomal large subunit
+YLR325C	RPL38	cytoplasmic ribosomal large subunit
+YJL189W	RPL39	cytoplasmic ribosomal large subunit
+YIL148W	RPL40A	cytoplasmic ribosomal large subunit
+YKR094C	RPL40B	cytoplasmic ribosomal large subunit
+YDL184C	RPL41A	cytoplasmic ribosomal large subunit
+YDL133C-A	RPL41B	cytoplasmic ribosomal large subunit
+YNL162W	RPL42A	cytoplasmic ribosomal large subunit
+YHR141C	RPL42B	cytoplasmic ribosomal large subunit
+YPR043W	RPL43A	cytoplasmic ribosomal large subunit
+YJR094W-A	RPL43B	cytoplasmic ribosomal large subunit
+YBR031W	RPL4A	cytoplasmic ribosomal large subunit
+YDR012W	RPL4B	cytoplasmic ribosomal large subunit
+YPL131W	RPL5	cytoplasmic ribosomal large subunit
+YML073C	RPL6A	cytoplasmic ribosomal large subunit
+YLR448W	RPL6B	cytoplasmic ribosomal large subunit
+YGL076C	RPL7A	cytoplasmic ribosomal large subunit
+YPL198W	RPL7B	cytoplasmic ribosomal large subunit
+YHL033C	RPL8A	cytoplasmic ribosomal large subunit
+YLL045C	RPL8B	cytoplasmic ribosomal large subunit
+YGL147C	RPL9A	cytoplasmic ribosomal large subunit
+YNL067W	RPL9B	cytoplasmic ribosomal large subunit
+YLR340W	RPP0	cytoplasmic ribosomal large subunit
+YDL081C	RPP1A	cytoplasmic ribosomal large subunit
+YDL130W	RPP1B	cytoplasmic ribosomal large subunit
+YOL039W	RPP2A	cytoplasmic ribosomal large subunit
+YDR382W	RPP2B	cytoplasmic ribosomal large subunit
+YDL207W	GLE1	Nup82 nuclear pore subcomplex	9736720	Reconstituted Complex	GO:0005643	nuclear pore	0.0612244897959184
+YIL115C	NUP159	Nup82 nuclear pore subcomplex
+YJL061W	NUP82	Nup82 nuclear pore subcomplex
+YER027C	GAL83	Snf1p/Snf4p/Gal83p complex	12393914	Affinity Capture-Western	GO:0031588	AMP-activated protein kinase complex	0.6
+YDR477W	SNF1	Snf1p/Snf4p/Gal83p complex
+YGL115W	SNF4	Snf1p/Snf4p/Gal83p complex
+YBR112C	CYC8	Tup1p/Ssn6p complex	8943325	"Affinity Capture-Western,Reconstituted Complex"	GO:0017053	transcriptional repressor complex	1
+YCR084C	TUP1	Tup1p/Ssn6p complex
+YGR003W	CUL3	Cul3p-RING ubiquitin ligase complex	16675952	"Affinity Capture-Western,Co-purification"	GO:0031463	Cul3-RING ubiquitin ligase complex	1
+YNL230C	ELA1	Cul3p-RING ubiquitin ligase complex
+YPL046C	ELC1	Cul3p-RING ubiquitin ligase complex
+YBR114W	RAD16	Cul3p-RING ubiquitin ligase complex
+YJR052W	RAD7	Cul3p-RING ubiquitin ligase complex
+YPR025C	CCL1	transcription factor TFIIH complex	15220919	"Affinity Capture-Western,Affinity Capture-MS"	GO:0000442	SSL2-core TFIIH complex portion of NEF3 complex	0.6
+YDL108W	KIN28	transcription factor TFIIH complex
+YDR460W	TFB3	transcription factor TFIIH complex
+YER171W	RAD3	transcription factor TFIIH complex
+YLR005W	SSL1	transcription factor TFIIH complex
+YIL143C	SSL2	transcription factor TFIIH complex
+YDR311W	TFB1	transcription factor TFIIH complex
+YPL122C	TFB2	transcription factor TFIIH complex
+YPR056W	TFB4	transcription factor TFIIH complex
+YDR079C-A	TFB5	transcription factor TFIIH complex
+YDR517W	GRH1	Grh1p/Bug1p complex	17261844	Affinity Capture-Western	-	-	0
+YDL099W	BUG1	Grh1p/Bug1p complex
+YOR206W	NOC2	Noc2p/Noc3p complex	11371346	Affinity Capture-Western	GO:0030691	Noc2p-Noc3p complex	1
+YLR002C	NOC3	Noc2p/Noc3p complex
+YBR217W	ATG12	Apg12p/Apg5p/Apg16 multimeric complex	11897782	Co-purification	-	-	0
+YMR159C	ATG16	Apg12p/Apg5p/Apg16 multimeric complex
+YPL149W	ATG5	Apg12p/Apg5p/Apg16 multimeric complex
+YMR296C	LCB1	serine C-palmitoyltransferase complex	8058731	Biochemical Activity	GO:0017059	serine C-palmitoyltransferase complex	1
+YDR062W	LCB2	serine C-palmitoyltransferase complex
+YER148W	SPT15	transcription factor TFIID complex	15448131	Affinity Capture-MS	GO:0005669	transcription factor TFIID complex	1
+YGR274C	TAF1	transcription factor TFIID complex
+YDR167W	TAF10	transcription factor TFIID complex
+YML015C	TAF11	transcription factor TFIID complex
+YDR145W	TAF12	transcription factor TFIID complex
+YML098W	TAF13	transcription factor TFIID complex
+YPL129W	TAF14	transcription factor TFIID complex
+YCR042C	TAF2	transcription factor TFIID complex
+YPL011C	TAF3	transcription factor TFIID complex
+YMR005W	TAF4	transcription factor TFIID complex
+YBR198C	TAF5	transcription factor TFIID complex
+YGL112C	TAF6	transcription factor TFIID complex
+YMR227C	TAF7	transcription factor TFIID complex
+YML114C	TAF8	transcription factor TFIID complex
+YMR236W	TAF9	transcription factor TFIID complex
+YOL069W	NUF2	Ndc80p complex	11266451	Affinity Capture-Western	GO:0031262	Ndc80 complex	1
+YMR117C	SPC24	Ndc80p complex
+YER018C	SPC25	Ndc80p complex
+YIL144W	TID3	Ndc80p complex
+YKL189W	HYM1	Hym1p/Kic1p/Sog2p complex	12972564	"Two-hybrid,Affinity Capture-Western"	-	-	0
+YHR102W	KIC1	Hym1p/Kic1p/Sog2p complex
+YOR353C	SOG2	Hym1p/Kic1p/Sog2p complex
+YDR060W	MAK21	Noc1p/Noc2p complex	11371346	Affinity Capture-Western	GO:0030690	Noc1p-Noc2p complex	1
+YOR206W	NOC2	Noc1p/Noc2p complex
+YDL201W	TRM8	tRNA Methyltransferase Complex	12403464	Co-purification	-	-	0
+YDR165W	TRM82	tRNA Methyltransferase Complex
+YEL055C	POL5	UTP A complex	14759368	Affinity Capture-MS	GO:0032040	small-subunit processome	0.122448979591837
+YPL126W	NAN1	UTP A complex
+YDR324C	UTP4	UTP A complex
+YGR128C	UTP8	UTP A complex
+YHR196W	UTP9	UTP A complex
+YJL109C	UTP10	UTP A complex
+YMR093W	UTP15	UTP A complex
+YOR346W	REV1	Polzeta-Rev1p complex	17030609	Affinity Capture-Western	GO:0016035	zeta DNA polymerase complex	0.666666666666667
+YPL167C	REV3	Polzeta-Rev1p complex
+YIL139C	REV7	Polzeta-Rev1p complex
+YIL026C	IRR1	nuclear cohesin complex	9990856	Affinity Capture-Western	GO:0000798	nuclear cohesin complex	1
+YDL003W	MCD1	nuclear cohesin complex
+YPR007C	REC8	nuclear cohesin complex
+YFL008W	SMC1	nuclear cohesin complex
+YJL074C	SMC3	nuclear cohesin complex
+YAL041W	CDC24	Cdc24p/Far1p/Gbetagamma protein complex	10087263	"Two-hybrid,Affinity Capture-Western,Reconstituted Complex"	GO:0005834	heterotrimeric G-protein complex	0.4
+YJL157C	FAR1	Cdc24p/Far1p/Gbetagamma protein complex
+YJR086W	STE18	Cdc24p/Far1p/Gbetagamma protein complex
+YOR212W	STE4	Cdc24p/Far1p/Gbetagamma protein complex
+YFL034C-B	MOB2	Mob2p/Cbk1p complex	12196508	Affinity Capture-Western	-	-	0
+YNL161W	CBK1	Mob2p/Cbk1p complex
+YBR036C	CSG2	Csh1p/Csg2p complex	12954640	Affinity Capture-Western	-	-	0
+YBR161W	CSH1	Csh1p/Csg2p complex
+YMR167W	MLH1	Mlh1p/Pms1p complex	10570173	"Two-hybrid,Affinity Capture-Western"	GO:0032389	MutLalpha complex	1
+YNL082W	PMS1	Mlh1p/Pms1p complex
+YNL124W	NAF1	Shq1p/Naf1p complex	12228251	Reconstituted Complex	-	-	0
+YIL104C	SHQ1	Shq1p/Naf1p complex
+YJR086W	STE18	heterodimeric G-protein complex	8995254	Affinity Capture-Western	GO:0005834	heterotrimeric G-protein complex	0.666666666666667
+YOR212W	STE4	heterodimeric G-protein complex
+YGL105W	ARC1	methionyl glutamyl tRNA synthetase complex	9659920	Affinity Capture-Western	GO:0017102	methionyl glutamyl tRNA synthetase complex	1
+YGL245W	GUS1	methionyl glutamyl tRNA synthetase complex
+YGR264C	MES1	methionyl glutamyl tRNA synthetase complex
+YIR022W	SEC11	signal peptidase complex	1846444	Co-purification	GO:0005787	signal peptidase complex	1
+YJR010C-A	SPC1	signal peptidase complex
+YML055W	SPC2	signal peptidase complex
+YLR066W	SPC3	signal peptidase complex
+YNL244C	SUI1	eIF1/eIF1A/40S complex	12860115	FRET	GO:0043614	multi-eIF complex	0.111111111111111
+YMR260C	TIF11	eIF1/eIF1A/40S complex
+YBR160W	CDC28	Cdc28p/Cln1p complex	8319908	Traceable author statement	GO:0000307	cyclin-dependent protein kinase holoenzyme complex	0.0666666666666667
+YMR199W	CLN1	Cdc28p/Cln1p complex
+YNL232W	CSL4	Nuclear exosome complex	10465791	Affinity Capture-MS	GO:0000176	nuclear exosome (RNase complex)	1
+YOL021C	DIS3	Nuclear exosome complex
+YHR081W	LRP1	Nuclear exosome complex
+YGR158C	MTR3	Nuclear exosome complex
+YHR069C	RRP4	Nuclear exosome complex
+YOL142W	RRP40	Nuclear exosome complex
+YDL111C	RRP42	Nuclear exosome complex
+YCR035C	RRP43	Nuclear exosome complex
+YDR280W	RRP45	Nuclear exosome complex
+YGR095C	RRP46	Nuclear exosome complex
+YOR001W	RRP6	Nuclear exosome complex
+YGR195W	SKI6	Nuclear exosome complex
+YGL086W	MAD1	Mad1p/Mad2p complex	10436016	"Two-hybrid,Affinity Capture-Western,Co-purification"	GO:0033597	mitotic checkpoint complex	0.2
+YJL030W	MAD2	Mad1p/Mad2p complex
+YMR080C	NAM7	Nonsense-mediated mRNA decay pathway complex	9032286	Two-hybrid	GO:0005844	polysome	0.214285714285714
+YHR077C	NMD2	Nonsense-mediated mRNA decay pathway complex
+YGR072W	UPF3	Nonsense-mediated mRNA decay pathway complex
+YNL138W-A	YSF3	SF3b complex	15565172	Affinity Capture-MS	GO:0005686	snRNP U2	0.285714285714286
+YMR240C	CUS1	SF3b complex
+YMR288W	HSH155	SF3b complex
+YOR319W	HSH49	SF3b complex
+YPR094W	RDS3	SF3b complex
+YML049C	RSE1	SF3b complex
+YJL209W	CBP1	Cbp1p/Pet309p complex	15047869	Affinity Capture-MS	-	-	0
+YLR067C	PET309	Cbp1p/Pet309p complex
+YFL039C	ACT1	NuA4 histone acetyltransferase complex	15353583	Affinity Capture-MS	GO:0035267	NuA4 histone acetyltransferase complex	1
+YJL081C	ARP4	NuA4 histone acetyltransferase complex
+YPR023C	EAF3	NuA4 histone acetyltransferase complex
+YEL018W	EAF5	NuA4 histone acetyltransferase complex
+YJR082C	EAF6	NuA4 histone acetyltransferase complex
+YNL136W	EAF7	NuA4 histone acetyltransferase complex
+YFL024C	EPL1	NuA4 histone acetyltransferase complex
+YOR244W	ESA1	NuA4 histone acetyltransferase complex
+YGR002C	SWC4	NuA4 histone acetyltransferase complex
+YHR099W	TRA1	NuA4 histone acetyltransferase complex
+YDR359C	EAF1	NuA4 histone acetyltransferase complex
+YNL107W	YAF9	NuA4 histone acetyltransferase complex
+YHR090C	YNG2	NuA4 histone acetyltransferase complex
+YIL035C	CKA1	protein kinase CK2 complex	3468112	Affinity Capture-Western	GO:0005956	protein kinase CK2 complex	1
+YOR061W	CKA2	protein kinase CK2 complex
+YGL019W	CKB1	protein kinase CK2 complex
+YOR039W	CKB2	protein kinase CK2 complex
+YMR127C	SAS2	SAS Complex	15659401	Affinity Capture-MS	-	-	0
+YDR181C	SAS4	SAS Complex
+YOR213C	SAS5	SAS Complex
+YJR089W	BIR1	Sli15p/Bir1p complex	16381814	Two-hybrid	GO:0000778	condensed nuclear chromosome kinetochore	0.0303030303030303
+YBR156C	SLI15	Sli15p/Bir1p complex
+YDL145C	COP1	COPI	1461285	Co-purification	GO:0030126	COPI vesicle coat	1
+YER122C	GLO3	COPI
+YFR051C	RET2	COPI
+YPL010W	RET3	COPI
+YNL287W	SEC21	COPI
+YDR238C	SEC26	COPI
+YGL137W	SEC27	COPI
+YIL076W	SEC28	COPI
+YGL194C	HOS2	Set3p complex	15643056	Affinity Capture-Western	GO:0000118	histone deacetylase complex	0.388888888888889
+YIL112W	HOS4	Set3p complex
+YDR155C	CPR1	Set3p complex
+YOL068C	HST1	Set3p complex
+YKR029C	SET3	Set3p complex
+YBR103W	SIF2	Set3p complex
+YCR033W	SNT1	Set3p complex
+YPL022W	RAD1	nucleotide-excision repair factor 1 complex	8621533	"Affinity Capture-Western,Co-purification"	GO:0000110	nucleotide-excision repair factor 1 complex	1
+YML095C	RAD10	nucleotide-excision repair factor 1 complex
+YMR201C	RAD14	nucleotide-excision repair factor 1 complex
+YMR048W	CSM3	Tof1p/Mrc1p/Csm3p complex	15755447	Affinity Capture-MS	-	-	0
+YCL061C	MRC1	Tof1p/Mrc1p/Csm3p complex
+YNL273W	TOF1	Tof1p/Mrc1p/Csm3p complex
+YFL039C	ACT1	Swr1p complex	14690608	"Affinity Capture-Western,Affinity Capture-MS"	GO:0000812	SWR1 complex	1
+YJL081C	ARP4	Swr1p complex
+YLR085C	ARP6	Swr1p complex
+YDR190C	RVB1	Swr1p complex
+YPL235W	RVB2	Swr1p complex
+YAL011W	SWC3	Swr1p complex
+YGR002C	SWC4	Swr1p complex
+YBR231C	SWC5	Swr1p complex
+YLR385C	SWC7	Swr1p complex
+YDR334W	SWR1	Swr1p complex
+YML041C	VPS71	Swr1p complex
+YDR485C	VPS72	Swr1p complex
+YNL107W	YAF9	Swr1p complex
+YNL172W	APC1	anaphase-promoting complex	9469814	Affinity Capture-MS	GO:0005680	anaphase-promoting complex	0.9375
+YDL008W	APC11	anaphase-promoting complex
+YLR127C	APC2	anaphase-promoting complex
+YDR118W	APC4	anaphase-promoting complex
+YOR249C	APC5	anaphase-promoting complex
+YLR102C	APC9	anaphase-promoting complex
+YKL022C	CDC16	anaphase-promoting complex
+YGL116W	CDC20	anaphase-promoting complex
+YHR166C	CDC23	anaphase-promoting complex
+YFR036W	CDC26	anaphase-promoting complex
+YBL084C	CDC27	anaphase-promoting complex
+YGL003C	CDH1	anaphase-promoting complex
+YGL240W	DOC1	anaphase-promoting complex
+YIR025W	MND2	anaphase-promoting complex
+YDR260C	SWM1	anaphase-promoting complex
+YKL148C	SDH1	Succinate dehydrogenase complex (complex II)	14672929	Biochemical Activity	GO:0005749	mitochondrial respiratory chain complex II	1
+YLL041C	SDH2	Succinate dehydrogenase complex (complex II)
+YKL141W	SDH3	Succinate dehydrogenase complex (complex II)
+YDR178W	SDH4	Succinate dehydrogenase complex (complex II)
+YOL001W	PHO80	Pho85p/Pho80p complex	9032248	Two-hybrid	GO:0000307	cyclin-dependent protein kinase holoenzyme complex	0.142857142857143
+YPL031C	PHO85	Pho85p/Pho80p complex
+YHR005C	GPA1	heterotrimeric G-protein complex	8417317	Biochemical Activity	GO:0005834	heterotrimeric G-protein complex	1
+YJR086W	STE18	heterotrimeric G-protein complex
+YOR212W	STE4	heterotrimeric G-protein complex
+YIL153W	RRD1	Tap42p/Sit4p/Rrd1p complex	15689491	Affinity Capture-Western	-	-	0
+YDL047W	SIT4	Tap42p/Sit4p/Rrd1p complex
+YMR028W	TAP42	Tap42p/Sit4p/Rrd1p complex
+YGL206C	CHC1	Clathrin	9171338	Affinity Capture-Western	GO:0030125	clathrin vesicle coat	0.5
+YGR167W	CLC1	Clathrin
+YLR329W	REC102	meiotic recombination initiation complex	12897161	Affinity Capture-Western	-	-	0
+YHR157W	REC104	meiotic recombination initiation complex
+YHL022C	SPO11	meiotic recombination initiation complex
+YAR014C	BUD14	Bud14p/Glc7p complex	16107882	"Two-hybrid,Affinity Capture-Western"	GO:0000164	protein phosphatase type 1 complex	0.125
+YER133W	GLC7	Bud14p/Glc7p complex
+YGL134W	PCL10	Pho85p/Pcl10p complex	10490639	"Affinity Capture-Western,Reconstituted Complex"	GO:0000307	cyclin-dependent protein kinase holoenzyme complex	0.142857142857143
+YPL031C	PHO85	Pho85p/Pcl10p complex
+YKL028W	TFA1	transcription factor TFIIE complex	1429681	Co-purification	GO:0005673	transcription factor TFIIE complex	1
+YKR062W	TFA2	transcription factor TFIIE complex
+YEL036C	ANP1	"alpha-1,6-mannosyltransferase complex(Anp1p/Mnn9p)"	9430634	Affinity Capture-Western	GO:0000136	alpha-1,6-mannosyltransferase complex	0.833333333333333
+YJR075W	HOC1	"alpha-1,6-mannosyltransferase complex(Anp1p/Mnn9p)"
+YDR245W	MNN10	"alpha-1,6-mannosyltransferase complex(Anp1p/Mnn9p)"
+YJL183W	MNN11	"alpha-1,6-mannosyltransferase complex(Anp1p/Mnn9p)"
+YPL050C	MNN9	"alpha-1,6-mannosyltransferase complex(Anp1p/Mnn9p)"
+YDL090C	RAM1	protein farnesyltransferase complex	8406041	Affinity Capture-Western	GO:0005965	protein farnesyltransferase complex	1
+YKL019W	RAM2	protein farnesyltransferase complex
+YJL041W	NSP1	Nsp1p complex	7688296	Co-purification	GO:0005643	nuclear pore	0.0816326530612245
+YFR002W	NIC96	Nsp1p complex
+YGL172W	NUP49	Nsp1p complex
+YGR119C	NUP57	Nsp1p complex
+YPR023C	EAF3	Rpd3S complex	16286007	Affinity Capture-MS	GO:0000509	Rpd3S complex	1
+YMR075W	RCO1	Rpd3S complex
+YNL330C	RPD3	Rpd3S complex
+YOL004W	SIN3	Rpd3S complex
+YPL139C	UME1	Rpd3S complex
+YPL167C	REV3	zeta DNA polymerase complex	8658138	Affinity Capture-Western	GO:0016035	zeta DNA polymerase complex	1
+YIL139C	REV7	zeta DNA polymerase complex
+YLR274W	MCM5	Mcm2-7 complex	12480933	Co-purification	GO:0042555	MCM complex	1
+YBR202W	MCM7	Mcm2-7 complex
+YPR019W	MCM4	Mcm2-7 complex
+YBL023C	MCM2	Mcm2-7 complex
+YEL032W	MCM3	Mcm2-7 complex
+YGL201C	MCM6	Mcm2-7 complex
+YML121W	GTR1	GSE Complex	16732272	"Reconstituted Complex,Affinity Capture-MS,Co-purification"	GO:0030688	preribosome, small subunit precursor	0.111111111111111
+YGR163W	GTR2	GSE Complex
+YKL143W	LTV1	GSE Complex
+YKR007W	MEH1	GSE Complex
+YBR077C	SLM4	GSE Complex
+YBR160W	CDC28	Cdc28p/Clb3p complex	8319908	Traceable author statement	GO:0000307	cyclin-dependent protein kinase holoenzyme complex	0.0666666666666667
+YDL155W	CLB3	Cdc28p/Clb3p complex
+YNL232W	CSL4	Cytoplasmic exosome complex	10465791	Affinity Capture-MS	GO:0000177	cytoplasmic exosome (RNase complex)	1
+YOL021C	DIS3	Cytoplasmic exosome complex
+YGR158C	MTR3	Cytoplasmic exosome complex
+YHR069C	RRP4	Cytoplasmic exosome complex
+YOL142W	RRP40	Cytoplasmic exosome complex
+YDL111C	RRP42	Cytoplasmic exosome complex
+YCR035C	RRP43	Cytoplasmic exosome complex
+YDR280W	RRP45	Cytoplasmic exosome complex
+YGR095C	RRP46	Cytoplasmic exosome complex
+YGR195W	SKI6	Cytoplasmic exosome complex
+YPR034W	ARP7	RSC complex	8980231	Co-purification	GO:0016586	RSC complex	1
+YMR033W	ARP9	RSC complex
+YCR020W-B	HTL1	RSC complex
+YBL006C	LDB7	RSC complex
+YMR091C	NPL6	RSC complex
+YGR056W	RSC1	RSC complex
+YLR357W	RSC2	RSC complex
+YDR303C	RSC3	RSC complex
+YHR056C	RSC30	RSC complex
+YKR008W	RSC4	RSC complex
+YLR033W	RSC58	RSC complex
+YCR052W	RSC6	RSC complex
+YFR037C	RSC8	RSC complex
+YML127W	RSC9	RSC complex
+YGR275W	RTT102	RSC complex
+YLR321C	SFH1	RSC complex
+YIL126W	STH1	RSC complex
+YCL031C	RRP7	UTP C complex	14759368	Affinity Capture-MS	GO:0005956	protein kinase CK2 complex	0.666666666666667
+YGR090W	UTP22	UTP C complex
+YIL035C	CKA1	UTP C complex
+YOR061W	CKA2	UTP C complex
+YGL019W	CKB1	UTP C complex
+YOR039W	CKB2	UTP C complex
+YFR044C	DUG1	GSH degradosomal complex	17179087	"Affinity Capture-Western,Two-hybrid"	-	-	0
+YBR281C	DUG2	GSH degradosomal complex
+YNL191W	DUG3	GSH degradosomal complex
+YGL246C	RAI1	RNA Degradation Complex	15565157	Affinity Capture-MS	-	-	0
+YOR048C	RAT1	RNA Degradation Complex
+YDR289C	RTT103	RNA Degradation Complex
+YDL126C	CDC48	Cdc48p complex	11598205	Affinity Capture-Western	GO:0034098	Cdc48p-Npl4p-Ufd1p AAA ATPase complex	1
+YGR048W	UFD1	Cdc48p complex
+YBR170C	NPL4	Cdc48p complex
+YBR160W	CDC28	Cdc28p/Cln3p complex	1316273	Affinity Capture-Western	GO:0000307	cyclin-dependent protein kinase holoenzyme complex	0.0666666666666667
+YAL040C	CLN3	Cdc28p/Cln3p complex
+YPR180W	AOS1	Uba2p/Aos1p complex	9312010	Reconstituted Complex	GO:0031510	SUMO activating enzyme complex	1
+YDR390C	UBA2	Uba2p/Aos1p complex
+YGL130W	CEG1	mRNA guanylyl transferase (capping complex)	3029058	Affinity Capture-Western	GO:0031533	mRNA capping enzyme complex	1
+YPL228W	CET1	mRNA guanylyl transferase (capping complex)
+YDL134C	PPH21	protein phosphatase type 2A complex (Rts1p)	17550305	Affinity Capture-Western	GO:0000159	protein phosphatase type 2A complex	0.5
+YOR014W	RTS1	protein phosphatase type 2A complex (Rts1p)
+YAL016W	TPD3	protein phosphatase type 2A complex (Rts1p)
+YEL037C	RAD23	nucleotide-excision repair factor 2 complex	7768886	Co-purification	GO:0000111	nucleotide-excision repair factor 2 complex	1
+YER162C	RAD4	nucleotide-excision repair factor 2 complex
+Q0045	COX1	Cox14p/Cox1p/Mss51p complex	15306853	Affinity Capture-Western	GO:0005751	mitochondrial respiratory chain complex IV	0.0714285714285714
+YML129C	COX14	Cox14p/Cox1p/Mss51p complex
+YLR203C	MSS51	Cox14p/Cox1p/Mss51p complex
+YLR148W	PEP3	CORVET complex	17488625	"Affinity Capture-Western,Affinity Capture-MS"	GO:0033263	CORVET complex	1
+YMR231W	PEP5	CORVET complex
+YDR495C	VPS3	CORVET complex
+YPL045W	VPS16	CORVET complex
+YLR396C	VPS33	CORVET complex
+YAL002W	VPS8	CORVET complex
+YDL113C	ATG20	Atg20p/Snx4p/Snx41p complex	12554655	Affinity Capture-Western	-	-	0
+YJL036W	SNX4	Atg20p/Snx4p/Snx41p complex
+YDR425W	SNX41	Atg20p/Snx4p/Snx41p complex
+YER025W	GCD11	multi-eIF complex	11018020	Affinity Capture-Western	GO:0043614	multi-eIF complex	1
+YMR309C	NIP1	multi-eIF complex
+YOR361C	PRT1	multi-eIF complex
+YNL244C	SUI1	multi-eIF complex
+YJR007W	SUI2	multi-eIF complex
+YPL237W	SUI3	multi-eIF complex
+YMR146C	TIF34	multi-eIF complex
+YPR041W	TIF5	multi-eIF complex
+YNL153C	GIM3	prefoldin complex	9463374	Affinity Capture-Western	GO:0016272	prefoldin complex	1
+YEL003W	GIM4	prefoldin complex
+YML094W	GIM5	prefoldin complex
+YGR078C	PAC10	prefoldin complex
+YJL179W	PFD1	prefoldin complex
+YLR200W	YKE2	prefoldin complex
+YPR066W	UBA3	Ula1p/Uba3p complex	9545234	Reconstituted Complex	-	-	0
+YPL003W	ULA1	Ula1p/Uba3p complex
+YKL054C	DEF1	Def1p/Rad26p complex	11859374	Co-purification	-	-	0
+YJR035W	RAD26	Def1p/Rad26p complex
+YDR448W	ADA2	SAGA complex	15506919	Affinity Capture-MS	GO:0000124	SAGA complex	1
+YER164W	CHD1	SAGA complex
+YGR252W	GCN5	SAGA complex
+YPL254W	HFI1	SAGA complex
+YDR176W	NGG1	SAGA complex
+YPL047W	SGF11	SAGA complex
+YCL010C	SGF29	SAGA complex
+YGL066W	SGF73	SAGA complex
+YOL148C	SPT20	SAGA complex
+YDR392W	SPT3	SAGA complex
+YBR081C	SPT7	SAGA complex
+YLR055C	SPT8	SAGA complex
+YBR111W-A	SUS1	SAGA complex
+YDR167W	TAF10	SAGA complex
+YDR145W	TAF12	SAGA complex
+YBR198C	TAF5	SAGA complex
+YGL112C	TAF6	SAGA complex
+YMR236W	TAF9	SAGA complex
+YHR099W	TRA1	SAGA complex
+YMR223W	UBP8	SAGA complex
+YBR098W	MMS4	Holliday junction resolvase complex	17363897	Reconstituted Complex	GO:0048476	Holliday junction resolvase complex	1
+YDR386W	MUS81	Holliday junction resolvase complex
+YLL036C	PRP19	Prp19-associated complex	11842115	"Two-hybrid,Affinity Capture-Western"	GO:0005681	spliceosome	0.258064516129032
+YMR213W	CEF1	Prp19-associated complex
+YJR050W	ISY1	Prp19-associated complex
+YLR117C	CLF1	Prp19-associated complex
+YDR416W	SYF1	Prp19-associated complex
+YGR129W	SYF2	Prp19-associated complex
+YBR188C	NTC20	Prp19-associated complex
+YPR101W	SNT309	Prp19-associated complex
+YDL084W	SUB2	transcription export complex	11979277	Affinity Capture-Western	GO:0000346	transcription export complex	1
+YNL253W	TEX1	transcription export complex
+YDR381W	YRA1	transcription export complex
+YDR009W	GAL3	GAL3p/GAL80p complex	11964151	Co-purification	-	-	0
+YML051W	GAL80	GAL3p/GAL80p complex
+YMR150C	IMP1	mitochondrial inner membrane peptidase complex	10821182	Affinity Capture-Western	GO:0042720	mitochondrial inner membrane peptidase complex	1
+YMR035W	IMP2	mitochondrial inner membrane peptidase complex
+YEL059C-A	SOM1	mitochondrial inner membrane peptidase complex
+YEL027W	CUP5	"H+-transporting ATPase, Golgi"	11592965	"Co-localization, Biochemical Activity"	GO:0000221	vacuolar proton-transporting V-type ATPase, V1 domain	0.615384615384615
+YHR026W	PPA1	"H+-transporting ATPase, Golgi"
+YMR054W	STV1	"H+-transporting ATPase, Golgi"
+YDL185W	TFP1	"H+-transporting ATPase, Golgi"
+YPL234C	TFP3	"H+-transporting ATPase, Golgi"
+YHR039C-A	VMA10	"H+-transporting ATPase, Golgi"
+YPR036W	VMA13	"H+-transporting ATPase, Golgi"
+YBR127C	VMA2	"H+-transporting ATPase, Golgi"
+YOR332W	VMA4	"H+-transporting ATPase, Golgi"
+YKL080W	VMA5	"H+-transporting ATPase, Golgi"
+YLR447C	VMA6	"H+-transporting ATPase, Golgi"
+YGR020C	VMA7	"H+-transporting ATPase, Golgi"
+YEL051W	VMA8	"H+-transporting ATPase, Golgi"
+YGR258C	RAD2	nucleotide-excision repair factor 3 complex	8855246	Affinity Capture-Western	GO:0000442	SSL2-core TFIIH complex portion of NEF3 complex	0.857142857142857
+YER171W	RAD3	nucleotide-excision repair factor 3 complex
+YLR005W	SSL1	nucleotide-excision repair factor 3 complex
+YIL143C	SSL2	nucleotide-excision repair factor 3 complex
+YDR311W	TFB1	nucleotide-excision repair factor 3 complex
+YPL122C	TFB2	nucleotide-excision repair factor 3 complex
+YPR056W	TFB4	nucleotide-excision repair factor 3 complex
+YER111C	SWI4	SBF complex	2689885	Co-purification	-	-	0
+YLR182W	SWI6	SBF complex
+YDL192W	ARF1	Chs5p/Arf-1binding proteins (ChAPs)	16498409	"Affinity Capture-Western,Co-purification,Affinity Capture-MS"	GO:0034044	exomer complex	0.833333333333333
+YMR237W	BCH1	Chs5p/Arf-1binding proteins (ChAPs)
+YKR027W	BCH2	Chs5p/Arf-1binding proteins (ChAPs)
+YOR299W	BUD7	Chs5p/Arf-1binding proteins (ChAPs)
+YLR330W	CHS5	Chs5p/Arf-1binding proteins (ChAPs)
+YJL099W	CHS6	Chs5p/Arf-1binding proteins (ChAPs)
+YHR064C	SSZ1	Ribosome-associated complex (RAC)	11274393	Reconstituted Complex	GO:0005840	ribosome	0.04
+YGR285C	ZUO1	Ribosome-associated complex (RAC)
+YBR160W	CDC28	Cdc28p/Clb4p complex	8319908	Traceable author statement	GO:0000307	cyclin-dependent protein kinase holoenzyme complex	0.0666666666666667
+YLR210W	CLB4	Cdc28p/Clb4p complex
+YPL055C	LGE1	Lge1p/Bre1p complex	17370254	Affinity Capture-MS	-	-	0
+YDL074C	BRE1	Lge1p/Bre1p complex
+YBL097W	BRN1	nuclear condensin complex	10811823	Affinity Capture-Western	GO:0000799	nuclear condensin complex	1
+YFR031C	SMC2	nuclear condensin complex
+YLR086W	SMC4	nuclear condensin complex
+YDR325W	YCG1	nuclear condensin complex
+YLR272C	YCS4	nuclear condensin complex
+YLR238W	FAR10	Far3p/Far7p/Far8p/Far9p/Far10p/Far11p complex	12588993	Two-hybrid	-	-	0
+YNL127W	FAR11	Far3p/Far7p/Far8p/Far9p/Far10p/Far11p complex
+YMR052W	FAR3	Far3p/Far7p/Far8p/Far9p/Far10p/Far11p complex
+YFR008W	FAR7	Far3p/Far7p/Far8p/Far9p/Far10p/Far11p complex
+YMR029C	FAR8	Far3p/Far7p/Far8p/Far9p/Far10p/Far11p complex
+YDR200C	VPS64	Far3p/Far7p/Far8p/Far9p/Far10p/Far11p complex
+YOR317W	FAA1	Fatty Acid Import Complex	12601005	"Two-hybrid,Affinity Capture-Western"	-	-	0
+YMR246W	FAA4	Fatty Acid Import Complex
+YBR041W	FAT1	Fatty Acid Import Complex
+YNL015W	PBI2	LMA1 complex	9015301	Co-purification	-	-	0
+YLR043C	TRX1	LMA1 complex
+YNL099C	OCA1	OCA complex	17370254	Affinity Capture-MS	-	-	0
+YNL056W	OCA2	OCA complex
+YNL032W	SIW14	OCA complex
+YCR095C	YCR095C	OCA complex
+YHL029C	YHL029C	OCA complex
+YDR067C	YDR067C	OCA complex
+YER048W-A	ISD11	Nfs1p/Isd11p complex	16341090	"Affinity Capture-Western,Co-purification,Affinity Capture-MS"	-	-	0
+YCL017C	NFS1	Nfs1p/Isd11p complex
+YMR167W	MLH1	Mlh1p/Mlh2p complex	10570173	"Two-hybrid,Affinity Capture-Western"	GO:0032390	MutLbeta complex	0.333333333333333
+YLR035C	MLH2	Mlh1p/Mlh2p complex
+YDR172W	SUP35	translation release factor complex	7556078	"Two-hybrid,Reconstituted Complex"	GO:0018444	translation release factor complex	1
+YBR143C	SUP45	translation release factor complex
+YNL071W	LAT1	mitochondrial pyruvate dehydrogenase complex	16643908	Affinity Capture-MS	GO:0005967	mitochondrial pyruvate dehydrogenase complex	0.571428571428571
+YFL018C	LPD1	mitochondrial pyruvate dehydrogenase complex
+YER178W	PDA1	mitochondrial pyruvate dehydrogenase complex
+YBR221C	PDB1	mitochondrial pyruvate dehydrogenase complex
+YGR193C	PDX1	mitochondrial pyruvate dehydrogenase complex
+YIL042C	PKP1	mitochondrial pyruvate dehydrogenase complex
+YOR090C	PTC5	mitochondrial pyruvate dehydrogenase complex
+YPL255W	BBP1	Mps2p/Bbp1p complex	16436507	"Two-hybrid,Affinity Capture-Western,Co-localization"	-	-	0
+YGL075C	MPS2	Mps2p/Bbp1p complex
+YLR457C	NBP1	Mps2p/Bbp1p complex
+YJL098W	SAP185	Sap185p/Sit4p complex	8649382	Affinity Capture-Western	-	-	0
+YDL047W	SIT4	Sap185p/Sit4p complex
+YDR448W	ADA2	SLIK (SAGA-like) complex	14563679	"Affinity Capture-Western,Co-purification"	GO:0046695	SLIK (SAGA-like) complex	1
+YER164W	CHD1	SLIK (SAGA-like) complex
+YGR252W	GCN5	SLIK (SAGA-like) complex
+YPL254W	HFI1	SLIK (SAGA-like) complex
+YDR176W	NGG1	SLIK (SAGA-like) complex
+YGL252C	RTG2	SLIK (SAGA-like) complex
+YGL066W	SGF73	SLIK (SAGA-like) complex
+YOL148C	SPT20	SLIK (SAGA-like) complex
+YDR392W	SPT3	SLIK (SAGA-like) complex
+YBR081C	SPT7	SLIK (SAGA-like) complex
+YDR167W	TAF10	SLIK (SAGA-like) complex
+YDR145W	TAF12	SLIK (SAGA-like) complex
+YBR198C	TAF5	SLIK (SAGA-like) complex
+YGL112C	TAF6	SLIK (SAGA-like) complex
+YMR236W	TAF9	SLIK (SAGA-like) complex
+YHR099W	TRA1	SLIK (SAGA-like) complex
+YMR223W	UBP8	SLIK (SAGA-like) complex
+YOR250C	CLP1	mRNA cleavage factor complex (CFI)	11344258	Affinity Capture-Western	GO:0005849	mRNA cleavage factor complex	0.555555555555556
+YOL123W	HRP1	mRNA cleavage factor complex (CFI)
+YDR228C	PCF11	mRNA cleavage factor complex (CFI)
+YMR061W	RNA14	mRNA cleavage factor complex (CFI)
+YGL044C	RNA15	mRNA cleavage factor complex (CFI)
+YBR160W	CDC28	Cdc28p/Clb2p complex	8319908	Traceable author statement	GO:0000307	cyclin-dependent protein kinase holoenzyme complex	0.0666666666666667
+YPR119W	CLB2	Cdc28p/Clb2p complex
+YLR191W	PEX13	peroxin docking complex	12667447	Affinity Capture-Western	-	-	0
+YGL153W	PEX14	peroxin docking complex
+YNL214W	PEX17	peroxin docking complex
+YOR142W	LSC1	Succinyl-CoA ligase	9874242	Biochemical Activity	-	-	0
+YGR244C	LSC2	Succinyl-CoA ligase
+YFL041W	FET5	Fth1p/Fet5p complex	10608875	Affinity Capture-Western	-	-	0
+YBR207W	FTH1	Fth1p/Fet5p complex
+YIR017C	MET28	Met4p/Met28p/Met32p complex	9799240	"Two-hybrid,Reconstituted Complex"	-	-	0
+YDR253C	MET32	Met4p/Met28p/Met32p complex
+YNL103W	MET4	Met4p/Met28p/Met32p complex
+YPL169C	MEX67	Mtr2p/Mex67p complex	9774696	"Affinity Capture-Western,Reconstituted Complex"	GO:0042272	nuclear RNA export factor complex	1
+YKL186C	MTR2	Mtr2p/Mex67p complex
+YFR013W	IOC3	ISW1a complex	12482963	Affinity Capture-Western	GO:0016587	ISW1 complex	0.5
+YBR245C	ISW1	ISW1a complex
+YOR194C	TOA1	transcription factor TFIIA complex	7862117	Reconstituted Complex	GO:0005672	transcription factor TFIIA complex	1
+YKL058W	TOA2	transcription factor TFIIA complex
+YPL082C	MOT1	Mot1p complex	12805227	Reconstituted Complex	GO:0000126	transcription factor TFIIIB complex	0.25
+YER148W	SPT15	Mot1p complex
+YMR116C	ASC1	cytoplasmic ribosomal small subunit	10404161	Affinity Capture-MS	GO:0022627	cytosolic small ribosomal subunit	0.904761904761905
+YGR214W	RPS0A	cytoplasmic ribosomal small subunit
+YLR048W	RPS0B	cytoplasmic ribosomal small subunit
+YOR293W	RPS10A	cytoplasmic ribosomal small subunit
+YMR230W	RPS10B	cytoplasmic ribosomal small subunit
+YDR025W	RPS11A	cytoplasmic ribosomal small subunit
+YBR048W	RPS11B	cytoplasmic ribosomal small subunit
+YOR369C	RPS12	cytoplasmic ribosomal small subunit
+YDR064W	RPS13	cytoplasmic ribosomal small subunit
+YCR031C	RPS14A	cytoplasmic ribosomal small subunit
+YJL191W	RPS14B	cytoplasmic ribosomal small subunit
+YOL040C	RPS15	cytoplasmic ribosomal small subunit
+YMR143W	RPS16A	cytoplasmic ribosomal small subunit
+YDL083C	RPS16B	cytoplasmic ribosomal small subunit
+YML024W	RPS17A	cytoplasmic ribosomal small subunit
+YDR447C	RPS17B	cytoplasmic ribosomal small subunit
+YDR450W	RPS18A	cytoplasmic ribosomal small subunit
+YML026C	RPS18B	cytoplasmic ribosomal small subunit
+YOL121C	RPS19A	cytoplasmic ribosomal small subunit
+YNL302C	RPS19B	cytoplasmic ribosomal small subunit
+YLR441C	RPS1A	cytoplasmic ribosomal small subunit
+YML063W	RPS1B	cytoplasmic ribosomal small subunit
+YGL123W	RPS2	cytoplasmic ribosomal small subunit
+YHL015W	RPS20	cytoplasmic ribosomal small subunit
+YKR057W	RPS21A	cytoplasmic ribosomal small subunit
+YJL136C	RPS21B	cytoplasmic ribosomal small subunit
+YJL190C	RPS22A	cytoplasmic ribosomal small subunit
+YLR367W	RPS22B	cytoplasmic ribosomal small subunit
+YGR118W	RPS23A	cytoplasmic ribosomal small subunit
+YPR132W	RPS23B	cytoplasmic ribosomal small subunit
+YER074W	RPS24A	cytoplasmic ribosomal small subunit
+YIL069C	RPS24B	cytoplasmic ribosomal small subunit
+YGR027C	RPS25A	cytoplasmic ribosomal small subunit
+YLR333C	RPS25B	cytoplasmic ribosomal small subunit
+YGL189C	RPS26A	cytoplasmic ribosomal small subunit
+YER131W	RPS26B	cytoplasmic ribosomal small subunit
+YKL156W	RPS27A	cytoplasmic ribosomal small subunit
+YHR021C	RPS27B	cytoplasmic ribosomal small subunit
+YOR167C	RPS28A	cytoplasmic ribosomal small subunit
+YLR264W	RPS28B	cytoplasmic ribosomal small subunit
+YLR388W	RPS29A	cytoplasmic ribosomal small subunit
+YDL061C	RPS29B	cytoplasmic ribosomal small subunit
+YNL178W	RPS3	cytoplasmic ribosomal small subunit
+YLR287C-A	RPS30A	cytoplasmic ribosomal small subunit
+YOR182C	RPS30B	cytoplasmic ribosomal small subunit
+YLR167W	RPS31	cytoplasmic ribosomal small subunit
+YJR145C	RPS4A	cytoplasmic ribosomal small subunit
+YHR203C	RPS4B	cytoplasmic ribosomal small subunit
+YJR123W	RPS5	cytoplasmic ribosomal small subunit
+YPL090C	RPS6A	cytoplasmic ribosomal small subunit
+YBR181C	RPS6B	cytoplasmic ribosomal small subunit
+YOR096W	RPS7A	cytoplasmic ribosomal small subunit
+YNL096C	RPS7B	cytoplasmic ribosomal small subunit
+YBL072C	RPS8A	cytoplasmic ribosomal small subunit
+YER102W	RPS8B	cytoplasmic ribosomal small subunit
+YPL081W	RPS9A	cytoplasmic ribosomal small subunit
+YBR189W	RPS9B	cytoplasmic ribosomal small subunit
+YOL067C	RTG1	Rtg1p/Rtg3p complex	9032238	Reconstituted Complex	-	-	0
+YBL103C	RTG3	Rtg1p/Rtg3p complex
+YPL096C-A	ERI1	glycosylphosphatidylinositol-N-acetylglucosaminyltransferase (GPI-GnT) complex	16278447	Affinity Capture-Western	GO:0000506	glycosylphosphatidylinositol-N-acetylglucosaminyltransferase (GPI-GnT) complex	1
+YGR216C	GPI1	glycosylphosphatidylinositol-N-acetylglucosaminyltransferase (GPI-GnT) complex
+YNL038W	GPI15	glycosylphosphatidylinositol-N-acetylglucosaminyltransferase (GPI-GnT) complex
+YDR437W	GPI19	glycosylphosphatidylinositol-N-acetylglucosaminyltransferase (GPI-GnT) complex
+YPL076W	GPI2	glycosylphosphatidylinositol-N-acetylglucosaminyltransferase (GPI-GnT) complex
+YPL175W	SPT14	glycosylphosphatidylinositol-N-acetylglucosaminyltransferase (GPI-GnT) complex
+YBR097W	VPS15	phosphatidylinositol (PtdIns) 3-kinase complex (functions in CPY sorting)	11157979	"Affinity Capture-Western,Affinity Capture-MS"	-	-	0
+YPL120W	VPS30	phosphatidylinositol (PtdIns) 3-kinase complex (functions in CPY sorting)
+YLR240W	VPS34	phosphatidylinositol (PtdIns) 3-kinase complex (functions in CPY sorting)
+YLR360W	VPS38	phosphatidylinositol (PtdIns) 3-kinase complex (functions in CPY sorting)
+YDR123C	INO2	Ino2p/Ino4p basic helix-loop-helix heteromeric complex	7862526	"Two-hybrid,Far Western"	-	-	0
+YOL108C	INO4	Ino2p/Ino4p basic helix-loop-helix heteromeric complex
+YER087C-B	SBH1	Sec61p translocon complex	7961662	Co-purification	GO:0005784	translocon complex	0.6
+YLR378C	SEC61	Sec61p translocon complex
+YDR086C	SSS1	Sec61p translocon complex
+YNR051C	BRE5	Ubp3p/Bre5p complex	12778054	"Two-hybrid,Affinity Capture-Western,Reconstituted Complex"	-	-	0
+YER151C	UBP3	Ubp3p/Bre5p complex
+YDL095W	PMT1	Protein O-mannosyltransferase(Pmt1p/Pmt2p)	12551906	Affinity Capture-Western	-	-	0
+YAL023C	PMT2	Protein O-mannosyltransferase(Pmt1p/Pmt2p)
+YKL002W	DID4	ESCRT III complex	12194857	Affinity Capture-Western	GO:0000815	ESCRT III complex	1
+YLR025W	SNF7	ESCRT III complex
+YMR077C	VPS20	ESCRT III complex
+YKL041W	VPS24	ESCRT III complex
+YBR179C	FZO1	Mgm1p/Ugo1p/Fzo1p complex	15087460	Affinity Capture-Western	-	-	0
+YOR211C	MGM1	Mgm1p/Ugo1p/Fzo1p complex
+YDR470C	UGO1	Mgm1p/Ugo1p/Fzo1p complex
+YML067C	ERV41	Erv41p/Erv46p complex	11157978	Affinity Capture-Western	-	-	0
+YAL042W	ERV46	Erv41p/Erv46p complex
+YLR095C	IOC2	ISW1b complex	12482963	Affinity Capture-Western	GO:0016587	ISW1 complex	0.75
+YMR044W	IOC4	ISW1b complex
+YBR245C	ISW1	ISW1b complex
+YLR148W	PEP3	HOPS complex	10944212	Affinity Capture-Western	GO:0030897	HOPS complex	1
+YMR231W	PEP5	HOPS complex
+YDL077C	VAM6	HOPS complex
+YPL045W	VPS16	HOPS complex
+YLR396C	VPS33	HOPS complex
+YDR080W	VPS41	HOPS complex
+YGR032W	GSC2	"1,3-beta-glucan synthase complex (Gsc2p/Smk1p)"	16116083	Affinity Capture-Western	GO:0000148	1,3-beta-glucan synthase complex	0.25
+YPR054W	SMK1	"1,3-beta-glucan synthase complex (Gsc2p/Smk1p)"
+YNL325C	FIG4	Fig4p/Vac14p complex	14528018	Affinity Capture-Western	-	-	0
+YLR386W	VAC14	Fig4p/Vac14p complex
+YDR363W-A	SEM1	19/22S regulator	15117943	"Affinity Capture-Western,Affinity Capture-MS"	GO:0008541	proteasome regulatory particle, lid subcomplex	0.454545454545455
+YHL030W	ECM29	19/22S regulator
+YFR010W	UBP6	19/22S regulator
+YGR232W	NAS6	19/22S regulator
+YHR027C	RPN1	19/22S regulator
+YHR200W	RPN10	19/22S regulator
+YFR004W	RPN11	19/22S regulator
+YFR052W	RPN12	19/22S regulator
+YLR421C	RPN13	19/22S regulator
+YIL075C	RPN2	19/22S regulator
+YER021W	RPN3	19/22S regulator
+YDL147W	RPN5	19/22S regulator
+YDL097C	RPN6	19/22S regulator
+YPR108W	RPN7	19/22S regulator
+YOR261C	RPN8	19/22S regulator
+YDR427W	RPN9	19/22S regulator
+YKL145W	RPT1	19/22S regulator
+YDL007W	RPT2	19/22S regulator
+YDR394W	RPT3	19/22S regulator
+YOR259C	RPT4	19/22S regulator
+YOR117W	RPT5	19/22S regulator
+YGL048C	RPT6	19/22S regulator
+YMR038C	CCS1	Sod1p/Ccs1p complex	11524675	Co-crystal Structure	-	-	0
+YJR104C	SOD1	Sod1p/Ccs1p complex
+YKL193C	SDS22	Sds22p/Glc7p complex	10775415	Affinity Capture-MS	GO:0000164	protein phosphatase type 1 complex	0.125
+YER133W	GLC7	Sds22p/Glc7p complex
+YLR229C	CDC42	Cdc42p/Ste20p complex	9003780	Affinity Capture-Western	-	-	0
+YHL007C	STE20	Cdc42p/Ste20p complex
+YPL024W	RMI1	RecQ helicase-Topo III complex	15899853	"Affinity Capture-Western,Reconstituted Complex"	GO:0031422	RecQ helicase-Topo III complex	1
+YMR190C	SGS1	RecQ helicase-Topo III complex
+YLR234W	TOP3	RecQ helicase-Topo III complex
+YNL289W	PCL1	Pho85p/Pcl1p complex	9032248	Two-hybrid	GO:0000307	cyclin-dependent protein kinase holoenzyme complex	0.142857142857143
+YPL031C	PHO85	Pho85p/Pcl1p complex
+YGL208W	SIP2	Snf1p/Snf4p/Sip2p complex	12393914	Affinity Capture-Western	GO:0031588	AMP-activated protein kinase complex	0.6
+YDR477W	SNF1	Snf1p/Snf4p/Sip2p complex
+YGL115W	SNF4	Snf1p/Snf4p/Sip2p complex
+YLR319C	BUD6	polarisome complex	9632790	"Affinity Capture-Western,Two-hybrid"	GO:0000133	polarisome	0.6
+YER149C	PEA2	polarisome complex
+YLL021W	SPA2	polarisome complex
+YPR176C	BET2	Geranylgeranyltransferase II (GGTase II)	8756702	Co-purification	GO:0005968	Rab-protein geranylgeranyltransferase complex	1
+YJL031C	BET4	Geranylgeranyltransferase II (GGTase II)
+YBL025W	RRN10	RNA polymerase I upstream activating factor complex	11500378	Affinity Capture-MS	GO:0000500	RNA polymerase I upstream activating factor complex	0.666666666666667
+YLR141W	RRN5	RNA polymerase I upstream activating factor complex
+YMR270C	RRN9	RNA polymerase I upstream activating factor complex
+YOR295W	UAF30	RNA polymerase I upstream activating factor complex
+YBR010W	HHT1	RNA polymerase I upstream activating factor complex
+YBR009C	HHF1	RNA polymerase I upstream activating factor complex
+YPL195W	APL5	AP-3 adaptor complex	9335339	Co-purification	GO:0030123	AP-3 adaptor complex	1
+YGR261C	APL6	AP-3 adaptor complex
+YBR288C	APM3	AP-3 adaptor complex
+YJL024C	APS3	AP-3 adaptor complex
+YGR082W	TOM20	mitochondrial outer membrane translocase complex	9774667	"Affinity Capture-Western,Co-purification"	GO:0005742	mitochondrial outer membrane translocase complex	0.875
+YNL131W	TOM22	mitochondrial outer membrane translocase complex
+YMR203W	TOM40	mitochondrial outer membrane translocase complex
+YPR133W-A	TOM5	mitochondrial outer membrane translocase complex
+YOR045W	TOM6	mitochondrial outer membrane translocase complex
+YNL070W	TOM7	mitochondrial outer membrane translocase complex
+YNL121C	TOM70	mitochondrial outer membrane translocase complex
+YLR015W	BRE2	COMPASS complex	11742990	Affinity Capture-MS	GO:0048188	COMPASS complex	1
+YDR469W	SDC1	COMPASS complex
+YHR119W	SET1	COMPASS complex
+YBR258C	SHG1	COMPASS complex
+YPL138C	SPP1	COMPASS complex
+YAR003W	SWD1	COMPASS complex
+YKL018W	SWD2	COMPASS complex
+YBR175W	SWD3	COMPASS complex
+YDR292C	SRP101	signal recognition particle receptor complex	9679135	Affinity Capture-Western	GO:0005785	signal recognition particle receptor complex	1
+YKL154W	SRP102	signal recognition particle receptor complex
+YLR129W	DIP2	UTP B complex	14759368	Affinity Capture-MS	GO:0034388	Pwp2p-containing subcomplex of 90S preribosome	1
+YCR057C	PWP2	UTP B complex
+YDR449C	UTP6	UTP B complex
+YLR222C	UTP13	UTP B complex
+YJL069C	UTP18	UTP B complex
+YLR409C	UTP21	UTP B complex
+YER090W	TRP2	anthranilate synthase complex	3881257	Co-purification	GO:0005950	anthranilate synthase complex	1
+YKL211C	TRP3	anthranilate synthase complex
+YLR381W	CTF3	Ctf3p protein complex	11782448	Affinity Capture-Western	GO:0000778	condensed nuclear chromosome kinetochore	0.09375
+YPR046W	MCM16	Ctf3p protein complex
+YJR135C	MCM22	Ctf3p protein complex
+YOL068C	HST1	Sum1p/Rfm1p/Hst1p complex	12612074	Affinity Capture-Western	GO:0000118	histone deacetylase complex	0.166666666666667
+YOR279C	RFM1	Sum1p/Rfm1p/Hst1p complex
+YDR310C	SUM1	Sum1p/Rfm1p/Hst1p complex
+YLR424W	SPP382	Ntr1p/Ntr2p/Prp43p complex	16357217	"Two-hybrid,Affinity Capture-Western,Co-purification"	GO:0005681	spliceosome	0.0967741935483871
+YKR022C	NTR2	Ntr1p/Ntr2p/Prp43p complex
+YGL120C	PRP43	Ntr1p/Ntr2p/Prp43p complex
+YHR085W	IPI1	Rix1p complex	15260980	Affinity Capture-MS	-	-	0
+YNL182C	IPI3	Rix1p complex
+YHR197W	RIX1	Rix1p complex
+YML043C	RRN11	RNA polymerase I transcription factor complex	8702872	Affinity Capture-Western	GO:0000120	RNA polymerase I transcription factor complex	0.6
+YBL014C	RRN6	RNA polymerase I transcription factor complex
+YJL025W	RRN7	RNA polymerase I transcription factor complex
+YNR017W	TIM23	mitochondrial inner membrane presequence translocase complex	12437925	"Two-hybrid,Affinity Capture-Western"	GO:0005744	mitochondrial inner membrane presequence translocase complex	1
+YJL104W	PAM16	mitochondrial inner membrane presequence translocase complex
+YLR008C	PAM18	mitochondrial inner membrane presequence translocase complex
+YJL143W	TIM17	mitochondrial inner membrane presequence translocase complex
+YGR033C	TIM21	mitochondrial inner membrane presequence translocase complex
+YPL063W	TIM50	mitochondrial inner membrane presequence translocase complex
+YER029C	SMB1	U1 snRNP complex	9630245	Affinity Capture-Western	GO:0005685	snRNP U1	0.944444444444444
+YGR074W	SMD1	U1 snRNP complex
+YLR275W	SMD2	U1 snRNP complex
+YLR147C	SMD3	U1 snRNP complex
+YOR159C	SME1	U1 snRNP complex
+YFL017W-A	SMX2	U1 snRNP complex
+YPR182W	SMX3	U1 snRNP complex
+YDL087C	LUC7	U1 snRNP complex
+YBR119W	MUD1	U1 snRNP complex
+YHR086W	NAM8	U1 snRNP complex
+YML046W	PRP39	U1 snRNP complex
+YKL012W	PRP40	U1 snRNP complex
+YDR235W	PRP42	U1 snRNP complex
+YIL061C	SNP1	U1 snRNP complex
+YDR240C	SNU56	U1 snRNP complex
+YGR013W	SNU71	U1 snRNP complex
+YLR298C	YHC1	U1 snRNP complex
+YHR129C	ARP1	dynactin complex	16291862	"Affinity Capture-Western,Two-hybrid"	GO:0005869	dynactin complex	1
+YDR106W	ARP10	dynactin complex
+YMR294W	JNM1	dynactin complex
+YPL174C	NIP100	dynactin complex
+YPL209C	IPL1	Aurora B-INCENP protein kinase complex	10385519	Affinity Capture-Western	GO:0000778	condensed nuclear chromosome kinetochore	0.0303030303030303
+YBR156C	SLI15	Aurora B-INCENP protein kinase complex
+YMR025W	CSI1	signalosome complex	12672462	"Co-purification, Two-hybrid"	GO:0008180	signalosome	1
+YJR084W	CSN12	signalosome complex
+YDR179C	CSN9	signalosome complex
+YIL071C	PCI8	signalosome complex
+YDL216C	RRI1	signalosome complex
+YOL117W	RRI2	signalosome complex
+YPL096W	PNG1	Png1p/Rad23p complex	15351714	Reconstituted Complex	GO:0000111	nucleotide-excision repair factor 2 complex	0.333333333333333
+YEL037C	RAD23	Png1p/Rad23p complex
+YGR140W	CBF2	CBF3 complex	10352012	Co-purification	GO:0031518	CBF3 complex	1
+YMR168C	CEP3	CBF3 complex
+YMR094W	CTF13	CBF3 complex
+YDR328C	SKP1	CBF3 complex
+YHR195W	NVJ1	Swh1p/Nvj1p complex	15367582	"Affinity Capture-Western,Co-localization"	-	-	0
+YAR042W	SWH1	Swh1p/Nvj1p complex
+YMR186W	HSC82	HMC Complex	11689685	Affinity Capture-MS	GO:0005844	polysome	0.0588235294117647
+YCL037C	SRO9	HMC Complex
+YBL075C	SSA3	HMC Complex
+YNL064C	YDJ1	HMC Complex
+YIL079C	AIR1	TRAMP complex (Air1p)	15828860	"Affinity Capture-Western,Affinity Capture-MS"	GO:0031499	TRAMP complex	0.75
+YJL050W	MTR4	TRAMP complex (Air1p)
+YOL115W	PAP2	TRAMP complex (Air1p)
+YML057W	CMP2	calcineurin complex	1321337	Co-purification	GO:0005955	calcineurin complex	1
+YLR433C	CNA1	calcineurin complex
+YKL190W	CNB1	calcineurin complex
+YOR178C	GAC1	Gac1p/Glc7p complex	11459182	"Two-hybrid,Affinity Capture-Western"	GO:0000164	protein phosphatase type 1 complex	0.285714285714286
+YER133W	GLC7	Gac1p/Glc7p complex
+YDL127W	PCL2	Pho85p/Pcl2p complex	7973731	"Affinity Capture-Western,Reconstituted Complex"	GO:0000307	cyclin-dependent protein kinase holoenzyme complex	0.142857142857143
+YPL031C	PHO85	Pho85p/Pcl2p complex
+YOR260W	GCD1	eIF2B	8506384	Affinity Capture-Western	GO:0005851	eukaryotic translation initiation factor 2B complex	1
+YGR083C	GCD2	eIF2B
+YDR211W	GCD6	eIF2B
+YLR291C	GCD7	eIF2B
+YKR026C	GCN3	eIF2B
+YDR141C	DOP1	Dop1p/Mon2p complex	16301316	Affinity Capture-MS	-	-	0
+YNL297C	MON2	Dop1p/Mon2p complex
+YDR347W	MRP1	mitochondrial ribosomal small subunit	12392552	Affinity Capture-MS	GO:0005763	mitochondrial small ribosomal subunit	0.885714285714286
+YDL045W-A	MRP10	mitochondrial ribosomal small subunit
+YGR084C	MRP13	mitochondrial ribosomal small subunit
+YKL003C	MRP17	mitochondrial ribosomal small subunit
+YPR166C	MRP2	mitochondrial ribosomal small subunit
+YBL090W	MRP21	mitochondrial ribosomal small subunit
+YHL004W	MRP4	mitochondrial ribosomal small subunit
+YPL118W	MRP51	mitochondrial ribosomal small subunit
+YPL013C	MRPS16	mitochondrial ribosomal small subunit
+YMR188C	MRPS17	mitochondrial ribosomal small subunit
+YNL306W	MRPS18	mitochondrial ribosomal small subunit
+YDR337W	MRPS28	mitochondrial ribosomal small subunit
+YGR165W	MRPS35	mitochondrial ribosomal small subunit
+YBR251W	MRPS5	mitochondrial ribosomal small subunit
+YMR158W	MRPS8	mitochondrial ribosomal small subunit
+YBR146W	MRPS9	mitochondrial ribosomal small subunit
+YNL137C	NAM9	mitochondrial ribosomal small subunit
+YOR158W	PET123	mitochondrial ribosomal small subunit
+YHR075C	PPE1	mitochondrial ribosomal small subunit
+YDR041W	RSM10	mitochondrial ribosomal small subunit
+YER050C	RSM18	mitochondrial ribosomal small subunit
+YNR037C	RSM19	mitochondrial ribosomal small subunit
+YKL155C	RSM22	mitochondrial ribosomal small subunit
+YGL129C	RSM23	mitochondrial ribosomal small subunit
+YDR175C	RSM24	mitochondrial ribosomal small subunit
+YIL093C	RSM25	mitochondrial ribosomal small subunit
+YJR101W	RSM26	mitochondrial ribosomal small subunit
+YGR215W	RSM27	mitochondrial ribosomal small subunit
+YJR113C	RSM7	mitochondrial ribosomal small subunit
+Q0140	VAR1	mitochondrial ribosomal small subunit
+YFR049W	YMR31	mitochondrial ribosomal small subunit
+YNL081C	SWS2	mitochondrial ribosomal small subunit
+YHR004C	NEM1	Nem1p/Spo7p complex	9822591	Affinity Capture-Western	-	-	0
+YAL009W	SPO7	Nem1p/Spo7p complex
+YDR439W	LRS4	monopolin complex	16990132	Affinity Capture-MS	GO:0033551	monopolin complex	1
+YER106W	MAM1	monopolin complex
+YCR086W	CSM1	monopolin complex
+YPL204W	HRR25	monopolin complex
+YOR039W	CKB2	CURI complex	17452446	Affinity Capture-MS	GO:0032545	CURI complex	1
+YLR223C	IFH1	CURI complex
+YCL031C	RRP7	CURI complex
+YGR090W	UTP22	CURI complex
+YLR207W	HRD3	luminal surveillance complex	16873065	Affinity Capture-MS	GO:0034099	luminal surveillance complex	1
+YJL034W	KAR2	luminal surveillance complex
+YDR057W	YOS9	luminal surveillance complex
+YOL013C	HRD1	ubiquitin ligase ERAD-M complex	16873066	Affinity Capture-MS	GO:0000838	Hrd1p ubiquitin ligase ERAD-M complex	1
+YLR207W	HRD3	ubiquitin ligase ERAD-M complex
+YMR028W	TAP42	Tap42p/Pph21p/Rrd2p complex	15689491	Affinity Capture-Western	GO:0000159	protein phosphatase type 2A complex	0.285714285714286
+YDL134C	PPH21	Tap42p/Pph21p/Rrd2p complex
+YPL152W	RRD2	Tap42p/Pph21p/Rrd2p complex
+YNL258C	DSL1	Dsl1p complex	15958492	Affinity Capture-Western	-	-	0
+YGL145W	TIP20	Dsl1p complex
+YDR498C	SEC20	Dsl1p complex
+YLR440C	SEC39	Dsl1p complex
+YGL098W	USE1	Dsl1p complex
+YOR075W	UFE1	Dsl1p complex
