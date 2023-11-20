@@ -12,4 +12,4 @@ Currently contains the following S. Cerevisiae datasets (large files are gitigno
 * iRefIndex (2023)
 * SGD GSE3431 (2010)
 
-If you need the gitignored files, you may find it in our teams.
+If you need the `.gitignore`'d files, you may find it in our teams.
