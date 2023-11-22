@@ -13,6 +13,7 @@ from operator import itemgetter
 from networkx.algorithms.flow import shortest_augmenting_path
 import multiprocessing as mp
 import time
+from PC2P_ParallelRay import Find_CNPs_V2
 
 def edgeCutSet_V2(cnp , G):
     """ This function find edges that connect the component to the rest of graph."""

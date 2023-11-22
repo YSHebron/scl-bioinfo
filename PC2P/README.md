@@ -1,7 +1,6 @@
-# PC2P 
+# PC2P
 
-### Protein Complexes from Coherent Partition
-
+## Protein Complexes from Coherent Partition
 
 PC2P is a network clustering algorithm that can be used to find protein complexes from protein-protein interaction networks(PPINs).
 
@@ -17,8 +16,6 @@ You can find PPINs for Human and Yeast in their respective folders with their go
 
 If you want to do further analysis and check how well the predicted clusters represent the reference complexes, please run PredictedClusters_Analysis.py in the Analysis folder for the predicted clusters from PC2P.
 
-
-
 ## References
 
 [1] Collins, S. R. et al., 2007. Toward a Comprehensive Atlas of the Physical Interactome of Saccharomyces cerevisiae. Molecular & Cellular Proteomics, Volume 6, p. 439–450.
@@ -32,7 +29,3 @@ If you want to do further analysis and check how well the predicted clusters rep
 [5] Nepusz, T., Yu, H. & Paccanaro, A., 2012. Detecting overlapping protein complexes in protein-protein interaction networks. Nature Methods, Volume 9, pp. 471-472.
 
 [6] Szklarczyk, D. et al., 2014. STRING v10: protein-protein interaction networks, integrated over the tree of life. Nucleic Acids Research, 10, Volume 43, pp. D447-D452.
-
-
-
-
