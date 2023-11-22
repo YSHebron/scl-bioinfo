@@ -10,7 +10,7 @@ The parallel version is implemented with 2 packages in python: Ray and Multiproc
 
 To run the program you need to call one of these implementations and pass your network to the function, please see main_Function.py for more details.
 
-There is an implementation with Jupiter, in which I put some examples. In these examples, you can find the original network and the predicted clusters after applying PC2P along with the total number of removed edges to obtain these clusters. 
+There is an implementation with Jupiter, in which I put some examples. In these examples, you can find the original network and the predicted clusters after applying PC2P along with the total number of removed edges to obtain these clusters.
 
 You can find PPINs for Human and Yeast in their respective folders with their gold standards, which we used to compare the predicted clusters with reference complexes.
 
