@@ -5,6 +5,11 @@ Created on Tue Mar 24 19:42:20 2020
 @author: somranian
 """
 
+# Assumes this file is run from the root
+import os
+from helper import printc
+printc("Hello from PC2P_Sequential.py! Current cwd (also for ray) :: " + os.getcwd())
+
 from itertools import chain
 import numpy as np
 import networkx as nx

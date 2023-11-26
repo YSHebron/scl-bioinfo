@@ -5,15 +5,16 @@ Created on Tue Mar 24 07:51:58 2020
 @author: SaRa Omranian
 """
 
+# Assumes this file is run from the root
+import os
+from helper import printc
+printc("Hello from PC2P_ParallelRay! Current cwd (also for ray) :: " + os.getcwd())
+
 import networkx as nx
 import itertools as itert
 from operator import itemgetter
 from networkx.algorithms.flow import shortest_augmenting_path
 import ray
-import psutil
-num_cpus = psutil.cpu_count(logical=False)
-ray.init(num_cpus=num_cpus)
-
 
 def edgeCutSet_V2(cnp , G):
     """ This function find edges that connect the component to the rest of graph."""

@@ -34,11 +34,17 @@ if (mode == 1):
     edge_cut = PC2P_Sequential.Find_CNP(G)
 else:
     if (osname == "linux"):
+        import psutil
+        import ray
+        num_cpus = psutil.cpu_count(logical=False)
+        conda_env = p + "/environment.yml"
+        runtime_env = {"conda": conda_env, "working_dir": p + "/PC2P"}
+        ray.init(num_cpus=num_cpus, runtime_env=runtime_env)
         import PC2P_ParallelRay
-        edge_cut = PC2P_ParallelRay.Find_CNPs_V2(PIPS_Corum)
+        edge_cut = PC2P_ParallelRay.Find_CNPs_V2(G)
     else:
         import PC2P_ParallelMultiprocess
-        edge_cut = PC2P_ParallelMultiprocess.Find_CNP(PIPS_Corum)
+        edge_cut = PC2P_ParallelMultiprocess.Find_CNP(G)
 
 """ To save the result clusters in Graph format"""
 G_copy = G.copy()
