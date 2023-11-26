@@ -94,7 +94,12 @@ def Find_CNP(G, mixed_label = False):
     G_components = list(nx.connected_components(G))
     G_temp = G.copy()
     edge_cut = []
+    iter = 0        # Variable to show iterations
+    k = 1           # Print at every kth iteration
     while len(G_components) != 0:
+        iter += 1
+        if (iter % k == 0):
+            print("At iter {}, len(G_components) = {}".format(iter, len(G_components)))
         min_ratioN1 = float('inf')
         min_ratioN2 = float('inf')
         componentOfG = G.subgraph(G_components[0]).copy() #we get the first component and find cnp
@@ -217,5 +222,7 @@ def Find_CNP(G, mixed_label = False):
             strList=sorted([i for i in edge_cut[i] if type(i) is str])
             sorted_x.append(intList + strList) 
         edge_cut =  list(set(tuple(i) for i in (sorted_x)))
+    
+    print("CNP loop ended at iteration {}".format(iter))
     return(edge_cut)
 
