@@ -179,7 +179,7 @@ def CNP(G,v ,mixed_label = False):
     result = {cnp_nodes:[v,min_ratio]}
     return(result)
 
-def Find_CNP(G, mngd_list = None, mixed_label = False):
+def Find_CNP(G, pool_threshold = 50, num_procs = 4, mngd_list = None, mixed_label = False):
     #Find all component of G
     G_components = list(nx.connected_components(G))
     G_temp = G.copy()
@@ -192,26 +192,31 @@ def Find_CNP(G, mngd_list = None, mixed_label = False):
                 del G_components[0]
                 continue  
             nodes = list(componentOfG.nodes())
-            # Parallelizing using Pool.apply()
-            # Step 1: Init multiprocessing.Pool()
-            pool = mp.Pool(mp.cpu_count())
-            # Step 2: `pool.apply` the `howmany_within_range()`
-            result_objects_1 = [pool.apply_async(CNP, args=(componentOfG,v,mixed_label)) for v in nodes] 
+            # SCL Note: Selectively Parallelizing using Pool.apply()
+            if (len(nodes) > pool_threshold):
+                # Step 1: Init multiprocessing.Pool()
+                pool = mp.Pool(num_procs)
+                # Step 2: `pool.apply` the `howmany_within_range()`
+                result_objects_1 = [pool.apply_async(CNP, args=(componentOfG,v,mixed_label)) for v in nodes]
+                results_1 = [r1.get() for r1 in result_objects_1]
+                pool.close()
+                pool.join()
+            else: results_1 = [CNP(componentOfG,v,mixed_label) for v in nodes]
             # result_objects is a list of pool.ApplyResult objects
-            results_1 = [r1.get() for r1 in result_objects_1]
-            pool.close()
-            pool.join() 
+
             scores_1 = [list(r.values())[0][1] for r in results_1]
             indx_1 = scores_1.index(min(scores_1))
             subgrf_1 = list(results_1[indx_1].keys())[0]
             edge_cut.append(edgeCutSet_V2(subgrf_1,componentOfG)) 
             #finding second neighbors for all cnp nodes
-            pool2 = mp.Pool(mp.cpu_count())
-            result_objects2 = [pool2.apply_async(second_Neighb, args=(componentOfG,v)) for v in subgrf_1.nodes()]
+            if (len(nodes) > pool_threshold):
+                pool = mp.Pool(num_procs)
+                result_objects2 = [pool.apply_async(second_Neighb, args=(componentOfG,v)) for v in subgrf_1.nodes()]
+                results2 = [r.get() for r in result_objects2]
+                pool.close()
+                pool.join()
+            else: results2 = [second_Neighb(componentOfG,v) for v in subgrf_1.nodes()]
             # result_objects is a list of pool.ApplyResult objects
-            results2 = [r.get() for r in result_objects2]
-            pool2.close()
-            pool2.join() 
             secondNeighb = []
             [secondNeighb.extend(s) for s in results2]
             secondNeighb = set(secondNeighb)
@@ -225,51 +230,54 @@ def Find_CNP(G, mngd_list = None, mixed_label = False):
         else:
             if len(componentOfG.nodes()) <= 3:
                 for i,r in enumerate(updated_results):
-#                    print(type(componentOfG.nodes()),"in result")
+            # print(type(componentOfG.nodes()),"in result")
                     if ( list(r.values())[0][0] in list(componentOfG.nodes()) ):
                         del updated_results[i]
                 for i,n in enumerate(list(Nodesto_NextRound)):
-#                    print(type(componentOfG.nodes()),"in Nodes")
+            # print(type(componentOfG.nodes()),"in Nodes")
                     if ( n in list(componentOfG.nodes()) ):
                         Nodesto_NextRound.remove(n)
                 del G_components[0]
                 continue   
-            # Step 1: Init multiprocessing.Pool()
-            pool = mp.Pool(mp.cpu_count())
-            # Step 2: `pool.apply` the `howmany_within_range()`
-    #I get the intersect incase we have multiple components. 
-#    At the end I have to add the nodes which are not present in the component to nodesto_NextRound
+            # I get the intersect incase we have multiple components. 
+            # At the end I have to add the nodes which are not present in the component to nodesto_NextRound
             nodes = Nodesto_NextRound.intersection(set(componentOfG.nodes()))
-#            print("nodes of component of G",set(componentOfG.nodes()))
+            # print("nodes of component of G",set(componentOfG.nodes()))
             if not nodes:
                 nodes = set(componentOfG.nodes())
                 nodes_diff = Nodesto_NextRound 
             else:
                 nodes_diff = Nodesto_NextRound - set(componentOfG.nodes())
-#            print("Nodes in round",rounds," is ",nodes)
-#            print("Nodes in diffff",rounds," is ",nodes_diff)
-            result_objects = [pool.apply_async(CNP, args=(componentOfG,v,mixed_label)) for v in nodes] 
+            # print("Nodes in round",rounds," is ",nodes)
+            # print("Nodes in diffff",rounds," is ",nodes_diff)
+            if (len(nodes) > pool_threshold):
+                pool = mp.Pool(mp.cpu_count())
+                result_objects = [pool.apply_async(CNP, args=(componentOfG,v,mixed_label)) for v in nodes]
+                results = [r.get() for r in result_objects]
+                pool.close()
+                pool.join()
+            else: results = [CNP(componentOfG,v,mixed_label) for v in nodes]
             # result_objects is a list of pool.ApplyResult objects
-            results = [r.get() for r in result_objects]
-            pool.close()
-            pool.join() 
-#            print('result',results)
+            # print('result',results)
             results.extend(updated_results)
             scores = [list(r.values())[0][1] for r in results]
-#            print('scores: ',scores)
+            # print('scores: ',scores)
             indx = scores.index(min(scores))
             subgrf = list(results[indx].keys())[0]
-#            print('subgrf: ',list(subgrf))
-#            edge_cut.append(edgeCutSet_V2(subgrf,componentOfG)) 
+            # print('subgrf: ',list(subgrf))
+            # edge_cut.append(edgeCutSet_V2(subgrf,componentOfG)) 
             edge_cut.append(edgeCutSet_V2(subgrf,G_temp))
             #finding second neighbors for all cnp nodes
-            pool2 = mp.Pool(mp.cpu_count())
-#            result_objects2 = [pool2.apply_async(second_Neighb, args=(componentOfG,v)) for v in subgrf.nodes()]
-            result_objects2 = [pool2.apply_async(second_Neighb, args=(G_temp,v)) for v in subgrf.nodes()]
+            
+            if (len(nodes) > pool_threshold):
+                pool = mp.Pool(mp.cpu_count())
+                result_objects2 = [pool.apply_async(second_Neighb, args=(G_temp,v)) for v in subgrf.nodes()]
+                results2 = [r.get() for r in result_objects2]
+                pool.close()
+                pool.join()
+            else: results2 = [second_Neighb(G_temp,v) for v in subgrf.nodes()]
+            
             # result_objects is a list of pool.ApplyResult objects
-            results2 = [r.get() for r in result_objects2]
-            pool2.close()
-            pool2.join() 
             secondNeighb = []
             [secondNeighb.extend(s) for s in results2]
             secondNeighb = set(secondNeighb)
