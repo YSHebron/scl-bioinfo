@@ -4,8 +4,8 @@ Created on Tue Mar 24 17:44:49 2020
 
 @author: saRa Omranian
 """
-
-
+from helper import printc
+printc("Hello from PC2P_ParallelMultirprocess.py! Current cwd (also for ray) :: " + os.getcwd())
 
 import networkx as nx
 import itertools as itert
@@ -13,7 +13,6 @@ from operator import itemgetter
 from networkx.algorithms.flow import shortest_augmenting_path
 import multiprocessing as mp
 import time
-from PC2P_ParallelRay import Find_CNPs_V2
 
 def edgeCutSet_V2(cnp , G):
     """ This function find edges that connect the component to the rest of graph."""
@@ -328,9 +327,15 @@ def read_network(fname):
 #----------------------------------------------------------------------------------
     
 start_time = time.time()
-STRING = nx.read_weighted_edgelist("STRING_Final.txt", create_using = nx.Graph(), nodetype = str)
 
-Edge_cut_STRING = Find_CNPs_V2(STRING)
+# Modifications
+import os
+from termcolor import colored
+print(colored(os.getcwd(), 'red'))
+
+STRING = nx.read_weighted_edgelist("Human/STRING/STRING_Final.txt", create_using = nx.Graph(), nodetype = str)
+
+Edge_cut_STRING = Find_CNP(STRING)
 STRING_copy = STRING.copy()
 STRING_copy.remove_edges_from(Edge_cut_STRING)
 
