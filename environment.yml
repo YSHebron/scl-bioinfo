@@ -1,6 +1,7 @@
 name: scl
 channels:
   - defaults
+  - conda-forge
 dependencies:
   - ipython=8.15.0
   - matplotlib=3.8.0
