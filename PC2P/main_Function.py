@@ -11,6 +11,7 @@ import sys
 import networkx as nx
 import numpy as np
 import pandas as pd
+import time
 from helper import printc
 
 osname = sys.platform
@@ -18,13 +19,15 @@ printc("Detected platform: {}".format(osname))
 printc("Enter 1 for sequential mode, Enter 2 for parallel mode: ", end = "")
 mode = int(input())
 
+start_time = time.time()
+
 # Maintaining use of absolute paths
 p = os.getcwd()
-"""As an example here the PIPS_Corum_Graph is called!"""
+"""As an example here the network PIPS_Corum_Graph is called!"""
 sample_path = "/PC2P/Human/PIPS/PIPS_Corum_Graph.txt" if (osname == "linux") else "\\PC2P\\Human\\PIPS\\PIPS_Corum_Graph.txt"
 path = p + sample_path
-PIPS_Corum = nx.read_weighted_edgelist(path, create_using = nx.Graph(), nodetype = str)
-G = PIPS_Corum.copy()
+network = nx.read_weighted_edgelist(path, create_using = nx.Graph(), nodetype = str)
+G = network.copy()
 
 """ To run code sequentially, we need to call Find_CNP from PC2P_Sequential.
     To run code parallel in Windows and Unix, we nee to call Find_CNP from PC2P_ParallelMultiprocess
@@ -69,4 +72,6 @@ with open(output_dir + 'G_PredictedClusters.txt', 'w') as f:
         for node in item:
             f.write("%s " % node)
         f.write("\n")
+
+printc("Algorithm took %s seconds to finish." % (time.time() - start_time))
 

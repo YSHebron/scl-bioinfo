@@ -4,8 +4,11 @@ Created on Tue Mar 24 17:44:49 2020
 
 @author: saRa Omranian
 """
+
+# Assumes this file is run from the root
+import os
 from helper import printc
-printc("Hello from PC2P_ParallelMultirprocess.py! Current cwd (also for ray) :: " + os.getcwd())
+printc("Hello from PC2P_ParallelRay! Current cwd (also for ray) :: " + os.getcwd())
 
 import networkx as nx
 import itertools as itert
@@ -325,77 +328,73 @@ def read_network(fname):
         known_proteins.append(set(parts))
     return known_proteins
 #----------------------------------------------------------------------------------
-    
-start_time = time.time()
 
-# Modifications
-import os
-from termcolor import colored
-print(colored(os.getcwd(), 'red'))
+# SCL Note: Transferred driver to main_Function.py
+# start_time = time.time()
 
-STRING = nx.read_weighted_edgelist("Human/STRING/STRING_Final.txt", create_using = nx.Graph(), nodetype = str)
+# STRING = nx.read_weighted_edgelist("PC2P/Human/STRING/STRING_Final.txt", create_using = nx.Graph(), nodetype = str)
 
-Edge_cut_STRING = Find_CNP(STRING)
-STRING_copy = STRING.copy()
-STRING_copy.remove_edges_from(Edge_cut_STRING)
+# Edge_cut_STRING = Find_CNP(STRING)
+# STRING_copy = STRING.copy()
+# STRING_copy.remove_edges_from(Edge_cut_STRING)
 
-nx.write_edgelist(STRING_copy, "STRING_CNPPredicted_V4.edgelist.gz", data=False)
-nx.write_weighted_edgelist(STRING_copy, 'STRING_CNPPredicted_V4.weighted.edgelist')
+# nx.write_edgelist(STRING_copy, "STRING_CNPPredicted_V4.edgelist.gz", data=False)
+# nx.write_weighted_edgelist(STRING_copy, 'STRING_CNPPredicted_V4.weighted.edgelist')
 
-#----Reading Gold standard to get shared proteins
+# #----Reading Gold standard to get shared proteins
 
-#MIPs = 'mips_3_100.txt'
-#r_MIPs = read_network(MIPs)
-#MIPS = set([r for s in r_MIPs for r in s])
-#MIPS_STRING_Nodes = MIPS.intersection(set(STRING.nodes()))
-#MIPSSTRING_Graph = STRING.subgraph(MIPS_STRING_Nodes)
-#Edge_cut_STRING = Find_CNPs_V2(MIPSSTRING_Graph)
+# #MIPs = 'mips_3_100.txt'
+# #r_MIPs = read_network(MIPs)
+# #MIPS = set([r for s in r_MIPs for r in s])
+# #MIPS_STRING_Nodes = MIPS.intersection(set(STRING.nodes()))
+# #MIPSSTRING_Graph = STRING.subgraph(MIPS_STRING_Nodes)
+# #Edge_cut_STRING = Find_CNPs_V2(MIPSSTRING_Graph)
 
-#STRING_copy = MIPSSTRING_Graph.copy()
-#STRING_copy.remove_edges_from(Edge_cut_STRING)
+# #STRING_copy = MIPSSTRING_Graph.copy()
+# #STRING_copy.remove_edges_from(Edge_cut_STRING)
 
-#nx.write_edgelist(STRING_copy, "STRING_MIPS_MultiParallelV3.edgelist.gz", data=False)
-#nx.write_weighted_edgelist(STRING_copy, 'STRING_MIPS_MultiParallelV3.weighted.edgelist')
+# #nx.write_edgelist(STRING_copy, "STRING_MIPS_MultiParallelV3.edgelist.gz", data=False)
+# #nx.write_weighted_edgelist(STRING_copy, 'STRING_MIPS_MultiParallelV3.weighted.edgelist')
 
-#SGD = 'sgd.txt'
-#r_SGD = read_network(SGD)
-#SGD = set([r for s in r_SGD for r in s])
-#SGD_STRING_Nodes = SGD.intersection(set(STRING.nodes()))
-#SGDSTRING_Graph = STRING.subgraph(SGD_STRING_Nodes)
-#Edge_cut_STRING = Find_CNPs_V2(SGDSTRING_Graph)
-#
-#STRING_copy = SGDSTRING_Graph.copy()
-#STRING_copy.remove_edges_from(Edge_cut_STRING)
-#
-#nx.write_edgelist(STRING_copy, "STRING_SGD_MultiParallelV3.edgelist.gz", data=False)
-#nx.write_weighted_edgelist(STRING_copy, 'STRING_SGD_MultiParallelV3.weighted.edgelist')
+# #SGD = 'sgd.txt'
+# #r_SGD = read_network(SGD)
+# #SGD = set([r for s in r_SGD for r in s])
+# #SGD_STRING_Nodes = SGD.intersection(set(STRING.nodes()))
+# #SGDSTRING_Graph = STRING.subgraph(SGD_STRING_Nodes)
+# #Edge_cut_STRING = Find_CNPs_V2(SGDSTRING_Graph)
+# #
+# #STRING_copy = SGDSTRING_Graph.copy()
+# #STRING_copy.remove_edges_from(Edge_cut_STRING)
+# #
+# #nx.write_edgelist(STRING_copy, "STRING_SGD_MultiParallelV3.edgelist.gz", data=False)
+# #nx.write_weighted_edgelist(STRING_copy, 'STRING_SGD_MultiParallelV3.weighted.edgelist')
 
 
-print("Number of edges to remove is:  ",len(Edge_cut_STRING))
+# print("Number of edges to remove is:  ",len(Edge_cut_STRING))
 
-STRING_cnp_components = list(nx.connected_components(STRING_copy))
-STRING_cnp_components.sort(key=len, reverse=True)
+# STRING_cnp_components = list(nx.connected_components(STRING_copy))
+# STRING_cnp_components.sort(key=len, reverse=True)
 
-with open('STRING_PredictedClusters_V4.txt', 'w') as f:
-    for item in STRING_cnp_components:
-        for node in item:
-            f.write("%s " % node)
-        f.write("\n")
-#with open('STRING_SGD_Predicted_MultiParallelV3.txt', 'w') as f:
-#    for item in STRING_cnp_components:
-#        for node in item:
-#            f.write("%s " % node)
-#        f.write("\n")
-#with open('STRING_MIPS_Predicted_MultiParallelV3.txt', 'w') as f:
-#    for item in STRING_cnp_components:
-#        for node in item:
-#            f.write("%s " % node)
-#        f.write("\n")
+# with open('STRING_PredictedClusters_V4.txt', 'w') as f:
+#     for item in STRING_cnp_components:
+#         for node in item:
+#             f.write("%s " % node)
+#         f.write("\n")
+# #with open('STRING_SGD_Predicted_MultiParallelV3.txt', 'w') as f:
+# #    for item in STRING_cnp_components:
+# #        for node in item:
+# #            f.write("%s " % node)
+# #        f.write("\n")
+# #with open('STRING_MIPS_Predicted_MultiParallelV3.txt', 'w') as f:
+# #    for item in STRING_cnp_components:
+# #        for node in item:
+# #            f.write("%s " % node)
+# #        f.write("\n")
 
-print("--- %s seconds ---" % (time.time() - start_time))
+# print("--- %s seconds ---" % (time.time() - start_time))
 
-#ss = STRING.subgraph(STRING_cnp_components[100])
-#if (nx.is_connected(nx.complement(ss))):
-#    print("booo")
-#else:
-#    print("yoohoo")
+# #ss = STRING.subgraph(STRING_cnp_components[100])
+# #if (nx.is_connected(nx.complement(ss))):
+# #    print("booo")
+# #else:
+# #    print("yoohoo")
