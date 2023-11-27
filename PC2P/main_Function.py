@@ -21,15 +21,17 @@ def platformer():
     printc("Enter 1 for sequential mode, Enter 2 for parallel mode: ", end = "")
     mode = int(input())
     if (osname == "win32" and mode == 2):
-        printc("Please enter pool_threshold (default 100): ", end = "")
-        pool_threshold = int(input())
+        printc("Please enter pool_thresh (default 100): ", end = "")
+        pool_thresh = input()
+        if pool_thresh == "": pool_thresh = 100
         printc("Please enter num_procs (default 8): ", end = "")
-        num_procs = int(input())
-        return osname, mode, pool_threshold, num_procs
+        num_procs = input()
+        if num_procs == "": num_procs = 8
+        return osname, mode, int(pool_thresh), int(num_procs)
     return osname, mode, 100, 8
 
 if __name__ == '__main__':
-    osname, mode, pool_threshold, num_procs = platformer()
+    osname, mode, pool_thresh, num_procs = platformer()
 
     start_time = time.time()
 
@@ -60,7 +62,7 @@ if __name__ == '__main__':
         else:
             import PC2P_ParallelMultiprocess
             printc("Now running PC2P_ParallelMultiprocess! :: " + os.getcwd())
-            edge_cut = PC2P_ParallelMultiprocess.Find_CNP(G, pool_threshold, num_procs)
+            edge_cut = PC2P_ParallelMultiprocess.Find_CNP(G, pool_thresh, num_procs)
 
     """ To save the result clusters in Graph format"""
     G_copy = G.copy()
