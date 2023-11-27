@@ -5,11 +5,6 @@ Created on Tue Mar 24 17:44:49 2020
 @author: saRa Omranian
 """
 
-# Assumes this file is run from the root
-import os
-from helper import printc
-printc("Hello from PC2P_ParallelRay! Current cwd (also for ray) :: " + os.getcwd())
-
 import networkx as nx
 import itertools as itert
 from operator import itemgetter
@@ -184,7 +179,7 @@ def CNP(G,v ,mixed_label = False):
     result = {cnp_nodes:[v,min_ratio]}
     return(result)
 
-def Find_CNP(G, mixed_label = False):
+def Find_CNP(G, mngd_list = None, mixed_label = False):
     #Find all component of G
     G_components = list(nx.connected_components(G))
     G_temp = G.copy()
@@ -305,6 +300,7 @@ def Find_CNP(G, mixed_label = False):
             strList=sorted([i for i in edge_cut[i] if type(i) is str])
             sorted_x.append(intList + strList) 
         edge_cut =  list(set(tuple(i) for i in (sorted_x)))
+    # mngd_list.extend(edge_cut)
     return(edge_cut)
 
 
