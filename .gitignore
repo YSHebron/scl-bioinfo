@@ -173,5 +173,6 @@ data/STRING_2023/accessory/COG.mappings.v12.0.txt.gz
 ### PC2P Artifacts
 PC2P/scl
 
-###
+### VSCode Artifacts
 backup
+.vscode
