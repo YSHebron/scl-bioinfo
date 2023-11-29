@@ -35,12 +35,10 @@ if __name__ == '__main__':
 
     start_time = time.time()
 
-    # Maintaining use of absolute paths
-    p = os.getcwd()
+    # Now using relative paths, linux path also happens to work for win32
     """As an example here the network PIPS_Corum_Graph is called!"""
-    sample_path = "/PC2P/Human/PIPS/PIPS_Corum_Graph.txt" if (osname == "linux") else "\\PC2P\\Human\\PIPS\\PIPS_Corum_Graph.txt"
-    path = p + sample_path
-    network = nx.read_weighted_edgelist(path, create_using = nx.Graph(), nodetype = str)
+    sample_path = "PC2P/Human/PIPS/PIPS_Corum_Graph.txt"
+    network = nx.read_weighted_edgelist(sample_path, create_using = nx.Graph(), nodetype = str)
     G = network.copy()
 
     """ To run code sequentially, we need to call Find_CNP from PC2P_Sequential.
@@ -54,8 +52,8 @@ if __name__ == '__main__':
             import psutil
             import ray
             num_cpus = psutil.cpu_count(logical=False)
-            conda_env = p + "/environment.yml"
-            runtime_env = {"conda": conda_env, "working_dir": p + "/PC2P"}
+            conda_env = "environment.yml"
+            runtime_env = {"conda": conda_env, "working_dir": "PC2P"}
             ray.init(num_cpus=num_cpus, runtime_env=runtime_env)
             import PC2P_ParallelRay
             edge_cut = PC2P_ParallelRay.Find_CNPs_V2(G)
@@ -67,7 +65,7 @@ if __name__ == '__main__':
     """ To save the result clusters in Graph format"""
     G_copy = G.copy()
     G_copy.remove_edges_from(edge_cut)
-    output_dir = p + "/PC2P/scl/" if (osname == "linux") else p + "\\PC2P\\scl\\"
+    output_dir = "PC2P/scl/"
     if not os.path.isdir(output_dir):
         os.mkdir(output_dir)
 
