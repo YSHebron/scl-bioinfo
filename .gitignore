@@ -161,14 +161,21 @@ cython_debug/
 
 ## SCL Specified Ignores
 
-### Large Datasets
+### Cayetano Large Datasets
 data/BIOGRID_3.0.67_2010
 data/BIOGRID_4.4.227_2023
 data/DIP_2017
 
+### Omranian Large Datasets
 data/STRING_2023/interaction/COG.links.detailed.v12.0.txt.gz
 data/STRING_2023/interaction/COG.links.v12.0.txt.gz
 data/STRING_2023/accessory/COG.mappings.v12.0.txt.gz
+
+### Yong and Wong Large
+Integrated/IntegratedComplexPrediction/yeast_predict_output
+Integrated/IntegratedComplexPrediction/yeast_xval_output
+Integrated/IntegratedComplexPrediction/data_human.txt
+Integrated/IntegratedComplexPrediction/data_yeast.txt
 
 ### PC2P Artifacts
 PC2P/scl
