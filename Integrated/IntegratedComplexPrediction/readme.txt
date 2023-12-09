@@ -36,9 +36,16 @@ EASIEST WAY TO RUN THIS PROGRAM
 
 The easiest way to run this program in Windows is to use the two prepared batch files: 
 
-1. To generate complexes using all the reference complexes for learning, use run_complexprediction.bat, with five arguments: the input data file, the reference complexes file, the GO scheme file, the GO annotations file, the output directory, and the parameter set (either "yeast" or "human"). For yeast, using the supplied input files, and "yeast_predict_output\" output directory, the command would be:
-*.\run_complexprediction.bat data_yeast.txt complexes_
-
+1. To generate complexes using all the reference complexes for learning, use run_complexprediction.bat, with five (5) arguments:
+    the input data file,
+    the reference complexes file,
+    the GO scheme file,
+    the GO annotations file,
+    the output directory,
+    and the parameter set (either "yeast" or "human").
+    
+For yeast, using the supplied input files, and "yeast_predict_output\" output directory, the command would be:
+.\run_complexprediction.bat data_yeast.txt complexes_yeast.txt go_scheme_all_mine.txt my_go_associations.sgd_propagated.txt yeast_predict_output yeast
 
 For human, using the supplied input files, and "human_predict_output\" output directory, the command would be:
 .\run_complexprediction.bat data_human.txt complexes_human.txt go_scheme_all_mine.txt my_go_associations.human_propagated.txt human_predict_output human
@@ -51,7 +58,16 @@ The output files (scored edges, and clusters) are stored in the output directory
 
 
 
-2. To run cross-validation experiments to get the performance figures as shown in the paper, use run_xval.bat, with six arguments: the input data file, the reference complexes file, the GO scheme file, the GO annotations file, the cross-validation file, the output directory, and the parameter set (either "yeast" or "human"). For yeast, with a "yeast_xval_output\" output directory, the command would be:
+2. To run cross-validation experiments to get the performance figures as shown in the paper, use run_xval.bat, with six (6) arguments:
+    the input data file,
+    the reference complexes file,
+    the GO scheme file,
+    the GO annotations file,
+    the cross-validation file,
+    the output directory, and
+    the parameter set (either "yeast" or "human").
+    
+For yeast, with a "yeast_xval_output\" output directory, the command would be:
 .\run_xval.bat data_yeast.txt complexes_yeast.txt go_scheme_all_mine.txt my_go_associations.sgd_propagated.txt xval_yeast.txt yeast_xval_output yeast
 
 For human, with a "human_xval_output\" output directory, the command would be:
