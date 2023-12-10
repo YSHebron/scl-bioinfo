@@ -18,15 +18,19 @@ from multiprocessing import Value
 def platformer():
     osname = sys.platform
     printc("Detected platform: {}".format(osname))
-    printc("Enter 1 for sequential mode, Enter 2 for parallel mode: ", end = "")
-    mode = int(input())
+    # printc("Enter 1 for sequential mode, Enter 2 for parallel mode: ", end = "")
+    mode = int(sys.argv[1])
     if (osname == "win32" and mode == 2):
-        printc("Please enter pool_thresh (default 100): ", end = "")
-        pool_thresh = input()
-        if pool_thresh == "": pool_thresh = 100
-        printc("Please enter num_procs (default 8): ", end = "")
-        num_procs = input()
-        if num_procs == "": num_procs = 8
+        try:
+            pool_thresh = sys.argv[2]
+        except:
+            pool_thresh = 100
+        printc("pool_thresh (default 100): " + str(pool_thresh))
+        try:
+            num_procs = sys.argv[3]
+        except:
+            num_procs = 8
+        printc("num_procs (default 8): " + str(num_procs))
         return osname, mode, int(pool_thresh), int(num_procs)
     return osname, mode, 100, 8
 
