@@ -172,17 +172,17 @@ data/STRING_2023/interaction/COG.links.v12.0.txt.gz
 data/STRING_2023/accessory/COG.mappings.v12.0.txt.gz
 
 ### Yong and Wong Large
-Integrated/IntegratedComplexPrediction/data_human.txt
-Integrated/IntegratedComplexPrediction/data_yeast.txt
+Integrated/data_human.txt
+Integrated/data_yeast.txt
 
 ### Yong and Wong Prediction Artifacts
-Integrated/IntegratedComplexPrediction/yeast_predict_output
-Integrated/IntegratedComplexPrediction/yeast_xval_output
-Integrated/IntegratedComplexPrediction/human_predict_output
-Integrated/IntegratedComplexPrediction/human_xval_output
-Integrated/IntegratedComplexPrediction/CLUSTERING/cmc/*.txt
-Integrated/IntegratedComplexPrediction/CLUSTERING/cmc/*.ids
-Integrated/IntegratedComplexPrediction/CLUSTERING/cmc/*.sum
+Integrated/yeast_predict_output
+Integrated/yeast_xval_output
+Integrated/human_predict_output
+Integrated/human_xval_output
+Integrated/CLUSTERING/cmc/*.txt
+Integrated/CLUSTERING/cmc/*.ids
+Integrated/CLUSTERING/cmc/*.sum
 
 
 ### PC2P Prediction Artifacts
