@@ -41,9 +41,13 @@ if __name__ == '__main__':
 
     # Now using relative paths, linux path also happens to work for win32
     """As an example here the network PIPS_Corum_Graph is called!"""
-    sample_path = "PC2P/Human/PIPS/PIPS_Corum_Graph.txt"
-    network = nx.read_weighted_edgelist(sample_path, create_using = nx.Graph(), nodetype = str)
+    sample_path = "scl-extra/data_yeast_rand.csv"
+    df = pd.read_csv(sample_path)
+    print(df)
+    network = nx.from_pandas_edgelist(df, source = "p1", target = "p2", create_using = nx.Graph(), edge_attr = None)
+    # networkx = nx.read_weighted_edgelist(sample_path, create_using = nx.Graph(), nodetype = str)
     G = network.copy()
+    print(G)
 
     """ To run code sequentially, we need to call Find_CNP from PC2P_Sequential.
         To run code parallel in Windows and Unix, we nee to call Find_CNP from PC2P_ParallelMultiprocess

@@ -188,3 +188,4 @@ PC2P/scl
 ### VSCode Artifacts
 backup
 .vscode
+.Rproj.user
