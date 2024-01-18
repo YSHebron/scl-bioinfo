@@ -180,9 +180,6 @@ Integrated/yeast_predict_output
 Integrated/yeast_xval_output
 Integrated/human_predict_output
 Integrated/human_xval_output
-Integrated/CLUSTERING/cmc/*.txt
-Integrated/CLUSTERING/cmc/*.ids
-Integrated/CLUSTERING/cmc/*.sum
 
 
 ### PC2P Prediction Artifacts
