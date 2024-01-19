@@ -5,7 +5,7 @@ Created on Tue Mar 24 20:27:04 2020
 @author: somranian
 """
 
-# This program must be roon from .../scl-bioinfo/
+# This program must be run from .../scl-bioinfo/
 import os
 import sys
 import networkx as nx
@@ -52,9 +52,9 @@ if __name__ == '__main__':
     exit()
     print(G)
 
-    """ To run code sequentially, we need to call Find_CNP from PC2P_Sequential.
-        To run code parallel in Windows and Unix, we nee to call Find_CNP from PC2P_ParallelMultiprocess
-        To run code parallel in Linux and Mac, we nee to call Find_CNP from PC2P_ParallelRay """
+    """ To run sequential code, we need to call Find_CNP from sequential.py
+        To run parallelized code in Windows and Unix, we need to call parallel_multiprocess.py 
+        To run parallelized code in Linux and Mac, we need to call Find_CNP from parallel_ray.py """
     if (mode == 1):
         import PC2P_Sequential
         edge_cut = PC2P_Sequential.Find_CNP(G)
@@ -66,12 +66,12 @@ if __name__ == '__main__':
             conda_env = "environment.yml"
             runtime_env = {"conda": conda_env, "working_dir": "PC2P"}
             ray.init(num_cpus=num_cpus, runtime_env=runtime_env)
-            import PC2P_ParallelRay
-            edge_cut = PC2P_ParallelRay.Find_CNPs_V2(G)
+            import parallel_ray
+            edge_cut = parallel_ray.Find_CNPs_V2(G)
         else:
-            import PC2P_ParallelMultiprocess
-            printc("Now running PC2P_ParallelMultiprocess! :: " + os.getcwd())
-            edge_cut = PC2P_ParallelMultiprocess.Find_CNP(G, pool_thresh, num_procs)
+            import parallel_multiprocess.py
+            printc("Now running parallel_multiprocess.py! :: " + os.getcwd())
+            edge_cut = parallel_multiprocess.Find_CNP(G, pool_thresh, num_procs)
 
     """ To save the result clusters in Graph format"""
     G_copy = G.copy()

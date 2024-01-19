@@ -8,7 +8,7 @@ Created on Tue Mar 24 07:51:58 2020
 # Assumes this file is run from the root
 import os
 from helper import printc
-printc("Hello from PC2P_ParallelRay! Current cwd (also for ray) :: " + os.getcwd())
+printc("Hello from parallel_ray! Current cwd :: " + os.getcwd())
 
 import networkx as nx
 import itertools as itert
