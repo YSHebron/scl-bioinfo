@@ -41,23 +41,24 @@ if __name__ == '__main__':
 
     # Now using relative paths, linux path also happens to work for win32
     """As an example here the network PIPS_Corum_Graph is called!"""
-    sample_path = "scl-extra/data_yeast_rand.csv"
+    sample_path = "data/intermediate/data_yeast_rand.csv"
     df = pd.read_csv(sample_path)
     print(df)
     network = nx.from_pandas_edgelist(df, source = "p1", target = "p2", create_using = nx.Graph(), edge_attr = None)
     # network = nx.read_weighted_edgelist(sample_path, create_using = nx.Graph(), nodetype = str)
     G = network.copy()
-    nx.draw_networkx(G)
-    
-    exit()
+    # nx.draw_networkx(G)
     print(G)
+    
+    print("V:", G.number_of_nodes())
+    print("E:", G.number_of_edges())
 
     """ To run sequential code, we need to call Find_CNP from sequential.py
         To run parallelized code in Windows and Unix, we need to call parallel_multiprocess.py 
         To run parallelized code in Linux and Mac, we need to call Find_CNP from parallel_ray.py """
     if (mode == 1):
-        import PC2P_Sequential
-        edge_cut = PC2P_Sequential.Find_CNP(G)
+        import sequential
+        edge_cut = sequential.Find_CNP(G)
     else:
         if (osname == "linux"):
             import psutil
@@ -69,14 +70,14 @@ if __name__ == '__main__':
             import parallel_ray
             edge_cut = parallel_ray.Find_CNPs_V2(G)
         else:
-            import parallel_multiprocess.py
+            import parallel_multiprocess
             printc("Now running parallel_multiprocess.py! :: " + os.getcwd())
             edge_cut = parallel_multiprocess.Find_CNP(G, pool_thresh, num_procs)
 
     """ To save the result clusters in Graph format"""
     G_copy = G.copy()
     G_copy.remove_edges_from(edge_cut)
-    output_dir = "PC2P/results/"
+    output_dir = "code/PC2P/results/"
     if not os.path.isdir(output_dir):
         os.mkdir(output_dir)
 

@@ -17,13 +17,19 @@ pacman::p_load(plyr, GGally, ggthemes, ggvis, plotly,
                RColorBrewer, ggfortify, devtools, colorspace,
                microbenchmark, highcharter, wordcloud, tm)
 
-df <- readr::read_table("data_yeast.txt",
+######### PARAMETERS ##########
+sample_size <- 5000
+
+set.seed(777)
+
+
+df <- readr::read_table("data/curated/Yong and Wong/data_yeast.txt",
                           col_names = c("p1", "p2", "feature", "score")) %>%
   dplyr::filter(feature %in% list("PPIREL")) %>%
   dplyr::select(p1, p2, score) %>%
   dplyr::distinct(p1, p2, .keep_all = TRUE)
 
-rand_df <- df[sample(nrow(df), size = 10000),] %>%
-  readr::write_csv("data_yeast_rand.csv")
+rand_df <- df[sample(nrow(df), size = sample_size),] %>%
+  readr::write_csv("data/intermediate/data_yeast_rand.csv", col_names = TRUE)
 
-test %>% readr::write_csv("data_yeast_scl_noheader.csv", col_names = FALSE)
+set.seed(NULL)

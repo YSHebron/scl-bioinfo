@@ -19,4 +19,4 @@ echo ================= PC2P ===================
 echo ==========================================
 echo. 
 
-python PC2P/main_Function.py %mode% %pool_thresh% %num_procs%
+python code/PC2P/main.py %mode% %pool_thresh% %num_procs%
