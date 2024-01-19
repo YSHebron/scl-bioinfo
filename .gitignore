@@ -164,18 +164,19 @@ cython_debug/
 data/curated
 
 ### Yong and Wong Prediction Artifacts
-Integrated/yeast_predict_output
-Integrated/yeast_xval_output
-Integrated/human_predict_output
-Integrated/human_xval_output
+code/integrated/yeast_predict_output
+code/integrated/yeast_xval_output
+code/integrated/human_predict_output
+code/integrated/human_xval_output
 
 ### PC2P Prediction Artifacts
-PC2P/scl
+code/PC2P/scl
 
 ### VSCode Artifacts
 backup
 .vscode
 .Rproj.user
+.Rhistory
 data_*
 
 # Zone Identifier (related to WSL)

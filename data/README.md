@@ -17,7 +17,7 @@
 
 Data here will be fed to the **prediction pipeline's** entry point at `code`. Intermediate data may be produced and fed back to this directory. Legacy data are obtained for fair comparison with previous papers.
 
-`data` currently contains the yeast datasets below, organized into PPI datasets and protein complex gold standards (large files are gitignored).
+`data/curated` currently contains the yeast datasets below, organized into PPI datasets and protein complex gold standards (large files are gitignored).
 
 Yeast PPI Datasets (and GO annotation):
 
@@ -34,6 +34,8 @@ Yeast Gold Standards:
 * SGD GSE3431 (2010)
 
 If you need the gitignore'd files, you may find it in our Teams.
+
+`data/results` will contain the results of this project, which are performance evaluations and such.
 
 ## Cayetano (2022) Datasets
 
