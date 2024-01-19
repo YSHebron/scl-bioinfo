@@ -12,20 +12,10 @@ if (pacman::p_detectOS() == "Linux" && !pacman::p_exists(xml2, local = TRUE)) {
 }
 
 # Use pacman to load add-on packages as desired.
-pacman::p_load(plyr, GGally, ggthemes, ggvis, plotly, psych,
-               htmlwidgets, rio, markdown, shiny, tidyverse,
-               ape, seqinr, kmer, validate, gsubfn,
-               Rtsne, tsne, umap, factoextra, scales,
-               RColorBrewer, ggfortify, devtools,
-               ggdendro, dendextend, cluster, colorspace,
-               microbenchmark, data.table, highcharter,
-               wordcloud, tm)
-
-test <- readr::read_table("data_yeast.txt",
-                          col_names = c("p1", "p2", "feature", "score")) %>%
-  dplyr::filter(feature %in% list("PPIREL", "STRING", "PUBMED", "PPIREL_CD")) %>%
-  dplyr::select(p1, p2, score) %>%
-  dplyr::distinct(p1, p2, .keep_all = TRUE)
+pacman::p_load(plyr, GGally, ggthemes, ggvis, plotly,
+               htmlwidgets, markdown, shiny, tidyverse, validate, gsubfn,
+               RColorBrewer, ggfortify, devtools, colorspace,
+               microbenchmark, highcharter, wordcloud, tm)
 
 df <- readr::read_table("data_yeast.txt",
                           col_names = c("p1", "p2", "feature", "score")) %>%
@@ -33,8 +23,7 @@ df <- readr::read_table("data_yeast.txt",
   dplyr::select(p1, p2, score) %>%
   dplyr::distinct(p1, p2, .keep_all = TRUE)
 
-rand_df <- df[sample(nrow(df), size = 10000),]
-
-rand_df %>% readr::write_csv("data_yeast_rand.csv")
+rand_df <- df[sample(nrow(df), size = 10000),] %>%
+  readr::write_csv("data_yeast_rand.csv")
 
 test %>% readr::write_csv("data_yeast_scl_noheader.csv", col_names = FALSE)
