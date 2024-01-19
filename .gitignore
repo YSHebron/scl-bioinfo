@@ -161,26 +161,13 @@ cython_debug/
 
 ## SCL Specified Ignores
 
-### Cayetano Large Datasets
-data/BIOGRID_3.0.67_2010
-data/BIOGRID_4.4.227_2023
-data/DIP_2017
-
-### Omranian Large Datasets
-data/STRING_2023/interaction/COG.links.detailed.v12.0.txt.gz
-data/STRING_2023/interaction/COG.links.v12.0.txt.gz
-data/STRING_2023/accessory/COG.mappings.v12.0.txt.gz
-
-### Yong and Wong Large
-Integrated/data_human.txt
-Integrated/data_yeast.txt
+data/curated
 
 ### Yong and Wong Prediction Artifacts
 Integrated/yeast_predict_output
 Integrated/yeast_xval_output
 Integrated/human_predict_output
 Integrated/human_xval_output
-
 
 ### PC2P Prediction Artifacts
 PC2P/scl
@@ -190,3 +177,6 @@ backup
 .vscode
 .Rproj.user
 data_*
+
+# Zone Identifier (related to WSL)
+*_Zone.Identifier
