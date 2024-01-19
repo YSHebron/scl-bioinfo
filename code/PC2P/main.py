@@ -76,7 +76,7 @@ if __name__ == '__main__':
     """ To save the result clusters in Graph format"""
     G_copy = G.copy()
     G_copy.remove_edges_from(edge_cut)
-    output_dir = "PC2P/scl/"
+    output_dir = "PC2P/results/"
     if not os.path.isdir(output_dir):
         os.mkdir(output_dir)
 

@@ -177,7 +177,8 @@ backup
 .vscode
 .Rproj.user
 .Rhistory
-data_*
+data_yeast*
+data_human*
 
 # Zone Identifier (related to WSL)
 *_Zone.Identifier
