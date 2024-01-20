@@ -1,14 +1,13 @@
-use strict;
-use IO::Handle;
-use List::Util 'shuffle';
-use List::Util 'max';
-use POSIX;
-use Storable qw(dclone);
-use Getopt::Std;
+# Imports and Compiler Flags
+use strict;					# safety pragma
+use IO::Handle;				# supply object methods for I/O handles
+use List::Util 'shuffle';	# imports shuffle, randomize order of elements in a list
+use List::Util 'max';		# imports max, returns maximum value in a list
+use POSIX;					# provides access to OS-specific functions
+use Storable qw(dclone);	# deep clone function
+use Getopt::Std;			# easier parsing of cmd options and arguments
 
-
-
-# inputs:
+# Inputs
 # -i <input clusters file, OR basefilename (see -x)>
 # -c <complexes file>
 # -n <Number of iterations. If defined, will iterate over the input file name, eg if input is "clusters_cmc swc5k", will process "clusters_cmc swc5k iter0.txt", "clusters_cmc swc5k iter1.txt", etc.>

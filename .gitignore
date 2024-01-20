@@ -168,6 +168,12 @@ code/integrated/yeast_predict_output
 code/integrated/yeast_xval_output
 code/integrated/human_predict_output
 code/integrated/human_xval_output
+ppi.matrix.txt
+ppi.pairs.txt
+ppi.temp.txt
+prtn.temp.ids
+qcliques.sum
+qclq.txt
 
 ### PC2P Prediction Artifacts
 code/PC2P/results

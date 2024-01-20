@@ -1,3 +1,5 @@
+:: .\run_xval.bat data_yeast.txt complexes_yeast.txt go_scheme_all_mine.txt my_go_associations.sgd_propagated.txt xval_yeast.txt yeast_xval_output yeast
+
 @echo off
 set inputdatafile=%1
 shift
@@ -114,6 +116,12 @@ REM --- Cluster with CMC ---
 echo.
 echo Running CMC...
 cd %maindir%\CLUSTERING\cmc
+type nul > "ppi.matrix.txt"
+type nul > "ppi.pairs.txt"
+type nul > "ppi.temp.txt"
+type nul > "prtn.temp.ids"
+type nul > "qcliques.sum"
+type nul > "qclq.txt"
 for /L %%i in (0,1,9) do cmc "..\..\%outputdir%\SWC\swc20k iter%%i.txt" 1 4 .5 .75 "..\..\%outputdir%\SWC\clusters_cmc swc20k iter%%i.txt" >> "%maindir%\%outputdir%\SWC\output swc.log"
 for /L %%i in (0,1,9) do perl format_cmc_results.pl "..\..\%outputdir%\SWC\clusters_cmc swc20k iter%%i.txt" "..\..\%outputdir%\SWC\swc20k iter%%i.txt" 1 "..\..\%outputdir%\SWC\clusters_cmc_formatted swc20k iter%%i.txt" >> "%maindir%\%outputdir%\SWC\output swc.log"
 for /L %%i in (0,1,9) do del "..\..\%outputdir%\SWC\clusters_cmc swc20k iter%%i.txt"
