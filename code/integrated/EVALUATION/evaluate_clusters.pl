@@ -4,8 +4,9 @@ use IO::Handle;				# supply object methods for I/O handles
 use List::Util 'shuffle';	# imports shuffle, randomize order of elements in a list
 use List::Util 'max';		# imports max, returns maximum value in a list
 use POSIX;					# provides access to OS-specific functions
-use Storable qw(dclone);	# deep clone function
-use Getopt::Std;			# easier parsing of cmd options and arguments
+use Storable qw(dclone);	# deep clone function, extract from string to list with delimiter
+use Getopt::Std;			# import getopts, easier parsing of cmd options and arguments
+
 
 # Inputs
 # -i <input clusters file, OR basefilename (see -x)>
@@ -15,14 +16,16 @@ use Getopt::Std;			# easier parsing of cmd options and arguments
 # -m <small complexes matching requirement is always 1? default 0>
 # -l <which complexes to consider for test: 0 = all, 1 = only size 4 and above, 23 = sizes 2 and 3. Note that clusters that match unconsidered complexes will NOT be false positives> default 1
 # -k <remove small clusters? 0 = no (default). If this is 1, but -l option still considers small complexes, then recall will be lowered because small complexes cannot be matched. But precision may be higher because small clusters are noisy>
-#    	To keep all clusters, eval on all complexes: -l 0. Small complexes match requirement 1: -l 0 -m 1
-# 		To keep only large clusters, eval on large complexes: -l 1
-# 		To keep only small clusters, eval on small complexes: -l 23. Small complexes match requirement 1: -l 23 -m 1
-# 		To keep only large clusters, eval on ALL complexes: -k 1 -l 0. Small complexes match requirement 1 (so that the large clusters cannot match small comp): -k 1 -l 0 -m 1
+## Usage:
+#   To keep all clusters, eval on all complexes: -l 0. Small complexes match requirement 1: -l 0 -m 1
+# 	To keep only large clusters, eval on large complexes: -l 1
+# 	To keep only small clusters, eval on small complexes: -l 23. Small complexes match requirement 1: -l 23 -m 1
+# 	To keep only large clusters, eval on ALL complexes: -k 1 -l 0. Small complexes match requirement 1 (so that the large clusters cannot match small comp): -k 1 -l 0 -m 1
 # -s <score>. only consider clusters with score over this, default 0
-# -a <number of clusters to keep per iteration. Defaul 9999999999>
+# -a <number of clusters to keep per iteration. Default 9999999999>
 # -u <filter clusters to keep only unique ones (matchthres = 0.5): 1 or 0 (default)>
 
+# declare argopts dictionary
 my %argopts;
 if (! getopts('i:c:n:x:l:k:s:u:m:a:', \%argopts)) { die "invalid arguments"; }
 
@@ -67,44 +70,58 @@ if ($num_iters > 0) {
 
 # read complexes
 # $complexes{$cid}{$pid} = 1 if protein $pid is in complex $cid
-my %complexes = ();
-open (COMPLEXFILE, $argopts{'c'}) || die $!;
+my %complexes = ();		# create hash %complexes, equivalent to C union T
+open (COMPLEXFILE, $argopts{'c'}) || die $!;	# open $argopts{'c'} (ref cplxs) as file handle COMPLEXFILE
+# for each line in COMPLEXFILE, chomp newline at the end,
+# then split assign line content to $id and $comp (prot ID and cplx ID) at tab delimiter
+# then convert all IDs to uppercase
+# then set $complexes{$cid}{$pid} = 1 if protein $pid is in complex $cid
 foreach my $line (<COMPLEXFILE>) {
 	chomp($line);
 	(my $id, my $comp) = split(/\t/, $line);
 	$id = uc($id);
 	$complexes{$comp}{$id} = 1;
 }
-close COMPLEXES_FILE;
+close COMPLEXFILE;
 print "num complexes read = ".(scalar keys %complexes)."\n";
 
-
-
+# The hash %complexes would look something like this:
+# {'1' => {'YLR342W' => 1,'YPR165W' => 1},
+#  '2' => {'YGR032W' => 1,'YPR054W' => 1}}
+# where 1 is a complex ID, and YLR342W and YPR165W are its co-complexed protein IDs
+# where 2 is a complex ID, and YGR032W and YPR054W are its co-complexed protein IDs
 
 # ==================== no iters ===============================
 if ($num_iters==0) {
 
 }
 
-
-
 # ==================== iters ===============================
 else {
 		
-	
 	# $test_complexes{$iter}{$complexid} = 1, if $complexid is a TEST complex in $iter
-	my %test_complexes = (); 
+	# We need an xval logfile such as xval_yeast.txt because each iteration uses
+	# different training set and testing set from the reference complexes, and the xval
+	# logfile logs which complexes (given by their complex id at complexes_yeast.txt) are being used as test complexes
+	# (important for the precision metric which filters out predicted complexes that match training complexes)
+	my %test_complexes = ();	# equivalent to C
 	my $xval_iters = ReadXValData($xvalfilename, \%test_complexes);	
 		
 	# count total number of test complexes
 	my $num_test_complexes = 0;
 	foreach my $iter (keys %test_complexes) {
+		# consider all complexes
 		if ($which_comps_consider==0) {
+			# scalar keys %hash gives the number of test complexes in that hash iteration
+			# we are adding up $num_test_complexes in each iter to get total num of test_complexes for verification purposes
 			$num_test_complexes += scalar keys %{$test_complexes{$iter}};
 		}
+		# consider only large complexes (size >= 4)
 		elsif ($which_comps_consider==1) {
+			# 
 			foreach my $comp (keys %{$test_complexes{$iter}}) {
 				if (scalar keys %{$complexes{$comp}} <= 3) {
+					# by using info from the hash complexes, delete small test_complexes
 					delete $test_complexes{$iter}{$comp};
 				}
 				else {
@@ -112,9 +129,11 @@ else {
 				}
 			}
 		}
+		# consider only small complexes (size 2 or 3)
 		elsif ($which_comps_consider==23) {
 			foreach my $comp (keys %{$test_complexes{$iter}}) {
 				if (scalar keys %{$complexes{$comp}} != 2 && scalar keys %{$complexes{$comp}} != 3) {
+					# by using info from the hash complexes, delete large test_complexes
 					delete $test_complexes{$iter}{$comp};
 				}
 				else {
@@ -130,22 +149,16 @@ else {
 	foreach my $iter (sort keys %test_complexes) {
 		print "Iteration $iter, num test complexes = ".(scalar keys %{$test_complexes{$iter}})."\n";
 	}
-
-
-
-
 	
-	# Read the clusters
+	# Read the clusters i.e. predicted complexes
 	# $clusters{$iter}{$c}{SCORE} = score, $clusters{$iter}{$c}{ELEMENTS}{$pid} = 1
 	my $inputfilename = $argopts{'i'};
-	my %clusters_orig = ();
+	my %clusters_orig = ();		# equivalent to P
 	ReadClustersIters($inputfilename, \%clusters_orig, $num_iters);
 	for (my $iter=0; $iter<$num_iters; $iter++) {
 		FilterClusters($clusters_orig{$iter}, $which_comps_consider, $score_threshold, $filter_unique);
 	}
 	my %clusters = ();
-	
-
 		
 	# ------------ Get Precision vs. Recall for matchscore = 0.5 -------------
 	# make a working copy of clusters
@@ -321,9 +334,11 @@ sub ReadXValData ($$) {
 	foreach my $line (<XVALFILE>) {
 		chomp $line;
 		my @toks = split(/\t/, $line);
+		# Get iteration from xval file
 		if ($toks[0] eq "iter") {
 			$curriter = $toks[1] + 0;
 		}
+		# Get complex ID from xval file, 
 		elsif (defined $toks[0] && $toks[0] ne "") {
 			my $compid = $toks[0] + 0;
 			$$xvaldataref{$curriter}{$compid} = 1;
