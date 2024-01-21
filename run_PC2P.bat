@@ -29,4 +29,6 @@ echo.
 :: .\run_PC2P.bat .\code\PC2P\Human\PIPS\PIPS_Corum_Graph.txt .\code\PC2P\results\ 10 2
 python code/PC2P/main.py %inputfile% %outputdir% %iters% %mode% %pool_thresh% %num_procs%
 
+:: To evaluate the results of this, run ./eval_PC2P.bat (no args) [WIP]
+
 cd %maindir%
