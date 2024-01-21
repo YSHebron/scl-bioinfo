@@ -212,7 +212,7 @@ def Find_CNPs_V2(G, mixed_label = False):
             updated_results = [results_1[i] for i,r in enumerate(results_1) if not(list(r.values())[0][0] in secondNeighb)]
             G_temp.remove_nodes_from(subgrf_1.nodes())
             G_components = list(nx.connected_components(G_temp))
-            print("end of round: ", rounds)
+            print("end of round:", rounds, end="\r")
             del nodes
             rounds += 1
         else:
@@ -253,7 +253,7 @@ def Find_CNPs_V2(G, mixed_label = False):
             updated_results = [results[i] for i,r in enumerate(results) if not (list(r.values())[0][0] in secondNeighb)]
             G_temp.remove_nodes_from(subgrf.nodes())
             G_components = list(nx.connected_components(G_temp))
-            print("end of round: ", rounds)
+            print("end of round:", rounds, end="\r")
             rounds += 1
     edge_cut = [edge for sublist in edge_cut for edge in sublist]
     if not mixed_label:
@@ -265,4 +265,5 @@ def Find_CNPs_V2(G, mixed_label = False):
             strList=sorted([i for i in edge_cut[i] if type(i) is str])
             sorted_x.append(intList + strList) 
         edge_cut =  list(set(tuple(i) for i in (sorted_x)))
+    printc("Algorithm took {} rounds".format(rounds))
     return(edge_cut)

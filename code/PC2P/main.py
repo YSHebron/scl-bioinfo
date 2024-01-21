@@ -1,61 +1,80 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Mar 24 20:27:04 2020
-
-@author: somranian
-"""
-
-# This program must be run from .../scl-bioinfo/
+# This program must be run from scl-bioinfo root
+# python code/PC2P/main.py data/intermediate/data_yeast_rand.csv code/PC2P/results 2
+# python code/PC2P/main.py code/PC2P/Human/PIPS/PIPS_Corum_Graph.txt code/PC2P/results 2
 import os
 import sys
 import networkx as nx
-import numpy as np
 import pandas as pd
 import time
 from helper import printc
-from multiprocessing import Value
+from typing import Tuple
 
-def platformer():
+# Parameters (unrelated to the actual clustering!)
+# argv[1] inputfile: relpath to PPI dataset csv file (with header p1, p2, score)
+# argv[2] outputdir: relpath to output dir for predicted complexes (CNPs) 
+# argv[3] mode: 1 for sequential, 2 for parallel
+# argv[4] pool_thresh: only if mode 2, default 100, tells if a round will need to parallelize based on number of components
+# argv[5] num_procs: only if mode 2, default 8, tells how many processes will be created for each call to pool
+
+# Get user-given and OS-based arguments (no ValueError validation)
+def getopts() -> Tuple[str, str, int, None|int, None|int]:
     osname = sys.platform
     printc("Detected platform: {}".format(osname))
-    # printc("Enter 1 for sequential mode, Enter 2 for parallel mode: ", end = "")
-    mode = int(sys.argv[1])
-    if (osname == "win32" and mode == 2):
-        try:
-            pool_thresh = sys.argv[2]
-        except:
-            pool_thresh = 100
-        printc("pool_thresh (default 100): " + str(pool_thresh))
-        try:
-            num_procs = sys.argv[3]
-        except:
-            num_procs = 8
-        printc("num_procs (default 8): " + str(num_procs))
-        return osname, mode, int(pool_thresh), int(num_procs)
-    return osname, mode, 100, 8
+    
+    try: inputfile = sys.argv[1]
+    except IndexError: print("No inputfile path provided. Exiting."); sys.exit()
+    try: os.path.isfile(inputfile)
+    except: print("Invalid inputfile. Exiting."); sys.exit()
+    
+    try: outputdir = sys.argv[2]
+    except IndexError: print("No outputdir path provided. Exiting."); sys.exit()
+    
+    try: mode = int(sys.argv[3])
+    except IndexError: print("No mode provided. Exiting."); sys.exit()
+    except ValueError: print("Invalid mode. Exiting."); sys.exit()
+    
+    if mode==1:
+        printc("Run mode: sequential")
+        return osname, inputfile, outputdir, mode, None, None
+    elif mode==2:
+        printc("Run mode: parallel")
+        # Return for parallel_multiprocess
+        if osname=="win32":
+            try: pool_thresh = int(sys.argv[4])
+            except IndexError: pool_thresh = 100
+            except ValueError: print("Invalid pool_thresh. Exiting."); sys.exit()
+            try: num_procs = int(sys.argv[5])
+            except IndexError: num_procs = 8
+            except ValueError: print("Invalid num_procs. Exiting."); sys.exit()
+            printc("pool_thresh: " + str(pool_thresh))
+            printc("num_procs: " + str(num_procs))
+            return osname, inputfile, outputdir, mode, pool_thresh, num_procs
+        # Return for parallel_ray
+        return osname, inputfile, outputdir, mode, None, None
+    else: print("Mode argument is not 1 or 2. Exiting."); sys.exit()
 
 if __name__ == '__main__':
-    osname, mode, pool_thresh, num_procs = platformer()
-
+    osname, inputfile, outputdir, mode, pool_thresh, num_procs = getopts()
+    
     start_time = time.time()
-
-    # Now using relative paths, linux path also happens to work for win32
-    """As an example here the network PIPS_Corum_Graph is called!"""
-    sample_path = "data/intermediate/data_yeast_rand.csv"
-    df = pd.read_csv(sample_path)
-    print(df)
-    network = nx.from_pandas_edgelist(df, source = "p1", target = "p2", create_using = nx.Graph(), edge_attr = None)
-    # network = nx.read_weighted_edgelist(sample_path, create_using = nx.Graph(), nodetype = str)
-    G = network.copy()
-    # nx.draw_networkx(G)
+    G = nx.Graph()
+    if inputfile.endswith(".csv"):
+        # for .csv with header inputs
+        df = pd.read_csv(inputfile)
+        print(df)
+        G = nx.from_pandas_edgelist(df, source = "p1", target = "p2", create_using = nx.Graph(), edge_attr = "score")
+    elif inputfile.endswith(".txt"):
+        # for .txt no header inputs
+        G = nx.read_weighted_edgelist(inputfile, create_using = nx.Graph(), nodetype = str)
     print(G)
     
-    print("V:", G.number_of_nodes())
-    print("E:", G.number_of_edges())
+    print("Size of V(G):", G.number_of_nodes())
+    print("Size of E(G):", G.number_of_edges())
 
-    """ To run sequential code, we need to call Find_CNP from sequential.py
-        To run parallelized code in Windows and Unix, we need to call parallel_multiprocess.py 
-        To run parallelized code in Linux and Mac, we need to call Find_CNP from parallel_ray.py """
+    ### Clustering
+    # To run sequential code, we need to call Find_CNP from sequential.py
+    # To run parallelized code in Windows and Unix, we need to call parallel_multiprocess.py 
+    # To run parallelized code in Linux and Mac, we need to call Find_CNP from parallel_ray.py """
     if (mode == 1):
         import sequential
         edge_cut = sequential.Find_CNP(G)
@@ -65,7 +84,7 @@ if __name__ == '__main__':
             import ray
             num_cpus = psutil.cpu_count(logical=False)
             conda_env = "environment.yml"
-            runtime_env = {"conda": conda_env, "working_dir": "PC2P"}
+            runtime_env = {"conda": conda_env, "working_dir": "code/PC2P"}
             ray.init(num_cpus=num_cpus, runtime_env=runtime_env)
             import parallel_ray
             edge_cut = parallel_ray.Find_CNPs_V2(G)
@@ -74,28 +93,39 @@ if __name__ == '__main__':
             printc("Now running parallel_multiprocess.py! :: " + os.getcwd())
             edge_cut = parallel_multiprocess.Find_CNP(G, pool_thresh, num_procs)
 
-    """ To save the result clusters in Graph format"""
+    ### Minimum Edge Cut
     G_copy = G.copy()
-    G_copy.remove_edges_from(edge_cut)
-    output_dir = "code/PC2P/results/"
-    if not os.path.isdir(output_dir):
-        os.mkdir(output_dir)
+    G_copy.remove_edges_from(edge_cut) # G_copy now contains G's predicted CNP
+    
+    ### Writing to results
+    outputdir = outputdir + "/"
+    if not os.path.isdir(outputdir):
+        os.mkdir(outputdir)
 
-    #--- If the edges are unweighted ----------
-    nx.write_edgelist(G_copy, output_dir + "STRING_CNPPredicted_V4.edgelist.gz", data=False)
-    #--- If the edges are weighted ----------
-    nx.write_weighted_edgelist(G_copy, output_dir + 'STRING_CNPPredicted_V4.weighted.edgelist.gz')
-    # Note: Use gzip -dk file.gz to extract .gz
+    # For unweighted inputfile (default)
+    nx.write_edgelist(G_copy, outputdir + "G_PredictedCNP_edgelist.txt", data=False)
+    nx.write_edgelist(G_copy, outputdir + "G_PredictedCNP_edgelist.gz", data=False)
+    # For weighted inputfile (not really used)
+    nx.write_weighted_edgelist(G_copy, outputdir + "G_PredictedCNP_weightededgelist.txt")
+    nx.write_weighted_edgelist(G_copy, outputdir + "G_PredictedCNP_weightededgelist.gz")
+    # Note: Use gzip -dk file.gz to extract .gz in linux
 
-    """ We save each predicted cluster in one line """
-    # I.e. one line per predicted cluster
+    # We save each predicted cluster (complex) in the predicted CNP of G in one line
+    # Each remaining connected component (predicted BSsG coherent partitions) is treated as its own cluster
+    # We write one line per predicted cluster
+    # Each cluster is represented as a set in G_cnp_components
     G_cnp_components = list(nx.connected_components(G_copy))
     G_cnp_components.sort(key=len, reverse=True)
+    G_cnp_components = [sorted(list(cplx)) for cplx in G_cnp_components]
+    printc("First 10 complexes, sorted by decreasing number of proteins:")
+    print(*G_cnp_components[:10], sep="\n")
 
-    with open(output_dir + 'G_PredictedClusters.txt', 'w') as f:
-        for item in G_cnp_components:
-            for node in item:
-                f.write("%s " % node)
+    with open(outputdir + 'G_PredictedComplexes.txt', 'w') as f:
+        # complex === line
+        for complex in G_cnp_components:
+            # protein === node
+            for protein in complex:
+                f.write("%s " % protein)
             f.write("\n")
 
     printc("Algorithm took %s seconds to finish." % (time.time() - start_time))

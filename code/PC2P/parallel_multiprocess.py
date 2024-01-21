@@ -11,6 +11,7 @@ from operator import itemgetter
 from networkx.algorithms.flow import shortest_augmenting_path
 import multiprocessing as mp
 import time
+from helper import printc
 
 def edgeCutSet_V2(cnp , G):
     """ This function find edges that connect the component to the rest of graph."""
@@ -224,7 +225,7 @@ def Find_CNP(G, pool_threshold = 50, num_procs = 4, mngd_list = None, mixed_labe
             updated_results = [results_1[i] for i,r in enumerate(results_1) if not(list(r.values())[0][0] in secondNeighb)]
             G_temp.remove_nodes_from(subgrf_1.nodes())
             G_components = list(nx.connected_components(G_temp))
-            print("end of round: ", rounds)
+            print("end of round:", rounds, end="\r")
             del nodes
             rounds += 1
         else:
@@ -296,7 +297,7 @@ def Find_CNP(G, pool_threshold = 50, num_procs = 4, mngd_list = None, mixed_labe
             G_components = list(nx.connected_components(G_temp))
 #             G_components.sort(key=len)
 #            print("G_components: ",G_components)
-            print("end of round: ", rounds)
+            print("end of round:", rounds, end="\r")
             rounds += 1
     edge_cut = [edge for sublist in edge_cut for edge in sublist]
     if not mixed_label:
@@ -309,6 +310,7 @@ def Find_CNP(G, pool_threshold = 50, num_procs = 4, mngd_list = None, mixed_labe
             sorted_x.append(intList + strList) 
         edge_cut =  list(set(tuple(i) for i in (sorted_x)))
     # mngd_list.extend(edge_cut)
+    printc("Algorithm took {} rounds".format(rounds))
     return(edge_cut)
 
 
