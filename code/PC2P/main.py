@@ -83,6 +83,7 @@ if __name__ == '__main__':
     # To run parallelized code in Linux and Mac, we need to call Find_CNP from parallel_ray.py """
     
     for i in range(0, iters):
+        iter_time = time.time()
         print("Iteration", i)
         if (mode == 1):
             import sequential
@@ -137,6 +138,6 @@ if __name__ == '__main__':
                     f.write("%s " % protein)
                 f.write("\n")
                 
-        printc("Iteration {} took {} seconds to finish.".format(i, time.time() - start_time))
+        printc("Iteration {} took {} seconds to finish.".format(i, time.time() - iter_time))
 
     printc("Algorithm took %s seconds to finish." % (time.time() - start_time))
