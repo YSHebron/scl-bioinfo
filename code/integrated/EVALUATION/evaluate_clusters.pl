@@ -4,7 +4,7 @@ use IO::Handle;				# supply object methods for I/O handles
 use List::Util 'shuffle';	# imports shuffle, randomize order of elements in a list
 use List::Util 'max';		# imports max, returns maximum value in a list
 use POSIX;					# provides access to OS-specific functions
-use Storable qw(dclone);	# deep clone function, extract from string to list with delimiter
+use Storable qw(dclone);	# deep clone function, extract from string to list with delimiter, UNUSED
 use Getopt::Std;			# import getopts, easier parsing of cmd options and arguments
 
 
@@ -68,7 +68,7 @@ if ($num_iters > 0) {
 }
 
 
-# read complexes
+### Read complexes
 # $complexes{$cid}{$pid} = 1 if protein $pid is in complex $cid
 my %complexes = ();		# create hash %complexes, equivalent to C union T
 open (COMPLEXFILE, $argopts{'c'}) || die $!;	# open $argopts{'c'} (ref cplxs) as file handle COMPLEXFILE
@@ -173,6 +173,7 @@ else {
 	
 	# ------------ Get Precision vs. Recall for matchscore = 0.5 -------------
 	# make a working copy of clusters
+	# This is effectively a deep copy (dclone left unused)
 	%clusters = ();
 	for (my $iter=0; $iter<$num_iters; $iter++) {
 		foreach my $clus (keys %{$clusters_orig{$iter}}) {
@@ -182,10 +183,13 @@ else {
 			}
 		}
 	}
+
+	# Declare statistical variables (AUC: area under curve, SE: standard error (similar to standard deviation))
 	my $avg_auc = 0;
 	my $se_auc = 0;
 	my $avg_rec = 0;
-	my $se_rec = 0;	
+	my $se_rec = 0;
+
 	# $test_complexes_matched{$comp}{N} = num iters that $comp is tested in, {M} = num iters it is matched
 	my %test_complexes_matched = (); 
 	foreach my $iter (keys %test_complexes) {
@@ -201,6 +205,7 @@ else {
 		print "Iter $iter\n";
 		my $rec = 0;
 		my %matched_complexes = ();
+		# Calculate precision recalls of complex prediction
 		my $auc = CalcPrecRecCompPred(0.5, \%{$clusters{$iter}}, \%{$test_complexes{$iter}}, \%complexes, \$rec, \%matched_complexes);
 		foreach my $comp (keys %matched_complexes) {
 			$test_complexes_matched{$comp}{"M"}++;

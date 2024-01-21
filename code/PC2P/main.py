@@ -113,6 +113,7 @@ def get_cnp(args):
         # complex === line
         for complex in G_cnp_components:
             # protein === node
+            if len(complex) < 2: continue   # filter out single-protein complexes
             for protein in complex:
                 f.write("%s " % protein)
             f.write("\n")
