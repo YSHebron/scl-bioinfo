@@ -107,17 +107,17 @@ else {
 	my %test_complexes = ();	# equivalent to C
 	my $xval_iters = ReadXValData($xvalfilename, \%test_complexes);	
 		
-	# count total number of test complexes
+	# Count total number of test complexes
 	my $num_test_complexes = 0;
-	# Filter test complexes
+	# Filter TEST complexes by size
 	foreach my $iter (keys %test_complexes) {
-		# consider all complexes
+		# case: consider all complexes
 		if ($which_comps_consider==0) {
 			# scalar keys %hash gives the number of test complexes in that hash iteration
 			# we are adding up $num_test_complexes in each iter to get total num of test_complexes for verification purposes
 			$num_test_complexes += scalar keys %{$test_complexes{$iter}};
 		}
-		# consider only large complexes (size >= 4)
+		# case: consider only large complexes (size >= 4)
 		elsif ($which_comps_consider==1) {
 			# 
 			foreach my $comp (keys %{$test_complexes{$iter}}) {
@@ -130,7 +130,7 @@ else {
 				}
 			}
 		}
-		# consider only small complexes (size 2 or 3)
+		# case: consider only small complexes (size 2 or 3)
 		elsif ($which_comps_consider==23) {
 			foreach my $comp (keys %{$test_complexes{$iter}}) {
 				if (scalar keys %{$complexes{$comp}} != 2 && scalar keys %{$complexes{$comp}} != 3) {
@@ -142,10 +142,10 @@ else {
 				}
 			}
 			
-		} # end which_comps_consider==23
+		}
 	}
 	
-	# print some statistics
+	# print some statistics on test complexes
 	print "num test complexes = $num_test_complexes\n";
 	foreach my $iter (sort keys %test_complexes) {
 		print "Iteration $iter, num test complexes = ".(scalar keys %{$test_complexes{$iter}})."\n";
@@ -190,6 +190,7 @@ else {
 	my $avg_rec = 0;
 	my $se_rec = 0;
 
+	# $test_complexes{$iter}{$complexid} = 1, if $complexid is a TEST complex in $iter
 	# $test_complexes_matched{$comp}{N} = num iters that $comp is tested in, {M} = num iters it is matched
 	my %test_complexes_matched = (); 
 	foreach my $iter (keys %test_complexes) {
@@ -201,6 +202,7 @@ else {
 	if ($SMALLCOMP_MATCH1==1) {
 		print "*************** Match threshold = 1 for small comps *************\n";
 	}
+	# Calculate values needed for Prec-Recall Curve for each iteration
 	for (my $iter=0; $iter<$num_iters; $iter++) {
 		print "Iter $iter\n";
 		my $rec = 0;
@@ -622,7 +624,8 @@ sub CalcPrecRecCompPred {
 	my %correct_clusters = ();
 	my %correct_smallclusters = ();
 	foreach my $clus (keys %{$clusters_ref}) {
-		my @cluster_matches; 	# since each cluster may be matched to multiple complexes, this structure keeps track of them
+		my @cluster_matches;
+		# since each cluster may be matched to multiple complexes, this structure keeps track of them
 		$cluster_matches[0] = $$clusters_ref{$clus}{SCORE};
 		$cluster_matches[1] = 0;
 		$cluster_matches[2] = $clus;
@@ -701,29 +704,63 @@ sub CalcPrecRecCompPred {
 	my $recall = 0;
 	my $auc = 0;
 	my $auc_prevrecall = 0;
+
+	# $results[i][0] = score
+	# $results[i][1] = number of correct matches
+	# $results[i][2] = cluster id
+	# $results[i][3]{complex_id} = 1 if matched to complex_id
+	# Loop through sorted results array based on the score of each subarray in descending order
 	foreach (sort {$$b[0] <=> $$a[0]} @results) {
+		
+		# Check if the score of the current result subarray is different from the previous one
 		if ($lastvalue != $$_[0]) {
-	   	$recall = $matched/$numtestcomps;
-	   	if ($$_[0] != $lastvalue && $lastvalue != -1 && $recall > $threshold)    {
-	    	print "$lastvalue\t$predicts\t$recall\t".$corrects/$predicts."\n";
-	    	while($threshold < $recall) {
-	     		$threshold += 0.01;
-	    	}
-			  # accumulate AUC
-			  $auc += ($recall - $auc_prevrecall) * ($corrects/$predicts);
-			  $auc_prevrecall = $recall;
-	   	}
-	   	$lastvalue = $$_[0];
-	  }
-	  if ($$_[1] > 0){
-	  	$corrects++;
-	  	foreach my $comp (keys %{$$_[3]}) {
-	  		$matched_complexes{$comp} = 1;
-	  	}
-	  	$matched = scalar keys %matched_complexes;
-	  }
-	  $predicts++;
+			my $check = $$_[0];
+			# print("$lastvalue compared to $check", "\n");
+			# print("threshold: $threshold", "\n");
+
+			# Calculate recall as the ratio of matched to the total number of test complexes
+			$recall = $matched / $numtestcomps;
+
+			# Check conditions for printing metrics
+			# (when the first element changes, not the first iteration, and recall exceeds threshold)
+			if ($$_[0] != $lastvalue && $lastvalue != -1 && $recall > $threshold) {
+				# Print the results including the last value, number of predictions, recall, and precision
+				print "$lastvalue\t$predicts\t$recall\t" . $corrects / $predicts . "\n";
+
+				# Adjust the threshold to be greater than or equal to the current recall
+				# Adjustment only happens after a has been printed
+				while ($threshold < $recall) {
+					$threshold += 0.01;
+				}
+
+				# Accumulate AUC (Area Under the Curve) based on trapezoidal rule
+				$auc += ($recall - $auc_prevrecall) * ($corrects / $predicts);
+				$auc_prevrecall = $recall;
+			}
+
+			# Update the last value for comparison in the next iteration
+			$lastvalue = $$_[0];
+		}
+
+		# Check if number of matches of current result subarray is greater than 0
+		if ($$_[1] > 0) {
+			
+			# Increment the count of correct predictions
+			$corrects++;
+			
+			# Mark the predicted complexes as matched in a hash
+			foreach my $comp (keys %{$$_[3]}) {
+				$matched_complexes{$comp} = 1;
+			}
+
+			# Update the count of matched complexes
+			$matched = scalar keys %matched_complexes;
+		}
+
+		# Increment the count of predictions
+		$predicts++;
 	}
+
 	if ($predicts > 0) {
 	  $recall = $matched/$numtestcomps;
 		print "$lastvalue\t$predicts\t$recall\t".$corrects/$predicts."\n";
