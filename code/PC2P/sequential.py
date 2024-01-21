@@ -104,7 +104,7 @@ def Find_CNP(G, mixed_label = False):
     while len(G_components) != 0:
         iter += 1
         if (iter % k == 0):
-            print("At iter {}, len(G_components) = {}".format(iter, len(G_components)))
+            print("At iter {}, len(G_components) = {}".format(iter, len(G_components)), end="\r")
         min_ratioN1 = float('inf')
         min_ratioN2 = float('inf')
         componentOfG = G.subgraph(G_components[0]).copy() #we get the first component and find cnp

@@ -5,6 +5,7 @@ import os
 import sys
 import networkx as nx
 import pandas as pd
+import multiprocessing as mp
 import time
 from helper import printc
 from typing import Tuple
@@ -41,7 +42,7 @@ def getopts() -> Tuple[str, str, int, int, None|int, None|int]:
     
     if mode==1:
         printc("Run mode: sequential")
-        return osname, inputfile, iters, outputdir, mode, None, None
+        return osname, inputfile, outputdir, iters, mode, None, None
     elif mode==2:
         printc("Run mode: parallel")
         # Return for parallel_multiprocess
@@ -58,6 +59,65 @@ def getopts() -> Tuple[str, str, int, int, None|int, None|int]:
         # Return for parallel_ray
         return osname, inputfile, iters, outputdir, mode, None, None
     else: print("Mode argument is not 1 or 2. Exiting."); sys.exit()
+
+def get_cnp(args):
+    G, i, osname, mode, pool_thresh, num_procs, outputdir = args
+    iter_time = time.time()
+    print("Iteration", i)
+    if (mode == 1):
+        import sequential
+        edge_cut = sequential.Find_CNP(G)
+    else:
+        if (osname == "linux"):
+            import psutil
+            import ray
+            num_cpus = psutil.cpu_count(logical=False)
+            conda_env = "environment.yml"
+            runtime_env = {"conda": conda_env, "working_dir": "code/PC2P"}
+            ray.init(num_cpus=num_cpus, runtime_env=runtime_env)
+            import parallel_ray
+            edge_cut = parallel_ray.Find_CNPs_V2(G)
+        else:
+            import parallel_multiprocess
+            printc("Now running parallel_multiprocess.py! :: " + os.getcwd())
+            edge_cut = parallel_multiprocess.Find_CNP(G, pool_thresh, num_procs)
+
+    ### Minimum Edge Cut
+    G_copy = G.copy()
+    G_copy.remove_edges_from(edge_cut) # G_copy now contains G's predicted CNP
+    
+    ### Writing to results
+    outputdir = outputdir + "/"
+    if not os.path.isdir(outputdir):
+        os.mkdir(outputdir)
+
+    # # For unweighted inputfile (default)
+    # nx.write_edgelist(G_copy, outputdir + "G_PredictedCNP_edgelist.txt", data=False)
+    # nx.write_edgelist(G_copy, outputdir + "G_PredictedCNP_edgelist.gz", data=False)
+    # # For weighted inputfile (not really used)
+    # nx.write_weighted_edgelist(G_copy, outputdir + "G_PredictedCNP_weightededgelist.txt")
+    # nx.write_weighted_edgelist(G_copy, outputdir + "G_PredictedCNP_weightededgelist.gz")
+    # # Note: Use gzip -dk file.gz to extract .gz in linux
+
+    # We save each predicted cluster (complex) in the predicted CNP of G in one line
+    # Each remaining connected component (predicted BSsG coherent partitions) is treated as its own cluster
+    # We write one line per predicted cluster
+    # Each cluster is represented as a set in G_cnp_components
+    G_cnp_components = list(nx.connected_components(G_copy))
+    G_cnp_components.sort(key=len, reverse=True)
+    G_cnp_components = [sorted(list(cplx)) for cplx in G_cnp_components]
+    printc("First 10 complexes, sorted by decreasing number of proteins:")
+    print(*G_cnp_components[:10], sep="\n")
+
+    with open(outputdir + 'G_PredictedComplexes_iter{}.txt'.format(i), 'w') as f:
+        # complex === line
+        for complex in G_cnp_components:
+            # protein === node
+            for protein in complex:
+                f.write("%s " % protein)
+            f.write("\n")
+    
+    printc("Iteration {} took {} seconds to finish.".format(i, time.time() - iter_time))
 
 if __name__ == '__main__':
     osname, inputfile, outputdir, iters, mode, pool_thresh, num_procs = getopts()
@@ -80,64 +140,20 @@ if __name__ == '__main__':
     ### Clustering
     # To run sequential code, we need to call Find_CNP from sequential.py
     # To run parallelized code in Windows and Unix, we need to call parallel_multiprocess.py 
-    # To run parallelized code in Linux and Mac, we need to call Find_CNP from parallel_ray.py """
+    # To run parallelized code in Linux and Mac, we need to call Find_CNP from parallel_ray.py """    
     
-    for i in range(0, iters):
-        iter_time = time.time()
-        print("Iteration", i)
-        if (mode == 1):
-            import sequential
-            edge_cut = sequential.Find_CNP(G)
-        else:
-            if (osname == "linux"):
-                import psutil
-                import ray
-                num_cpus = psutil.cpu_count(logical=False)
-                conda_env = "environment.yml"
-                runtime_env = {"conda": conda_env, "working_dir": "code/PC2P"}
-                ray.init(num_cpus=num_cpus, runtime_env=runtime_env)
-                import parallel_ray
-                edge_cut = parallel_ray.Find_CNPs_V2(G)
-            else:
-                import parallel_multiprocess
-                printc("Now running parallel_multiprocess.py! :: " + os.getcwd())
-                edge_cut = parallel_multiprocess.Find_CNP(G, pool_thresh, num_procs)
+    # Parallel iterations for sequential mode: Create a Pool for parallel execution
+    # Sequential iterations for parallel mode
+    if mode==1:
+        with mp.Pool(processes=mp.cpu_count()) as pool:
+            # Prepare arguments for each iteration
+            args_list = [(G, i, osname, mode, pool_thresh, num_procs, outputdir) for i in range(0, iters)]
 
-        ### Minimum Edge Cut
-        G_copy = G.copy()
-        G_copy.remove_edges_from(edge_cut) # G_copy now contains G's predicted CNP
-        
-        ### Writing to results
-        outputdir = outputdir + "/"
-        if not os.path.isdir(outputdir):
-            os.mkdir(outputdir)
-
-        # # For unweighted inputfile (default)
-        # nx.write_edgelist(G_copy, outputdir + "G_PredictedCNP_edgelist.txt", data=False)
-        # nx.write_edgelist(G_copy, outputdir + "G_PredictedCNP_edgelist.gz", data=False)
-        # # For weighted inputfile (not really used)
-        # nx.write_weighted_edgelist(G_copy, outputdir + "G_PredictedCNP_weightededgelist.txt")
-        # nx.write_weighted_edgelist(G_copy, outputdir + "G_PredictedCNP_weightededgelist.gz")
-        # # Note: Use gzip -dk file.gz to extract .gz in linux
-
-        # We save each predicted cluster (complex) in the predicted CNP of G in one line
-        # Each remaining connected component (predicted BSsG coherent partitions) is treated as its own cluster
-        # We write one line per predicted cluster
-        # Each cluster is represented as a set in G_cnp_components
-        G_cnp_components = list(nx.connected_components(G_copy))
-        G_cnp_components.sort(key=len, reverse=True)
-        G_cnp_components = [sorted(list(cplx)) for cplx in G_cnp_components]
-        printc("First 10 complexes, sorted by decreasing number of proteins:")
-        print(*G_cnp_components[:10], sep="\n")
-
-        with open(outputdir + 'G_PredictedComplexes_iter{}.txt'.format(i), 'w') as f:
-            # complex === line
-            for complex in G_cnp_components:
-                # protein === node
-                for protein in complex:
-                    f.write("%s " % protein)
-                f.write("\n")
-                
-        printc("Iteration {} took {} seconds to finish.".format(i, time.time() - iter_time))
-
+            # Use the pool to map the function to the arguments
+            pool.map(get_cnp, args_list)
+    elif mode==2:
+        for i in range(0, iters):
+            args_list = (G, i, osname, mode, pool_thresh, num_procs, outputdir)
+            get_cnp(args_list)
+    
     printc("Algorithm took %s seconds to finish." % (time.time() - start_time))
