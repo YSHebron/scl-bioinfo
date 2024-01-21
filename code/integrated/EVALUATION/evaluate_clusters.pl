@@ -109,6 +109,7 @@ else {
 		
 	# count total number of test complexes
 	my $num_test_complexes = 0;
+	# Filter test complexes
 	foreach my $iter (keys %test_complexes) {
 		# consider all complexes
 		if ($which_comps_consider==0) {
@@ -150,16 +151,26 @@ else {
 		print "Iteration $iter, num test complexes = ".(scalar keys %{$test_complexes{$iter}})."\n";
 	}
 	
-	# Read the clusters i.e. predicted complexes
+	# Read the clusters i.e. predicted complexes P
 	# $clusters{$iter}{$c}{SCORE} = score, $clusters{$iter}{$c}{ELEMENTS}{$pid} = 1
+	# Data structure:
+	# clusters = {iter => c => {SCORE, ELEMENTS => pid}}
 	my $inputfilename = $argopts{'i'};
 	my %clusters_orig = ();		# equivalent to P
+
+	# Recall that $num_iters comes from -n, and if it is set, we iterate through the file name
+	# which if it looks like "clusters integrated.txt" will iterate through "clusters integrated iter{0..num_iters}"
 	ReadClustersIters($inputfilename, \%clusters_orig, $num_iters);
+	# ReadClustersIters populates %cluster_orig with key-value pairs like this:
+	# {1 => {C1_CCL1_C125|4|CL1|CMC|COACH|IPCA||2|1|2| => {SCORE => 1.50999445763554, ELEMENTS => {YER157W => 1, YGL005C => 1, ...}}, ...}}
 	for (my $iter=0; $iter<$num_iters; $iter++) {
+		# Filter P using -l -s and -u parameters
 		FilterClusters($clusters_orig{$iter}, $which_comps_consider, $score_threshold, $filter_unique);
 	}
+
+	# P, C, and also T (for precision caveat) has already been generated here for each iteration. Time to evaluate.
 	my %clusters = ();
-		
+	
 	# ------------ Get Precision vs. Recall for matchscore = 0.5 -------------
 	# make a working copy of clusters
 	%clusters = ();
@@ -425,14 +436,22 @@ sub ReadClustersIters ($$$) {
 	
 	for (my $iter=0; $iter<$numiters; $iter++) {		
 		open (CLUSTERS_FILE, "$filename iter".$iter.".txt") || die ("$filename iter".$iter.".txt");
+		# Sample line: C1_CCL1_C125|4|CL1|CMC|COACH|IPCA||2|1|2|(8_1.50999445763554): YER157W YGL005C YGL223C YGR120C YML071C YNL041C YNL051W YPR105C
 		foreach my $line (<CLUSTERS_FILE>) {
 			chomp($line);
 			my @toks = split(' ', $line);
+			# toks = [C1_CCL1_C125|4|CL1|CMC|COACH|IPCA||2|1|2|(8_1.50999445763554):,YER157W,YGL005C,YGL223C,YGR120C,YML071C,YNL041C,YNL051W,YPR105C]
 			(my $clus, my $rest) = split(/\(/, $toks[0]);
+			# $clus = C1_CCL1_C125|4|CL1|CMC|COACH|IPCA||2|1|2|
+			# $rest = 8_1.50999445763554):
 			(my $rest2, my $score) = split("_", $rest);
+			# $rest2 = 8
+			# $score = 1.50999445763554)
 			$score = substr($score, 0, length($score)-2);
+			# $score = 1.50999445763554 (then typecast to number)
 			$$clusters_ref{$iter}{$clus}{SCORE} = $score + 0;
 			shift @toks;
+			# $toks = [YER157W,YGL005C,YGL223C,YGR120C,YML071C,YNL041C,YNL051W,YPR105C]
 			foreach (@toks) {
 				$$clusters_ref{$iter}{$clus}{ELEMENTS}{$_} = 1;
 			}
@@ -448,7 +467,7 @@ sub ReadClustersIters ($$$) {
 }
 
 
-
+# Not used
 # $clusters{$c}{SCORE} = score, $clusters{$c}{ELEMENTS}{$pid} = 1
 sub ReadClusters ($$$) {
 	my $filename = $_[0];

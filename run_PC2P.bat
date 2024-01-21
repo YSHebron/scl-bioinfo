@@ -4,6 +4,8 @@ set inputfile=%1%
 shift
 set outputdir=%1%
 shift
+set iters=%1%
+shift
 set mode=%1
 shift
 set pool_thresh=%1
@@ -24,5 +26,6 @@ echo ==========================================
 echo. 
 
 :: Example:
-:: ./run_PC2P.bat .\code\PC2P\Human\PIPS\PIPS_Corum_Graph.txt .\code\PC2P\results\ 2
-python code/PC2P/main.py %inputfile% %outputdir% %mode% %pool_thresh% %num_procs%
+:: .\run_PC2P.ps1 .\code\PC2P\Human\PIPS\PIPS_Corum_Graph.txt .\code\PC2P\results\ 10 2
+python code/PC2P/main.py %inputfile% %outputdir% %iters% %mode% %pool_thresh% %num_procs%
+
