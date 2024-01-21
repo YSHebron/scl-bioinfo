@@ -1,5 +1,9 @@
 @echo off
 
+set inputfile=%1%
+shift
+set outputdir=%1%
+shift
 set mode=%1
 shift
 set pool_thresh=%1
@@ -19,4 +23,6 @@ echo ================= PC2P ===================
 echo ==========================================
 echo. 
 
-python code/PC2P/main.py %mode% %pool_thresh% %num_procs%
+:: Example:
+:: ./run_PC2P.bat .\code\PC2P\Human\PIPS\PIPS_Corum_Graph.txt .\code\PC2P\results\ 2
+python code/PC2P/main.py %inputfile% %outputdir% %mode% %pool_thresh% %num_procs%
