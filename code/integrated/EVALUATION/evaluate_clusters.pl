@@ -1,12 +1,11 @@
 # Imports and Compiler Flags
 use strict;					# safety pragma
 use IO::Handle;				# supply object methods for I/O handles
-use List::Util 'shuffle';	# imports shuffle, randomize order of elements in a list
-use List::Util 'max';		# imports max, returns maximum value in a list
+use List::Util 'shuffle';	# imports shuffle → randomize order of elements in a list
+use List::Util 'max';		# imports max → returns maximum value in a list
 use POSIX;					# provides access to OS-specific functions
 use Storable qw(dclone);	# deep clone function, extract from string to list with delimiter, UNUSED
 use Getopt::Std;			# import getopts, easier parsing of cmd options and arguments
-
 
 # Inputs
 # -i <input clusters file, OR basefilename (see -x)>
@@ -339,10 +338,6 @@ else {
 	
 } # end for $num_iters > 0
 
-
- 
- 
-
 sub ReadXValData ($$) {
 	my $filename = $_[0];
 	my $xvaldataref = $_[1]; # $xval_date{$iter}{$complexid} = 1, if $complexid is a TEST complex in $iter
@@ -373,9 +368,6 @@ sub ReadXValData ($$) {
 	
 	return ($curriter+1);
 }
-
-
-
 
 # match cluster with a lower bound. If match score is definitely below lower bound, then just return 0, no need to compute exactly
 sub MatchClustersLB ($$$) {
@@ -433,8 +425,6 @@ sub MatchClustersLB ($$$) {
 	return ($num_intersect/$num_union);
 }
 
- 
-
 # $clusters{$iter}{$c}{SCORE} = score, $clusters{$iter}{$c}{ELEMENTS}{$pid} = 1
 sub ReadClustersIters ($$$) {
 	my $filename = $_[0];
@@ -473,7 +463,6 @@ sub ReadClustersIters ($$$) {
 #	}	
 }
 
-
 # Not used
 # $clusters{$c}{SCORE} = score, $clusters{$c}{ELEMENTS}{$pid} = 1
 sub ReadClusters ($$$) {
@@ -495,11 +484,6 @@ sub ReadClusters ($$$) {
 	}		
 	close CLUSTERS_FILE;	
 }
-
-
-
-
-
 
 sub FilterClusters {
 	my $clustersref = $_[0];
@@ -564,8 +548,6 @@ sub FilterClusters {
 	}
 }
 
-
-
 sub RemoveDuplicateClusters ($$) {
 	my $clusters_ref = $_[0];
 	my $match_thres = $_[1];
@@ -593,11 +575,6 @@ sub RemoveDuplicateClusters ($$) {
 	}
 	
 }
-
-
-
-
-
 
 sub CalcPrecRecCompPred {
 	my $matchscore_thr = $_[0];
@@ -652,9 +629,6 @@ sub CalcPrecRecCompPred {
 	print "\tNum correct clusters = ".(scalar keys %correct_clusters)."\n";
 	print "\tNum correct small clusters = ".(scalar keys %correct_smallclusters)."\n";
 	print "\tNum test complexes matched = ".(scalar keys %{$matched_complexes_ref})."\n";
-#		foreach my $comp (keys %{$matched_complexes_ref}) {
-#			print "\t\t$comp\n";
-#		}
 	print "\tNum clusters not correct (matched to nontest complex, or wrong) = ".(scalar keys %{$clusters_ref})."\n";
 	my %nontest_correct_clusters = ();
 	foreach my $clus (keys %{$clusters_ref}) {
@@ -680,16 +654,9 @@ sub CalcPrecRecCompPred {
 		$tmparray[3] = ();
 		push (@results, \@tmparray);
 	}	
-	
-	
+		
 	my $numtestcomps = scalar keys %{$test_comps_ref};
 	print "Num test comps = $numtestcomps\n";
-	
-#	print "Clusters (excluding those that match nontest complexes:\n";
-#	print "Score\tNumMatches\tID\tNumMatches\tIter\n";
-#	foreach (sort {$$b[0] <=> $$a[0]} @results) {
-#		print "$$_[0]\t$$_[1]\t$$_[2]\t".(scalar keys %{$$_[3]})."\t$$_[4]\n";
-#	}
 	
 	print "Precision-recall for match_threshold = $matchscore_thr:\n";	
 	print "Score threshold\tPredictions\tRecall\tPrecision\n";
@@ -699,7 +666,7 @@ sub CalcPrecRecCompPred {
 	my $corrects= 0;
 	my $matched = 0;
 	my %matched_complexes = ();
-	my $lastvalue = -1;
+	my $lastvalue = -1;		# so that if lastvalue == -1, then first iteration
 	my $threshold = 0.01;
 	my $recall = 0;
 	my $auc = 0;
@@ -714,7 +681,7 @@ sub CalcPrecRecCompPred {
 		
 		# Check if the score of the current result subarray is different from the previous one
 		if ($lastvalue != $$_[0]) {
-			my $check = $$_[0];
+			my $check = ${$_[0]};
 			# print("$lastvalue compared to $check", "\n");
 			# print("threshold: $threshold", "\n");
 
@@ -775,11 +742,6 @@ sub CalcPrecRecCompPred {
 	$$recall_ref = $recall;
 	return $auc;
 }
-	 
-
-
-
-
 
 sub CalcPrecRecCompPredAllIters {
 	my $matchscore_thr = $_[0];
@@ -920,5 +882,3 @@ sub CalcPrecRecCompPredAllIters {
 	$auc += ($recall - $auc_prevrecall) * ($corrects/$predicts);
 	print "\nAUC\t$auc\n\n";
 }
-	 
-
