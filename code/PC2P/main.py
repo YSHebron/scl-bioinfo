@@ -60,6 +60,19 @@ def getopts() -> Tuple[str, str, int, int, None|int, None|int]:
         return osname, inputfile, iters, outputdir, mode, None, None
     else: print("Mode argument is not 1 or 2. Exiting."); sys.exit()
 
+# function to score the complex    
+def get_score(complex, edgesref):
+    totalweight = 0
+    for id1 in range(len(complex)):
+        for id2 in range(1,len(complex)):
+           id_a = complex[id1]
+           id_b = complex[id2]
+           key = f"{id_a}|{id_b}" if id_a < id_b else f"{id_b}|{id_a}"
+           if key in edgesref:
+               totalweight += edgesref[key]
+    score = totalweight*2 / ((len(complex) * (len(complex) -1)))
+    return score
+
 def get_cnp(args):
     G, i, osname, mode, pool_thresh, num_procs, outputdir = args
     iter_time = time.time()
@@ -114,6 +127,10 @@ def get_cnp(args):
         for complex in G_cnp_components:
             # protein === node
             if len(complex) < 2: continue   # filter out single-protein complexes
+
+            # score the complex by their weighted weighted density
+            score = get_score(complex, scorededges)
+            f.write("(" + str(len(complex)) + "_" + str(score) + "): ")
             for protein in complex:
                 f.write("%s " % protein)
             f.write("\n")
@@ -137,6 +154,19 @@ if __name__ == '__main__':
     
     print("Size of V(G):", G.number_of_nodes())
     print("Size of E(G):", G.number_of_edges())
+    
+    ### Read the score edges file
+    # Assumes the inputfile has scores
+    scorededges = {}
+    neighbours = {}  # only used if method==3
+    with open(inputfile) as edges_file:
+        for line in edges_file:
+            edge = line.split()
+            id_a = edge[0]
+            id_b = edge[1]
+            score = edge[2]
+            key = f"{id_a}|{id_b}" if id_a < id_b else f"{id_b}|{id_a}"
+            scorededges[key] = float(score)
 
     ### Clustering
     # To run sequential code, we need to call Find_CNP from sequential.py

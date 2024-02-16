@@ -26,7 +26,7 @@ echo ==========================================
 echo. 
 
 :: Example:
-:: .\run_PC2P.bat .\code\PC2P\Human\PIPS\PIPS_Corum_Graph.txt .\code\PC2P\results\ 10 2
+:: .\run_PC2P.bat .\code\PC2P\Yeast\KroganCore\krogan2006_core.txt .\code\PC2P\results\ 1 2
 python code/PC2P/main.py %inputfile% %outputdir% %iters% %mode% %pool_thresh% %num_procs%
 
 :: To evaluate the results of this, run ./eval_PC2P.bat (no args) [WIP]
