@@ -19,13 +19,13 @@ use Data::Dumper;
 # -x <Xval file, only when -n option is used>
 # -m <small complexes matching requirement is always 1? default 0>
 # -l <which complexes to consider for test: 0 = all, 1 = only size 4 and above, 23 = sizes 2 and 3. Note that clusters that match unconsidered complexes will NOT be false positives> default 1
-# -k <remove small clusters? 0 = no (default). If this is 1, but -l option still considers small complexes, then recall will be lowered because small complexes cannot be matched. But precision may be higher because small clusters are noisy>
+# -k <remove small clusters? 0 = no (default). If -k 1 but -l still considers small complexes, then recall will be lowered because small complexes cannot be matched. But precision may be higher because small clusters are noisy>
 ## Usage:
 #   To keep all clusters, eval on all complexes: -l 0. Small complexes match requirement 1: -l 0 -m 1
 # 	To keep only large clusters, eval on large complexes: -l 1
 # 	To keep only small clusters, eval on small complexes: -l 23. Small complexes match requirement 1: -l 23 -m 1
 # 	To keep only large clusters, eval on ALL complexes: -k 1 -l 0. Small complexes match requirement 1 (so that the large clusters cannot match small comp): -k 1 -l 0 -m 1
-# -s <score>. only consider clusters with score over this, default 0
+# -s <score>. only consider clusters with score over this, default 0 (if this is 0 it appears that score thresholds are automatically generated)
 # -a <number of clusters to keep per iteration. Default 9999999999>
 # -u <filter clusters to keep only unique ones (matchthres = 0.5): 1 or 0 (default)>
 
@@ -33,53 +33,47 @@ use Data::Dumper;
 my %argopts;
 if (! getopts('i:c:n:x:l:k:s:u:m:a:', \%argopts)) { die "invalid arguments"; }
 
-my $SMALLCOMP_MATCH1 = 0;
+my $SMALLCPLX_MATCH_ALL = 0;
 if (defined $argopts{'m'}) {
-	$SMALLCOMP_MATCH1 = $argopts{'m'}+0;
+	$SMALLCPLX_MATCH_ALL = $argopts{'m'}+0;
 }
 my $REMOVE_SMALLCLUS = 0;
 if (defined $argopts{'k'}) {
 	$REMOVE_SMALLCLUS = $argopts{'k'}+0;
 }
-
-my $which_comps_consider = 1; 
+my $CPLXSIZE_CONSIDERED = 1;	# 0: all, 1: size >=4, 23: sizes 2 and 3
 if (defined $argopts{'l'}) {
-	$which_comps_consider = $argopts{'l'};
+	$CPLXSIZE_CONSIDERED = $argopts{'l'};
 }
-my $score_threshold = 0;
+my $SCORE_THRESHOLD = 0;
 if (defined $argopts{'s'}) {
-	$score_threshold = $argopts{'s'}+0;
+	$SCORE_THRESHOLD = $argopts{'s'}+0;
 }
-my $filter_unique = 0;
+my $FILTER_UNIQUE = 0;
 if (defined $argopts{'u'}) {
-	$filter_unique = $argopts{'u'}+0;
+	$FILTER_UNIQUE = $argopts{'u'}+0;
 }
-
-my $num_iters = 0;
+my $NUM_ITERS = 0;
 if (defined $argopts{'n'}) {
-	$num_iters = $argopts{'n'}+0;
-	if ($num_iters == 0) { die("die: zero iterations specified"); }
+	$NUM_ITERS = $argopts{'n'}+0;
+	if ($NUM_ITERS == 0) { die("die: zero iterations specified"); }
 }
-
 my $NUM_CLUS_KEEP = 999999999;
 if (defined $argopts{'a'}) {
 	$NUM_CLUS_KEEP = $argopts{'a'} + 0;
 }
-
-my $xvalfilename;
-if ($num_iters > 0) {
-	$xvalfilename = $argopts{'x'};
+my $XVALFILENAME;
+if ($NUM_ITERS > 0) {
+	$XVALFILENAME = $argopts{'x'};
 }
 
-# READ REFERENCE COMPLEXES
+# READ REFERENCE COMPLEXES C
 # $complexes{$cplx_id}{$prot_id} = 1 if protein $prot_id is in complex $cplx_id
+# Data structure: {cplx_id => {prot_id => 1, ...}, ...}
 my %complexes = ();
 open (COMPLEXFILE, $argopts{'c'}) || die $!;	# open $argopts{'c'} (reference cplxs) as file handle COMPLEXFILE
 
-# for each line in COMPLEXFILE, chomp newline at the end,
-# then split assign line content to $id and $comp (prot ID and cplx ID) at tab delimiter (denoted by regex /\t/)
-# then convert all protein IDs to uppercase
-# then set $complexes{$cplx_id}{$prot_id} = 1 if protein $prot_id is in complex $cplx_id
+# Sample row in COMPLEXFILE: YER069W	3	"Arg2p/Arg5,6p complex"
 foreach my $line (<COMPLEXFILE>) {
 	chomp($line);
 	(my $prot_id, my $cplx_id) = split(/\t/, $line);
@@ -87,50 +81,45 @@ foreach my $line (<COMPLEXFILE>) {
 	$complexes{$cplx_id}{$prot_id} = 1;
 }
 close COMPLEXFILE;
+print "Num reference complexes in C = ".(scalar keys %complexes)."\n";
 
-print "Number of complexes read = ".(scalar keys %complexes)."\n";
+if ($NUM_ITERS == 0) {print "-n set to 0, exiting..."; exit(0);}
 
-# %complexes data structure:
-# {cplx_id => {prot_id, ...}, ...}
+# IDENTIFY TEST COMPLEXES T FROM EACH ITERATION
+# $test_complexes{$iter}{$cplx_id} = 1, if $cplx_id is a test complex in clustering iteration $iter
+# Data Structure: {iter => {cplx_id => 1, ...}, ...}
 
-# EVAL ITERATIONS
-# $test_complexes{$iter}{$complexid} = 1, if $complexid is a TEST complex in $iter
-# We need an xval logfile such as xval_yeast.txt because each iteration uses
-# different training set and testing set from the reference complexes, and the xval
-# logfile logs which complexes (given by their complex id at complexes_yeast.txt) are being used as test complexes
-# (important for the precision metric which filters out predicted complexes that match training complexes)
-my %test_complexes = ();	# equivalent to C
-my $xval_iters = ReadXValData($xvalfilename, \%test_complexes);	
+# Note: Xval file such as xval_yeast.txt needed because each iteration uses different train-test split, and the xval file logs which complexes (given by their complex id at complexes_yeast.txt) are being used as test complexes.
+# Important for the precision metric which filters out predicted complexes that match training complexes
+
+my %test_complexes = ();
+ReadXValData($XVALFILENAME, \%test_complexes);
 	
 # Count total number of test complexes
 my $num_test_complexes = 0;
 # Filter TEST complexes by size
 foreach my $iter (keys %test_complexes) {
-	# case: consider all complexes
-	if ($which_comps_consider==0) {
-		# scalar keys %hash gives the number of test complexes in that hash iteration
+	if ($CPLXSIZE_CONSIDERED==0) {
+		# scalar keys gives the number of test complexes in that iteration
 		# we are adding up $num_test_complexes in each iter to get total num of test_complexes for verification purposes
 		$num_test_complexes += scalar keys %{$test_complexes{$iter}};
 	}
-	# case: consider only large complexes (size >= 4)
-	elsif ($which_comps_consider==1) {
-		# 
-		foreach my $comp (keys %{$test_complexes{$iter}}) {
-			if (scalar keys %{$complexes{$comp}} <= 3) {
-				# by using info from the hash complexes, delete small test_complexes
-				delete $test_complexes{$iter}{$comp};
+	elsif ($CPLXSIZE_CONSIDERED==1) {
+		foreach my $cplx_id (keys %{$test_complexes{$iter}}) {
+			if (scalar keys %{$complexes{$cplx_id}} <= 3) {
+				# by using info from %complexes, delete small test_complexes
+				delete $test_complexes{$iter}{$cplx_id};
 			}
 			else {
 				$num_test_complexes++;
 			}
 		}
 	}
-	# case: consider only small complexes (size 2 or 3)
-	elsif ($which_comps_consider==23) {
-		foreach my $comp (keys %{$test_complexes{$iter}}) {
-			if (scalar keys %{$complexes{$comp}} != 2 && scalar keys %{$complexes{$comp}} != 3) {
-				# by using info from the hash complexes, delete large test_complexes
-				delete $test_complexes{$iter}{$comp};
+	elsif ($CPLXSIZE_CONSIDERED==23) {
+		foreach my $cplx_id (keys %{$test_complexes{$iter}}) {
+			if (scalar keys %{$complexes{$cplx_id}} != 2 && scalar keys %{$complexes{$cplx_id}} != 3) {
+				# by using info from %complexes, delete large test_complexes
+				delete $test_complexes{$iter}{$cplx_id};
 			}
 			else {
 				$num_test_complexes++;
@@ -141,9 +130,9 @@ foreach my $iter (keys %test_complexes) {
 }
 
 # print some statistics on test complexes
-print "num test complexes = $num_test_complexes\n";
+print "Num test complexes in T in ALL iters = $num_test_complexes\n";
 foreach my $iter (sort keys %test_complexes) {
-	print "Iteration $iter, num test complexes = ".(scalar keys %{$test_complexes{$iter}})."\n";
+	print "Iter $iter, ".(scalar keys %{$test_complexes{$iter}})." test complexes\n";
 }
 
 # Read the clusters i.e. predicted complexes P
@@ -153,14 +142,14 @@ foreach my $iter (sort keys %test_complexes) {
 my $inputfilename = $argopts{'i'};
 my %clusters_orig = ();		# equivalent to P
 
-# Recall that $num_iters comes from -n, and if it is set, we iterate through the file name
-# which if it looks like "clusters integrated.txt" will iterate through "clusters integrated iter{0..num_iters}"
-ReadClustersIters($inputfilename, \%clusters_orig, $num_iters);
+# Recall that $NUM_ITERS comes from -n, and if it is set, we iterate through the file name
+# which if it looks like "clusters integrated.txt" will iterate through "clusters integrated iter{0..NUM_ITERS}"
+ReadClustersIters($inputfilename, \%clusters_orig, $NUM_ITERS);
 # ReadClustersIters populates %cluster_orig with key-value pairs like this:
 # {1 => {C1_CCL1_C125|4|CL1|CMC|COACH|IPCA||2|1|2| => {SCORE => 1.50999445763554, ELEMENTS => {YER157W => 1, YGL005C => 1, ...}}, ...}}
-for (my $iter=0; $iter<$num_iters; $iter++) {
+for (my $iter=0; $iter<$NUM_ITERS; $iter++) {
 	# Filter P using -l -s and -u parameters
-	FilterClusters($clusters_orig{$iter}, $which_comps_consider, $score_threshold, $filter_unique);
+	FilterClusters($clusters_orig{$iter}, $CPLXSIZE_CONSIDERED, $SCORE_THRESHOLD, $FILTER_UNIQUE);
 }
 
 # P, C, and also T (for precision caveat) has already been generated here for each iteration. Time to evaluate.
@@ -170,7 +159,7 @@ my %clusters = ();
 # make a working copy of clusters
 # This is effectively a deep copy (dclone left unused)
 %clusters = ();
-for (my $iter=0; $iter<$num_iters; $iter++) {
+for (my $iter=0; $iter<$NUM_ITERS; $iter++) {
 	foreach my $clus (keys %{$clusters_orig{$iter}}) {
 		$clusters{$iter}{$clus}{SCORE} = $clusters_orig{$iter}{$clus}{SCORE};
 		foreach my $prot (keys %{$clusters_orig{$iter}{$clus}{ELEMENTS}}) {
@@ -194,11 +183,11 @@ foreach my $iter (keys %test_complexes) {
 	}
 }
 print "*************** Match threshold = 0.5 *************\n";
-if ($SMALLCOMP_MATCH1==1) {
+if ($SMALLCPLX_MATCH_ALL==1) {
 	print "*************** Match threshold = 1 for small comps *************\n";
 }
 # Calculate values needed for Prec-Recall Curve for each iteration
-for (my $iter=0; $iter<$num_iters; $iter++) {
+for (my $iter=0; $iter<$NUM_ITERS; $iter++) {
 	print "Iter $iter\n";
 	my $rec = 0;
 	my %matched_complexes = ();
@@ -212,17 +201,17 @@ for (my $iter=0; $iter<$num_iters; $iter++) {
 	$avg_rec += $rec;
 	$se_rec += $rec ** 2;
 }
-$avg_auc /= $num_iters;
-$se_auc /= $num_iters;
+$avg_auc /= $NUM_ITERS;
+$se_auc /= $NUM_ITERS;
 $se_auc = $se_auc - $avg_auc**2;
-$se_auc = ($se_auc * $num_iters / ($num_iters-1)) ** .5;
-$se_auc = $se_auc / ($num_iters ** .5);
+$se_auc = ($se_auc * $NUM_ITERS / ($NUM_ITERS-1)) ** .5;
+$se_auc = $se_auc / ($NUM_ITERS ** .5);
 
-$avg_rec /= $num_iters;
-$se_rec /= $num_iters;
+$avg_rec /= $NUM_ITERS;
+$se_rec /= $NUM_ITERS;
 $se_rec = $se_rec - $avg_rec**2;
-$se_rec = ($se_rec * $num_iters / ($num_iters-1)) ** .5;
-$se_rec = $se_rec / ($num_iters ** .5);
+$se_rec = ($se_rec * $NUM_ITERS / ($NUM_ITERS-1)) ** .5;
+$se_rec = $se_rec / ($NUM_ITERS ** .5);
 
 print "\nAUCmean\t$avg_auc\n";
 print "AUCse\t$se_auc\n";
@@ -241,7 +230,7 @@ foreach my $comp (sort {$test_complexes_matched{$a}{"P"} <=>$test_complexes_matc
 
 # print overall precision-recall for all iterations
 %clusters = ();
-for (my $iter=0; $iter<$num_iters; $iter++) {
+for (my $iter=0; $iter<$NUM_ITERS; $iter++) {
 	foreach my $clus (keys %{$clusters_orig{$iter}}) {
 		$clusters{$iter}{$clus}{SCORE} = $clusters_orig{$iter}{$clus}{SCORE};
 		foreach my $prot (keys %{$clusters_orig{$iter}{$clus}{ELEMENTS}}) {
@@ -249,7 +238,7 @@ for (my $iter=0; $iter<$num_iters; $iter++) {
 		}
 	}
 }
-CalcPrecRecCompPredAllIters (0.5, \%clusters, \%test_complexes, \%complexes, $num_iters);
+CalcPrecRecCompPredAllIters (0.5, \%clusters, \%test_complexes, \%complexes, $NUM_ITERS);
 print "\n";
 	
 	
@@ -257,7 +246,7 @@ print "\n";
 	
 # ------------ Get Precision vs. Recall for matchscore = 0.75 -------------
 my %clusters = ();
-for (my $iter=0; $iter<$num_iters; $iter++) {
+for (my $iter=0; $iter<$NUM_ITERS; $iter++) {
 	foreach my $clus (keys %{$clusters_orig{$iter}}) {
 		$clusters{$iter}{$clus}{SCORE} = $clusters_orig{$iter}{$clus}{SCORE};
 		foreach my $prot (keys %{$clusters_orig{$iter}{$clus}{ELEMENTS}}) {
@@ -277,10 +266,10 @@ foreach my $iter (keys %test_complexes) {
 	}
 }
 print "*************** Matchscore 0.75 *************\n";
-if ($SMALLCOMP_MATCH1==1) {
+if ($SMALLCPLX_MATCH_ALL==1) {
 	print "*************** Match threshold = 1 for small comps *************\n";
 }
-for (my $iter=0; $iter<$num_iters; $iter++) {
+for (my $iter=0; $iter<$NUM_ITERS; $iter++) {
 	print "Iter $iter\n";
 	my $rec = 0;
 	my %matched_complexes = ();
@@ -293,16 +282,16 @@ for (my $iter=0; $iter<$num_iters; $iter++) {
 	$avg_rec += $rec;
 	$se_rec += $rec ** 2;
 }
-$avg_auc /= $num_iters;
-$se_auc /= $num_iters;
+$avg_auc /= $NUM_ITERS;
+$se_auc /= $NUM_ITERS;
 $se_auc = $se_auc - $avg_auc**2;
-$se_auc = ($se_auc * $num_iters / ($num_iters-1)) ** .5;
-$se_auc = $se_auc / ($num_iters ** .5);
-$avg_rec /= $num_iters;
-$se_rec /= $num_iters;
+$se_auc = ($se_auc * $NUM_ITERS / ($NUM_ITERS-1)) ** .5;
+$se_auc = $se_auc / ($NUM_ITERS ** .5);
+$avg_rec /= $NUM_ITERS;
+$se_rec /= $NUM_ITERS;
 $se_rec = $se_rec - $avg_rec**2;
-$se_rec = ($se_rec * $num_iters / ($num_iters-1)) ** .5;
-$se_rec = $se_rec / ($num_iters ** .5);
+$se_rec = ($se_rec * $NUM_ITERS / ($NUM_ITERS-1)) ** .5;
+$se_rec = $se_rec / ($NUM_ITERS ** .5);
 print "\nAUCmean\t$avg_auc\n";
 print "AUCse\t$se_auc\n";
 print "RECALLmean\t$avg_rec\n";
@@ -320,7 +309,7 @@ foreach my $comp (sort {$test_complexes_matched{$a}{"P"} <=>$test_complexes_matc
 
 # print overall precision-recall for all iterations
 %clusters = ();
-for (my $iter=0; $iter<$num_iters; $iter++) {
+for (my $iter=0; $iter<$NUM_ITERS; $iter++) {
 	foreach my $clus (keys %{$clusters_orig{$iter}}) {
 		$clusters{$iter}{$clus}{SCORE} = $clusters_orig{$iter}{$clus}{SCORE};
 		foreach my $prot (keys %{$clusters_orig{$iter}{$clus}{ELEMENTS}}) {
@@ -328,25 +317,28 @@ for (my $iter=0; $iter<$num_iters; $iter++) {
 		}
 	}
 }
-CalcPrecRecCompPredAllIters (0.75, \%clusters, \%test_complexes, \%complexes, $num_iters);
+CalcPrecRecCompPredAllIters (0.75, \%clusters, \%test_complexes, \%complexes, $NUM_ITERS);
 print "\n";
 
+# Called as: ReadXValData($XVALFILENAME, \%test_complexes);
+# XVALFILE has lines "iter\tk" and "cplx_id"
 sub ReadXValData ($$) {
 	my $filename = $_[0];
-	my $xvaldataref = $_[1]; # $xval_date{$iter}{$complexid} = 1, if $complexid is a TEST complex in $iter
+	my $xvaldataref = $_[1]; 
 	
 	open (XVALFILE, "$filename") || die ("Cannot open xval sampling file $filename");
 	my $curriter;
 	foreach my $line (<XVALFILE>) {
-		chomp $line;
-		my @toks = split(/\t/, $line);
-		# Get iteration from xval file
-		if ($toks[0] eq "iter") {
-			$curriter = $toks[1] + 0;
+		chomp $line;	# could be an iter or complex id line
+		my @tokens = split(/\t/, $line);
+		# Get iteration from xval file (ex. "iter\t0")
+		if ($tokens[0] eq "iter") {
+			$curriter = $tokens[1] + 0;
 		}
-		# Get complex ID from xval file, 
-		elsif (defined $toks[0] && $toks[0] ne "") {
-			my $compid = $toks[0] + 0;
+		# Get complex ID from xval file
+		# Set $$xvaldataref{$iter}{$cplx_id} = 1, if $cplx_id is a TEST complex in $iter
+		elsif (defined $tokens[0] && $tokens[0] ne "") {
+			my $compid = $tokens[0] + 0;
 			$$xvaldataref{$curriter}{$compid} = 1;
 		}
 	}
@@ -369,7 +361,7 @@ sub MatchClustersLB ($$$) {
 	my $lowerbound = $_[2];
 	
 	# require exact match for small comps
-	if ($SMALLCOMP_MATCH1==1) {
+	if ($SMALLCPLX_MATCH_ALL==1) {
 		# both are small comps
 		if (scalar keys %{$clus1_ref} <= 3 && scalar keys %{$clus2_ref} <= 3) {
 			if (scalar keys %{$clus1_ref} != scalar keys %{$clus2_ref}) {
@@ -480,12 +472,12 @@ sub ReadClusters ($$$) {
 
 sub FilterClusters {
 	my $clustersref = $_[0];
-	my $which_comps_consider = $_[1];
-	my $score_threshold = $_[2];
-	my $filter_unique = $_[3];
+	my $CPLXSIZE_CONSIDERED = $_[1];
+	my $SCORE_THRESHOLD = $_[2];
+	my $FILTER_UNIQUE = $_[3];
 	print "FilterClusters, num clusters originally = ".(scalar keys %{$clustersref})."\n";
 	# Filter clusters
-	if ($which_comps_consider == 1) {		
+	if ($CPLXSIZE_CONSIDERED == 1) {		
 		my %clusters_to_remove = ();
 		foreach my $clus (keys %{$clustersref}) {
 			if (scalar keys %{$$clustersref{$clus}{ELEMENTS}} <= 3) {
@@ -497,7 +489,7 @@ sub FilterClusters {
 		}
 		print "keeping only clusters of size > 3, num clusters = ".(scalar keys %{$clustersref})."\n";
 	}
-	elsif ($which_comps_consider == 23) {	
+	elsif ($CPLXSIZE_CONSIDERED == 23) {	
 		foreach my $clus (keys %{$clustersref}) {
 			if (scalar keys %{$$clustersref{$clus}{ELEMENTS}} > 3) {
 				delete $$clustersref{$clus};
@@ -514,20 +506,20 @@ sub FilterClusters {
 		print "Discarding small clusters, num clusters = ".(scalar keys %{$clustersref})."\n";
 	}
 	
-	if ($score_threshold > 0) {
+	if ($SCORE_THRESHOLD > 0) {
 		my %clusters_to_remove = ();
 		foreach my $clus (keys %{$clustersref}) {
-			if ($$clustersref{$clus}{SCORE} < $score_threshold) {
+			if ($$clustersref{$clus}{SCORE} < $SCORE_THRESHOLD) {
 				$clusters_to_remove{$clus} = 1;
 			}
 		}
 		foreach my $clus (keys %clusters_to_remove) {
 			delete $$clustersref{$clus};
 		}
-		print "keeping only clusters of score > $score_threshold, num clusters = ".(scalar keys %{$clustersref})."\n";
+		print "keeping only clusters of score > $SCORE_THRESHOLD, num clusters = ".(scalar keys %{$clustersref})."\n";
 	}
 	
-	if ($filter_unique==1) {
+	if ($FILTER_UNIQUE==1) {
 		RemoveDuplicateClusters($clustersref, 0.5);
 		print "keeping only unique clusters (match_thre=0.5), num clusters = ".(scalar keys %{$clustersref})."\n";
 	}
@@ -741,7 +733,7 @@ sub CalcPrecRecCompPredAllIters {
 	my $clusters_ref = $_[1];   # $$clusters_ref{$iter}{$clus}{SCORE} = $score, {ELEMENTS}{$prot} = 1
 	my $test_comps_ref = $_[2]; # $$test_comps_ref{$iter}{$comp} = 1  iff $comp is test complex in iter $iter
 	my $all_comps_ref = $_[3];  # $$all_comps_ref{$comp}{$prot} = 1
-	my $num_iters = $_[4];
+	my $NUM_ITERS = $_[4];
 	
 	# $results[i][0] = score
 	# $results[i][1] = number of correct matches
@@ -750,7 +742,7 @@ sub CalcPrecRecCompPredAllIters {
 	my @results;
 	
 	
-	for (my $iter = 0; $iter<$num_iters; $iter++) {	
+	for (my $iter = 0; $iter<$NUM_ITERS; $iter++) {	
 #		print "Iteration $iter, num predicted clusters = ".(scalar keys %{$$clusters_ref{$iter}})."\n";
 		
 		# 1. For each cluster in %clusters:
@@ -816,12 +808,12 @@ sub CalcPrecRecCompPredAllIters {
 	}
 	
 	my $numtestcomps = 0;
-	for (my $iter = 0; $iter<$num_iters; $iter++) {	
+	for (my $iter = 0; $iter<$NUM_ITERS; $iter++) {	
 		$numtestcomps += scalar keys %{$$test_comps_ref{$iter}};
 	}
 	
 	print "Precision-recall across all iters for match_threshold = $matchscore_thr:\n";	
-	if ($SMALLCOMP_MATCH1==1) {
+	if ($SMALLCPLX_MATCH_ALL==1) {
 		print "*************** Match threshold = 1 for small comps *************\n";
 	}
 	print "Score threshold\tPredictions\tRecall\tPrecision\n";
