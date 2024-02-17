@@ -135,20 +135,22 @@ foreach my $iter (sort keys %test_complexes) {
 	print "Iter $iter, ".(scalar keys %{$test_complexes{$iter}})." test complexes\n";
 }
 
-# Read the clusters i.e. predicted complexes P
+# READ PREDICTED COMPLEXES P
 # $clusters{$iter}{$c}{SCORE} = score, $clusters{$iter}{$c}{ELEMENTS}{$pid} = 1
 # Data structure:
-# clusters = {iter => c => {SCORE, ELEMENTS => pid}}
+# clusters = {iter => c => {SCORE, ELEMENTS => {pid}}}
 my $inputfilename = $argopts{'i'};
-my %clusters_orig = ();		# equivalent to P
+my %clusters_orig = ();
 
-# Recall that $NUM_ITERS comes from -n, and if it is set, we iterate through the file name
-# which if it looks like "clusters integrated.txt" will iterate through "clusters integrated iter{0..NUM_ITERS}"
+# Recall that $NUM_ITERS comes from -n, and if it is set, we iterate through the file name, which if it looks like "clusters integrated.txt" will iterate through "clusters integrated iter{0..NUM_ITERS}"
 ReadClustersIters($inputfilename, \%clusters_orig, $NUM_ITERS);
-# ReadClustersIters populates %cluster_orig with key-value pairs like this:
-# {1 => {C1_CCL1_C125|4|CL1|CMC|COACH|IPCA||2|1|2| => {SCORE => 1.50999445763554, ELEMENTS => {YER157W => 1, YGL005C => 1, ...}}, ...}}
+# ReadClustersIters populates %cluster_orig with key-value pairs like this:: From sample line:
+# C1_CIPCA_C242|4|CL1|CMC|COACH|IPCA||2|1|2|(8_1.51257463803248): YER157W YGL005C YGL223C YGR120C YML071C YNL041C YNL051W YPR105C
+# We get:
+# {0 => {C1_CIPCA_C242|4|CL1|CMC|COACH|IPCA||2|1|2| => {SCORE => 1.51257463803248, ELEMENTS => {YER157W, YGL005C, YGL223C, YGR120C, YML071C, YNL041C, YNL051W, YPR105C}},...},...}
+# where each pid corresponds to 1
 for (my $iter=0; $iter<$NUM_ITERS; $iter++) {
-	# Filter P using -l -s and -u parameters
+	# Filter P using -l -s and -u parameters (passes a hash into the sub)
 	FilterClusters($clusters_orig{$iter}, $CPLXSIZE_CONSIDERED, $SCORE_THRESHOLD, $FILTER_UNIQUE);
 }
 
@@ -156,17 +158,10 @@ for (my $iter=0; $iter<$NUM_ITERS; $iter++) {
 my %clusters = ();
 
 # ------------ Get Precision vs. Recall for matchscore = 0.5 -------------
-# make a working copy of clusters
+# Make a working copy of clusters_orig, store in clusters
 # This is effectively a deep copy (dclone left unused)
 %clusters = ();
-for (my $iter=0; $iter<$NUM_ITERS; $iter++) {
-	foreach my $clus (keys %{$clusters_orig{$iter}}) {
-		$clusters{$iter}{$clus}{SCORE} = $clusters_orig{$iter}{$clus}{SCORE};
-		foreach my $prot (keys %{$clusters_orig{$iter}{$clus}{ELEMENTS}}) {
-			$clusters{$iter}{$clus}{ELEMENTS}{$prot} = $clusters_orig{$iter}{$clus}{ELEMENTS}{$prot};
-		}
-	}
-}
+DeepCopyClusters(\%clusters_orig, \%clusters);
 
 # Declare statistical variables (AUC: area under curve, SE: standard error (similar to standard deviation))
 my $avg_auc = 0;
@@ -230,30 +225,14 @@ foreach my $comp (sort {$test_complexes_matched{$a}{"P"} <=>$test_complexes_matc
 
 # print overall precision-recall for all iterations
 %clusters = ();
-for (my $iter=0; $iter<$NUM_ITERS; $iter++) {
-	foreach my $clus (keys %{$clusters_orig{$iter}}) {
-		$clusters{$iter}{$clus}{SCORE} = $clusters_orig{$iter}{$clus}{SCORE};
-		foreach my $prot (keys %{$clusters_orig{$iter}{$clus}{ELEMENTS}}) {
-			$clusters{$iter}{$clus}{ELEMENTS}{$prot} = $clusters_orig{$iter}{$clus}{ELEMENTS}{$prot};
-		}
-	}
-}
+DeepCopyClusters(\%clusters_orig, \%clusters);
 CalcPrecRecCompPredAllIters (0.5, \%clusters, \%test_complexes, \%complexes, $NUM_ITERS);
 print "\n";
 	
-	
-	
-	
 # ------------ Get Precision vs. Recall for matchscore = 0.75 -------------
 my %clusters = ();
-for (my $iter=0; $iter<$NUM_ITERS; $iter++) {
-	foreach my $clus (keys %{$clusters_orig{$iter}}) {
-		$clusters{$iter}{$clus}{SCORE} = $clusters_orig{$iter}{$clus}{SCORE};
-		foreach my $prot (keys %{$clusters_orig{$iter}{$clus}{ELEMENTS}}) {
-			$clusters{$iter}{$clus}{ELEMENTS}{$prot} = $clusters_orig{$iter}{$clus}{ELEMENTS}{$prot};
-		}
-	}
-}
+DeepCopyClusters(\%clusters_orig, \%clusters);
+
 my $avg_auc = 0;
 my $se_auc = 0;
 my $avg_rec = 0;
@@ -309,14 +288,7 @@ foreach my $comp (sort {$test_complexes_matched{$a}{"P"} <=>$test_complexes_matc
 
 # print overall precision-recall for all iterations
 %clusters = ();
-for (my $iter=0; $iter<$NUM_ITERS; $iter++) {
-	foreach my $clus (keys %{$clusters_orig{$iter}}) {
-		$clusters{$iter}{$clus}{SCORE} = $clusters_orig{$iter}{$clus}{SCORE};
-		foreach my $prot (keys %{$clusters_orig{$iter}{$clus}{ELEMENTS}}) {
-			$clusters{$iter}{$clus}{ELEMENTS}{$prot} = $clusters_orig{$iter}{$clus}{ELEMENTS}{$prot};
-		}
-	}
-}
+DeepCopyClusters(\%clusters_orig, \%clusters);
 CalcPrecRecCompPredAllIters (0.75, \%clusters, \%test_complexes, \%complexes, $NUM_ITERS);
 print "\n";
 
@@ -666,9 +638,6 @@ sub CalcPrecRecCompPred {
 		
 		# Check if the score of the current result subarray is different from the previous one
 		if ($lastvalue != $$_[0]) {
-			my $check = ${$_[0]};
-			# print("$lastvalue compared to $check", "\n");
-			# print("threshold: $threshold", "\n");
 
 			# Calculate recall as the ratio of matched to the total number of test complexes
 			$recall = $matched / $numtestcomps;
@@ -866,4 +835,17 @@ sub CalcPrecRecCompPredAllIters {
 	# accumulate AUC
 	$auc += ($recall - $auc_prevrecall) * ($corrects/$predicts);
 	print "\nAUC\t$auc\n\n";
+}
+
+sub DeepCopyClusters($$) {
+	my $clusters_orig = $_[0];
+	my $clusters = $_[1];
+	for (my $iter=0; $iter<$NUM_ITERS; $iter++) {
+		foreach my $clus (keys %{$$clusters_orig{$iter}}) {
+			$$clusters{$iter}{$clus}{SCORE} = $$clusters_orig{$iter}{$clus}{SCORE};
+			foreach my $prot (keys %{$$clusters_orig{$iter}{$clus}{ELEMENTS}}) {
+				$$clusters{$iter}{$clus}{ELEMENTS}{$prot} = $$clusters_orig{$iter}{$clus}{ELEMENTS}{$prot};
+			}
+		}
+	}
 }
