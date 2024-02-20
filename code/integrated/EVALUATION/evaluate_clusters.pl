@@ -1,6 +1,5 @@
 # USAGE
 # perl evaluate_clusters.pl -i "..\%outputdir%\clusters integrated"  -c "..\%complexfile%" -n 10 -l 0 -m 1 -x "..\%xvalfile%" > "..\%outputdir%\results clusters integrated.txt"
-# 
 
 # Imports and Compiler Flags
 use strict;					# safety pragma
@@ -67,9 +66,14 @@ if ($NUM_ITERS > 0) {
 	$XVALFILENAME = $argopts{'x'};
 }
 
-# READ REFERENCE COMPLEXES C
+# NOTE: P: clusters (predicted complexes)
+#		C: test reference complexes
+#		T: training reference complexes (only implied here as nontest complexes)
+# However, this program deviates from the manuscript by not considering
+
+# READ REFERENCE COMPLEXES
 # $complexes{$cplx_id}{$prot_id} = 1 if protein $prot_id is in complex $cplx_id
-# Data structure: {cplx_id => {prot_id => 1, ...}, ...}
+# Data structure: complexes = {cplx_id => {prot_id => 1, ...}, ...}
 my %complexes = ();
 open (COMPLEXFILE, $argopts{'c'}) || die $!;	# open $argopts{'c'} (reference cplxs) as file handle COMPLEXFILE
 
@@ -81,13 +85,13 @@ foreach my $line (<COMPLEXFILE>) {
 	$complexes{$cplx_id}{$prot_id} = 1;
 }
 close COMPLEXFILE;
-print "Num reference complexes in C = ".(scalar keys %complexes)."\n";
+print 'Num reference complexes in %complexes = '.(scalar keys %complexes)."\n";
 
 if ($NUM_ITERS == 0) {print "-n set to 0, exiting..."; exit(0);}
 
-# IDENTIFY TEST COMPLEXES T FROM EACH ITERATION
-# $test_complexes{$iter}{$cplx_id} = 1, if $cplx_id is a test complex in clustering iteration $iter
-# Data Structure: {iter => {cplx_id => 1, ...}, ...}
+# IDENTIFY TEST REFERENCE COMPLEXES C FROM EACH ITERATION
+# $test_complexes{$iter}{$cplx_id} = 1, if $cplx_id is a training reference complex in clustering iteration $iter
+# Data Structure: test_complexes = {iter => {cplx_id => 1, ...}, ...}
 
 # Note: Xval file such as xval_yeast.txt needed because each iteration uses different train-test split, and the xval file logs which complexes (given by their complex id at complexes_yeast.txt) are being used as test complexes.
 # Important for the precision metric which filters out predicted complexes that match training complexes
@@ -136,7 +140,8 @@ foreach my $iter (sort keys %test_complexes) {
 }
 
 # READ PREDICTED COMPLEXES P
-# $clusters{$iter}{$c}{SCORE} = score, $clusters{$iter}{$c}{ELEMENTS}{$pid} = 1
+# $clusters{$iter}{$c}{SCORE} = score
+# $clusters{$iter}{$c}{ELEMENTS}{$pid} = 1
 # Data structure:
 # clusters = {iter => c => {SCORE, ELEMENTS => {pid}}}
 my $inputfilename = $argopts{'i'};
@@ -147,8 +152,13 @@ ReadClustersIters($inputfilename, \%clusters_orig, $NUM_ITERS);
 # ReadClustersIters populates %cluster_orig with key-value pairs like this:: From sample line:
 # C1_CIPCA_C242|4|CL1|CMC|COACH|IPCA||2|1|2|(8_1.51257463803248): YER157W YGL005C YGL223C YGR120C YML071C YNL041C YNL051W YPR105C
 # We get:
-# {0 => {C1_CIPCA_C242|4|CL1|CMC|COACH|IPCA||2|1|2| => {SCORE => 1.51257463803248, ELEMENTS => {YER157W, YGL005C, YGL223C, YGR120C, YML071C, YNL041C, YNL051W, YPR105C}},...},...}
-# where each pid corresponds to 1
+# 'iter => C3_FYHR058C|YOR174W|YPR168W|1|3|' => {
+# 										'ELEMENTS' => {
+# 														'YPR168W' => 1,
+# 														'YHR058C' => 1,
+# 														'YOR174W' => 1
+# 													},
+# 										'SCORE' => '0.00210466955510085'
 for (my $iter=0; $iter<$NUM_ITERS; $iter++) {
 	# Filter P using -l -s and -u parameters (passes a hash into the sub)
 	FilterClusters($clusters_orig{$iter}, $CPLXSIZE_CONSIDERED, $SCORE_THRESHOLD, $FILTER_UNIQUE);
@@ -163,39 +173,45 @@ my %clusters = ();
 %clusters = ();
 DeepCopyClusters(\%clusters_orig, \%clusters);
 
-# Declare statistical variables (AUC: area under curve, SE: standard error (similar to standard deviation))
-my $avg_auc = 0;
+# Declare statistical variables (AUC: area under curve or the integral of the precision-recall curve, SE: standard error (similar to standard deviation))
+my $avg_auc = 0;	# These vars initially serves as accumulators.	
 my $se_auc = 0;
 my $avg_rec = 0;
 my $se_rec = 0;
 
-# $test_complexes{$iter}{$complexid} = 1, if $complexid is a TEST complex in $iter
-# $test_complexes_matched{$comp}{N} = num iters that $comp is tested in, {M} = num iters it is matched
-my %test_complexes_matched = (); 
+# $test_complexes{$iter}{$cplx_id} = 1 if $cplx_id is a TEST complex in that $iter
+# $test_complexes_matched{$cplx_id}{N} => 
+# 	"num of iterations that $cplx_id is a test complex in"
+# $test_complexes_matched{$cplx_id}{M} => 
+# 	"num of complexes matched by test complex $cplx_id"
+my %test_complexes_matched = ();
 foreach my $iter (keys %test_complexes) {
-	foreach my $comp (keys %{$test_complexes{$iter}}) {
-		$test_complexes_matched{$comp}{"N"}++;
+	foreach my $cplx_id (keys %{$test_complexes{$iter}}) {
+		$test_complexes_matched{$cplx_id}{"N"}++;	# increment N on each match
 	}
 }
+
 print "*************** Match threshold = 0.5 *************\n";
 if ($SMALLCPLX_MATCH_ALL==1) {
 	print "*************** Match threshold = 1 for small comps *************\n";
 }
-# Calculate values needed for Prec-Recall Curve for each iteration
+# Calculate values needed for Precision-Recall Curve for each iteration separately
 for (my $iter=0; $iter<$NUM_ITERS; $iter++) {
 	print "Iter $iter\n";
 	my $rec = 0;
 	my %matched_complexes = ();
 	# Calculate precision recalls of complex prediction
 	my $auc = CalcPrecRecCompPred(0.5, \%{$clusters{$iter}}, \%{$test_complexes{$iter}}, \%complexes, \$rec, \%matched_complexes);
-	foreach my $comp (keys %matched_complexes) {
-		$test_complexes_matched{$comp}{"M"}++;
+
+	foreach my $cplx_id (keys %matched_complexes) {
+		$test_complexes_matched{$cplx_id}{"M"}++;
 	}
 	$avg_auc += $auc;
 	$se_auc += $auc ** 2;
 	$avg_rec += $rec;
 	$se_rec += $rec ** 2;
 }
+# AUC and REC is accumulated and then divided by the total number of iterations to get the mean, and then 
 $avg_auc /= $NUM_ITERS;
 $se_auc /= $NUM_ITERS;
 $se_auc = $se_auc - $avg_auc**2;
@@ -223,7 +239,7 @@ foreach my $comp (sort {$test_complexes_matched{$a}{"P"} <=>$test_complexes_matc
 	print "$comp\t$test_complexes_matched{$comp}{P}\t$test_complexes_matched{$comp}{M}\t$test_complexes_matched{$comp}{N}\n";
 }
 
-# print overall precision-recall for all iterations
+# Print overall Precision-Recall for all iterations
 %clusters = ();
 DeepCopyClusters(\%clusters_orig, \%clusters);
 CalcPrecRecCompPredAllIters (0.5, \%clusters, \%test_complexes, \%complexes, $NUM_ITERS);
@@ -266,11 +282,13 @@ $se_auc /= $NUM_ITERS;
 $se_auc = $se_auc - $avg_auc**2;
 $se_auc = ($se_auc * $NUM_ITERS / ($NUM_ITERS-1)) ** .5;
 $se_auc = $se_auc / ($NUM_ITERS ** .5);
+
 $avg_rec /= $NUM_ITERS;
 $se_rec /= $NUM_ITERS;
 $se_rec = $se_rec - $avg_rec**2;
 $se_rec = ($se_rec * $NUM_ITERS / ($NUM_ITERS-1)) ** .5;
 $se_rec = $se_rec / ($NUM_ITERS ** .5);
+
 print "\nAUCmean\t$avg_auc\n";
 print "AUCse\t$se_auc\n";
 print "RECALLmean\t$avg_rec\n";
@@ -290,7 +308,9 @@ foreach my $comp (sort {$test_complexes_matched{$a}{"P"} <=>$test_complexes_matc
 %clusters = ();
 DeepCopyClusters(\%clusters_orig, \%clusters);
 CalcPrecRecCompPredAllIters (0.75, \%clusters, \%test_complexes, \%complexes, $NUM_ITERS);
-print "\n";
+print "\nALL DONE!\n";
+
+## SUBROUTINES
 
 # Called as: ReadXValData($XVALFILENAME, \%test_complexes);
 # XVALFILE has lines "iter\tk" and "cplx_id"
@@ -533,6 +553,8 @@ sub RemoveDuplicateClusters ($$) {
 	
 }
 
+# Called as:
+# my $auc = CalcPrecRecCompPred(0.5, \%{$clusters{$iter}}, \%{$test_complexes{$iter}}, \%complexes, \$rec, \%matched_complexes);
 sub CalcPrecRecCompPred {
 	my $matchscore_thr = $_[0];
 	my $clusters_ref = $_[1];   # $$clusters_ref{$clus}{SCORE} = $score, {ELEMENTS}{$prot} = 1
@@ -654,7 +676,7 @@ sub CalcPrecRecCompPred {
 					$threshold += 0.01;
 				}
 
-				# Accumulate AUC (Area Under the Curve) based on trapezoidal rule
+				# Accumulate AUC (Area Under the Curve) based on trapezoidal rule (this actually only uses simple A=lw, I think we can also improve this using Simpson's Rule if we have time to port this to Python)
 				$auc += ($recall - $auc_prevrecall) * ($corrects / $predicts);
 				$auc_prevrecall = $recall;
 			}
@@ -712,7 +734,6 @@ sub CalcPrecRecCompPredAllIters {
 	
 	
 	for (my $iter = 0; $iter<$NUM_ITERS; $iter++) {	
-#		print "Iteration $iter, num predicted clusters = ".(scalar keys %{$$clusters_ref{$iter}})."\n";
 		
 		# 1. For each cluster in %clusters:
 		#    - Check if it matches a test complex. If so, put in @results as correct
@@ -746,9 +767,7 @@ sub CalcPrecRecCompPredAllIters {
 		foreach my $clus (keys %correct_clusters) {
 			delete $$clusters_ref{$iter}{$clus};
 		}
-#		print "\tNum correct clusters = ".(scalar keys %correct_clusters)."\n";
-#		print "\tNum test complexes matched = ".(scalar keys %matched_complexes)."\n";
-#		print "\tNum clusters not correct (matched to nontest complex, or wrong) = ".(scalar keys %{$$clusters_ref{$iter}})."\n";
+
 		my %nontest_correct_clusters = ();
 		foreach my $clus (keys %{$$clusters_ref{$iter}}) {
 			foreach my $comp (keys %{$all_comps_ref}) {
@@ -763,8 +782,7 @@ sub CalcPrecRecCompPredAllIters {
 		foreach my $clus (keys %nontest_correct_clusters) {
 			delete $$clusters_ref{$iter}{$clus};
 		}
-#		print "\tNum clusters matched to nontest complex = ".(scalar keys %nontest_correct_clusters)."\n";
-#		print "\tNum wrong clusters = ".(scalar keys %{$$clusters_ref{$iter}})."\n";
+
 		foreach my $clus (keys %{$$clusters_ref{$iter}}) {
 			my @tmparray;
 			$tmparray[0] = $$clusters_ref{$iter}{$clus}{SCORE};
