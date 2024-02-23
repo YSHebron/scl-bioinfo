@@ -47,6 +47,8 @@ For **yeast**, using the supplied input files, and the `yeast_predict_output/` o
 .\run_complexprediction.bat data_yeast.txt complexes_yeast.txt go_scheme_all_mine.txt my_go_associations.sgd_propagated.txt yeast_predict_output yeast
 ```
 
+NOTE: complexes_yeast.txt is equivalent to the CYC2008 reference complex.
+
 For **human**, using the supplied input files, and `human_predict_output/` output directory, the command would be:
 
 ```shell
