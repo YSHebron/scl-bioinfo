@@ -1,6 +1,8 @@
 # This program must be run from scl-bioinfo root
-# python code/PC2P/main.py data/intermediate/data_yeast_rand.csv code/PC2P/results 10 2
-# python code/PC2P/main.py code/PC2P/Human/PIPS/PIPS_Corum_Graph.txt code/PC2P/results 10 2
+# python code/PC2P/main.py data/intermediate/data_yeast_rand.csv code/PC2P/results 1 2         (accepts .csv PPIN)
+# python code/PC2P/main.py code/PC2P/Human/PIPS/PIPS_Corum_Graph.txt code/PC2P/results 1 2     (accepts .txt PPIN)
+# NOTE: Programming this must be generalizable so when using a different clustering algorithm it would be a quick transition
+
 import os
 import sys
 import networkx as nx
@@ -9,9 +11,10 @@ import multiprocessing as mp
 import time
 from helper import printc
 from typing import Tuple
+import eval_PC2P
 
 # Parameters (unrelated to the actual clustering!)
-# argv[1] inputfile: relpath to PPI dataset csv file (with header p1, p2, score)
+# argv[1] inputfile: relpath to PPI dataset csv file (with header p1, p2, score) or txt file (no header)
 # argv[2] outputdir: relpath to output dir for predicted complexes (CNPs)
 # argv[3] iters: number of clustering iterations to produce (to match run_xval.bat) 
 # argv[4] mode: 1 for sequential, 2 for parallel
@@ -19,7 +22,7 @@ from typing import Tuple
 # argv[6] num_procs: only if mode 2, default 8, tells how many processes will be created for each call to pool
 
 # Get user-given and OS-based arguments (no ValueError validation)
-def getopts() -> Tuple[str, str, int, int, None|int, None|int]:
+def get_opts() -> Tuple[str, str, int, int, None|int, None|int]:
     osname = sys.platform
     printc("Detected platform: {}".format(osname))
     
@@ -32,7 +35,7 @@ def getopts() -> Tuple[str, str, int, int, None|int, None|int]:
     try: outputdir = sys.argv[2]
     except IndexError: print("No outputdir path provided. Exiting."); sys.exit()
     
-    try: iters = int(sys.argv[3])
+    try: iters = int(sys.argv[3])   # Note that PC2P is deterministic, hence each iteration produce the same clustering
     except IndexError: print("No number of iterations provided. Exiting."); sys.exit()
     except ValueError: print("Invalid mode. Exiting."); sys.exit()
     
@@ -60,7 +63,7 @@ def getopts() -> Tuple[str, str, int, int, None|int, None|int]:
         return osname, inputfile, iters, outputdir, mode, None, None
     else: print("Mode argument is not 1 or 2. Exiting."); sys.exit()
 
-# function to score the complex    
+# function to score the complex
 def get_score(complex, edgesref):
     totalweight = 0
     for id1 in range(len(complex)):
@@ -73,7 +76,7 @@ def get_score(complex, edgesref):
     score = totalweight*2 / ((len(complex) * (len(complex) -1)))
     return score
 
-def get_cnp(args):
+def perform_cnp(args):
     G, i, osname, mode, pool_thresh, num_procs, outputdir = args
     iter_time = time.time()
     print("Iteration", i)
@@ -138,7 +141,7 @@ def get_cnp(args):
     printc("Iteration {} took {} seconds to finish.".format(i, time.time() - iter_time))
 
 if __name__ == '__main__':
-    osname, inputfile, outputdir, iters, mode, pool_thresh, num_procs = getopts()
+    osname, inputfile, outputdir, iters, mode, pool_thresh, num_procs = get_opts()
     
     start_time = time.time()
     G = nx.Graph()
@@ -157,34 +160,38 @@ if __name__ == '__main__':
     
     ### Read the score edges file
     # Assumes the inputfile has scores
-    scorededges = {}
-    neighbours = {}  # only used if method==3
-    with open(inputfile) as edges_file:
-        for line in edges_file:
-            edge = line.split()
-            id_a = edge[0]
-            id_b = edge[1]
-            score = edge[2]
-            key = f"{id_a}|{id_b}" if id_a < id_b else f"{id_b}|{id_a}"
-            scorededges[key] = float(score)
+    # scorededges = {}
+    # neighbours = {}
+    # with open(inputfile) as edges_file:
+    #     for line in edges_file:
+    #         edge = line.split()
+    #         id_a = edge[0]
+    #         id_b = edge[1]
+    #         score = edge[2]
+    #         key = f"{id_a}|{id_b}" if id_a < id_b else f"{id_b}|{id_a}"
+    #         scorededges[key] = float(score)
 
     ### Clustering
     # To run sequential code, we need to call Find_CNP from sequential.py
     # To run parallelized code in Windows and Unix, we need to call parallel_multiprocess.py 
-    # To run parallelized code in Linux and Mac, we need to call Find_CNP from parallel_ray.py """    
+    # To run parallelized code in Linux and Mac, we need to call Find_CNP from parallel_ray.py
     
     # Parallel iterations for sequential mode: Create a Pool for parallel execution
     # Sequential iterations for parallel mode
+    # TODO: Justify iterations by using a stochastic approach
+    #   (like by applying SWC before the parameter-free approach)
     if mode==1:
         with mp.Pool(processes=mp.cpu_count()) as pool:
             # Prepare arguments for each iteration
             args_list = [(G, i, osname, mode, pool_thresh, num_procs, outputdir) for i in range(0, iters)]
-
             # Use the pool to map the function to the arguments
-            pool.map(get_cnp, args_list)
+            pool.map(perform_cnp, args_list)
     elif mode==2:
         for i in range(0, iters):
             args_list = (G, i, osname, mode, pool_thresh, num_procs, outputdir)
-            get_cnp(args_list)
+            perform_cnp(args_list)
+            
+    ### Evaluation
+    
     
     printc("Algorithm took %s seconds to finish." % (time.time() - start_time))

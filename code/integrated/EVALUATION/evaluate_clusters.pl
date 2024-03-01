@@ -199,8 +199,9 @@ if ($SMALLCPLX_MATCH_ALL==1) {
 for (my $iter=0; $iter<$NUM_ITERS; $iter++) {
 	print "Iter $iter\n";
 	my $rec = 0;
-	my %matched_complexes = ();
-	# Calculate precision recalls of complex prediction
+	my %matched_complexes = ();		# list of complexes that have a match: matched_complexes{cplx_id} = 1 if cplx_id has a match.
+	# Calculate precision recalls of complex prediction (return AUC)
+	# CalcPrecRecCompPred(matchscore_thr, clusters_ref, test_comps_ref, complexes, rec, matched complexes);
 	my $auc = CalcPrecRecCompPred(0.5, \%{$clusters{$iter}}, \%{$test_complexes{$iter}}, \%complexes, \$rec, \%matched_complexes);
 
 	foreach my $cplx_id (keys %matched_complexes) {
@@ -399,7 +400,7 @@ sub MatchClustersLB ($$$) {
 		}
 	}
 	my $num_union = (scalar keys %{$clus1_ref}) + (scalar keys %{$clus2_ref}) - $num_intersect;
-	return ($num_intersect/$num_union);
+	return ($num_intersect/$num_union);	# JACCARD SCORE
 }
 
 # $clusters{$iter}{$c}{SCORE} = score, $clusters{$iter}{$c}{ELEMENTS}{$pid} = 1
@@ -553,13 +554,14 @@ sub RemoveDuplicateClusters ($$) {
 	
 }
 
+# CalcPrecRecCompPred(matchscore_thr, clusters_ref, test_comps_ref, all_comps_ref, recall_ref, matched_complexes_ref)
 # Called as:
 # my $auc = CalcPrecRecCompPred(0.5, \%{$clusters{$iter}}, \%{$test_complexes{$iter}}, \%complexes, \$rec, \%matched_complexes);
 sub CalcPrecRecCompPred {
 	my $matchscore_thr = $_[0];
-	my $clusters_ref = $_[1];   # $$clusters_ref{$clus}{SCORE} = $score, {ELEMENTS}{$prot} = 1
-	my $test_comps_ref = $_[2]; # $$test_comps_ref{$comp} = 1  iff $comp is test complex in iter $iter
-	my $all_comps_ref = $_[3];  # $$all_comps_ref{$comp}{$prot} = 1
+	my $clusters_ref = $_[1];   # $$clusters_ref{$clus}{SCORE} = $score, {ELEMENTS}{$prot} = 1 (THIS IS P)
+	my $test_comps_ref = $_[2]; # $$test_comps_ref{$comp} = 1  iff $comp is test complex in iter $iter (THIS IS C)
+	my $all_comps_ref = $_[3];  # $$all_comps_ref{$comp}{$prot} = 1 (THIS IS THE GOLD STANDARD COMPLEXES)
 	my $recall_ref = $_[4];
 	my $matched_complexes_ref = $_[5];
 	
@@ -576,9 +578,9 @@ sub CalcPrecRecCompPred {
 	# 2. For each remaining cluster in %clusters:
 	#    - Check if it matches a nontest complex. If so, delete from %clusters
 	# 3. For each remaining cluster in %clusters:
-	#    - Put in @results as incorrect
-	my %correct_clusters = ();
-	my %correct_smallclusters = ();
+	#    - Put in @results as incorrect (did not match anything)
+	my %correct_clusters = ();			# identifies clusters in P that are correct (matched gold standard)
+	my %correct_smallclusters = ();		# identifies small clusters in P that are correct (matched gold standard)
 	foreach my $clus (keys %{$clusters_ref}) {
 		my @cluster_matches;
 		# since each cluster may be matched to multiple complexes, this structure keeps track of them
@@ -588,7 +590,7 @@ sub CalcPrecRecCompPred {
 		$cluster_matches[3] = ();
 		foreach my $comp (keys %{$test_comps_ref}) {
 			my $matchscore = MatchClustersLB($$clusters_ref{$clus}{ELEMENTS}, $$all_comps_ref{$comp}, $matchscore_thr);
-			if ($matchscore >= $matchscore_thr) {
+			if ($matchscore >= $matchscore_thr) {	# JACCARD SCORE check
 				$correct_clusters{$clus} = 1;
 				if (scalar keys %{$$clusters_ref{$clus}{ELEMENTS}} <= 3) {
 					$correct_smallclusters{$clus} = 1;
@@ -603,7 +605,7 @@ sub CalcPrecRecCompPred {
 		}
 	}
 	foreach my $clus (keys %correct_clusters) {
-		delete $$clusters_ref{$clus};
+		delete $$clusters_ref{$clus};	# Do this to avoid repeat matches
 	}
 	print "\tNum correct clusters = ".(scalar keys %correct_clusters)."\n";
 	print "\tNum correct small clusters = ".(scalar keys %correct_smallclusters)."\n";
@@ -624,7 +626,7 @@ sub CalcPrecRecCompPred {
 		delete $$clusters_ref{$clus};
 	}
 	print "\tNum clusters matched to nontest partial complex = ".(scalar keys %nontest_correct_clusters)."\n";
-	print "\tNum wrong clusters = ".(scalar keys %{$clusters_ref})."\n";
+	print "\tNum wrong clusters = ".(scalar keys %{$clusters_ref})."\n";	# 
 	foreach my $clus (keys %{$clusters_ref}) {
 		my @tmparray;
 		$tmparray[0] = $$clusters_ref{$clus}{SCORE};
@@ -640,7 +642,7 @@ sub CalcPrecRecCompPred {
 	print "Precision-recall for match_threshold = $matchscore_thr:\n";	
 	print "Score threshold\tPredictions\tRecall\tPrecision\n";
 	# precision = $corrects / $predicts
-	# recall = $matched / $complex_count
+	# recall = $corrects / $numtestcomps
 	my $predicts = 0;		
 	my $corrects= 0;
 	my $matched = 0;
@@ -712,7 +714,7 @@ sub CalcPrecRecCompPred {
 	  $recall = $matched/$numtestcomps;
 		print "$lastvalue\t$predicts\t$recall\t0\n";
 	}
-	# accumulate AUC
+	# accumulate AUC (i.e. integrate with simple A=lw formula)
 	$auc += ($recall - $auc_prevrecall) * ($corrects/$predicts);
 	print "\nAUC\t$auc\n\n";
 	$$recall_ref = $recall;
@@ -726,12 +728,7 @@ sub CalcPrecRecCompPredAllIters {
 	my $all_comps_ref = $_[3];  # $$all_comps_ref{$comp}{$prot} = 1
 	my $NUM_ITERS = $_[4];
 	
-	# $results[i][0] = score
-	# $results[i][1] = number of correct matches
-	# $results[i][2] = cluster id
-	# $results[i][3]{complex_id} = 1 if matched to complex_id
 	my @results;
-	
 	
 	for (my $iter = 0; $iter<$NUM_ITERS; $iter++) {	
 		
@@ -855,6 +852,7 @@ sub CalcPrecRecCompPredAllIters {
 	print "\nAUC\t$auc\n\n";
 }
 
+# DeepCopyClusters(clusters_orig, clusters)
 sub DeepCopyClusters($$) {
 	my $clusters_orig = $_[0];
 	my $clusters = $_[1];
