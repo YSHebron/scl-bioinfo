@@ -1,6 +1,5 @@
 # This program must be run from scl-bioinfo root
-# py code/PC2P/main.py data/intermediate/data_yeast_rand.csv code/PC2P/results 1 2         (accepts .csv PPIN)
-# python code/PC2P/main.py code/PC2P/Human/PIPS/PIPS_Corum_Graph.txt code/PC2P/results 1 2     (accepts .txt PPIN)
+# Do main.py --help for help on running this program.
 # NOTE: Programming this must be generalizable so when using a different clustering algorithm it would be a quick transition
 
 import os
@@ -13,56 +12,22 @@ from helper import printc
 from typing import Tuple
 import eval_PC2P
 
-# Parameters (unrelated to the actual clustering!)
-# argv[1] inputfile: relpath to PPI dataset csv file (with header p1, p2, score) or txt file (no header)
-# argv[2] outputdir: relpath to output dir for predicted complexes (CNPs)
-# argv[3] iters: number of clustering iterations to produce (to match run_xval.bat) 
-# argv[4] mode: 1 for sequential, 2 for parallel
-# argv[5] pool_thresh: only if mode 2, default 100, tells if a round will need to parallelize based on number of components
-# argv[6] num_procs: only if mode 2, default 8, tells how many processes will be created for each call to pool
+def positive_int(x):
+    i = int(x)
+    if i < 1:
+        raise ValueError('Nonpositive values are not allowed')
+    return i
 
-# Get user-given and OS-based arguments (no ValueError validation)
-def get_opts() -> Tuple[str, str, str, int, int, None|int, None|int]:
-    
-    osname = sys.platform
-    printc("Detected platform: {}".format(osname))
-    
-    # TODO: Use argparse for better scaling, combine with converting run_PC2P.bat to powershell script
-    try: inputfile = sys.argv[1]
-    except IndexError: print("No inputfile path provided. Exiting."); sys.exit()
-    try: os.path.isfile(inputfile)
-    except: print("Invalid inputfile. Exiting."); sys.exit()
-    
-    try: outputdir = sys.argv[2]
-    except IndexError: print("No outputdir path provided. Exiting."); sys.exit()
-    
-    try: iters = int(sys.argv[3])   # Note that PC2P is deterministic, hence each iteration produce the same clustering
-    except IndexError: print("No number of iterations provided. Exiting."); sys.exit()
-    except ValueError: print("Invalid mode. Exiting."); sys.exit()
-    
-    try: mode = int(sys.argv[4])
-    except IndexError: print("No mode provided. Exiting."); sys.exit()
-    except ValueError: print("Invalid mode. Exiting."); sys.exit()
-    
-    if mode==1:
-        printc("Run mode: sequential")
-        return osname, inputfile, outputdir, iters, mode, None, None
-    elif mode==2:
-        printc("Run mode: parallel")
-        # Return for parallel_multiprocess
-        if osname=="win32":
-            try: pool_thresh = int(sys.argv[5])
-            except IndexError: pool_thresh = 100
-            except ValueError: print("Invalid pool_thresh. Exiting."); sys.exit()
-            try: num_procs = int(sys.argv[6])
-            except IndexError: num_procs = 8
-            except ValueError: print("Invalid num_procs. Exiting."); sys.exit()
-            printc("pool_thresh: " + str(pool_thresh))
-            printc("num_procs: " + str(num_procs))
-            return osname, inputfile, outputdir, iters, mode, pool_thresh, num_procs
-        # Return for parallel_ray
-        return osname, inputfile, outputdir, iters, mode, None, None
-    else: print("Mode argument is not 1 or 2. Exiting."); sys.exit()
+import argparse
+parser = argparse.ArgumentParser(description='Perform PC2P on PPI dataset and evaluate results. Can work with csv (with header p1, p2, score) or txt (no header) inputs. For scored clusters, use weighted edge list.')
+parser.add_argument('inputfile', type=str, help='relpath to PPI dataset')
+parser.add_argument('outputdir', type=str, help='relpath to output dir for predicted complexes (CNPs)')
+parser.add_argument('-i', metavar='ITERS', type=int, default=1, help='num of clustering iterations to produce (default 1)')
+parser.add_argument('-p', action='store_true', help='assert for parallel mode (default sequential)')
+parops = parser.add_argument_group('parallel options', description='if parallel mode is enabled with -p, the following options may be set')
+parops.add_argument('--pool_thresh', nargs='?', type=positive_int, default=100, const=100, help='num of graph components to selectively trigger parallelization (for mp only, default 100)')
+parops.add_argument('--num_procs', nargs='?', type=positive_int, default=8, const=8, help='num of processes created by each call to pool (for mp only, default 8)')
+args = parser.parse_args()
 
 # function to score the complex
 def get_score(complex, edgesref):
@@ -78,10 +43,10 @@ def get_score(complex, edgesref):
     return score
 
 def perform_cnp(args):
-    G, i, osname, mode, pool_thresh, num_procs, outputdir = args
+    G, i, osname, is_parallel, pool_thresh, num_procs, outputdir = args
     iter_time = time.time()
     print("Iteration", i)
-    if (mode == 1):
+    if not is_parallel:
         import sequential
         edge_cut = sequential.Find_CNP(G)
     else:
@@ -153,7 +118,8 @@ def perform_cnp(args):
     printc("Iteration {} took {} seconds to finish.".format(i, time.time() - iter_time))
 
 if __name__ == '__main__':
-    osname, inputfile, outputdir, iters, mode, pool_thresh, num_procs = get_opts()
+    osname = sys.platform
+    inputfile, outputdir, iters, is_parallel, pool_thresh, num_procs = args.inputfile, args.outputdir, args.i, args.p, args.pool_thresh, args.num_procs
     
     start_time = time.time()
     G = nx.Graph()
@@ -182,17 +148,17 @@ if __name__ == '__main__':
     # Sequential iterations for parallel mode
     # TODO: Justify iterations by using a stochastic approach
     #   (like by applying SWC before the parameter-free approach)
-    if mode==1:
+    if not is_parallel:
         with mp.Pool(processes=mp.cpu_count()) as pool:
             # Prepare arguments for each iteration
-            args_list = [(G, i, osname, mode, pool_thresh, num_procs, outputdir) for i in range(0, iters)]
+            args_list = [(G, i, osname, is_parallel, pool_thresh, num_procs, outputdir) for i in range(0, iters)]
             # Use the pool to map the function to the arguments
             pool.map(perform_cnp, args_list)
-    elif mode==2:
+    else:
         for i in range(0, iters):
-            args_list = (G, i, osname, mode, pool_thresh, num_procs, outputdir)
+            args_list = (G, i, osname, is_parallel, pool_thresh, num_procs, outputdir)
             perform_cnp(args_list)
-            
+             
     ### Evaluation
     
     

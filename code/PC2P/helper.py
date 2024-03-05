@@ -21,3 +21,6 @@ def write_new_complexfile(complexfile, complexfile_new):
     with open(complexfile_new, "w") as f:
         for cid in complexes:
             f.write("{0} {1}\n".format(cid, ' '.join(complexes[cid])))
+            
+def filter_complexfile(inputfile, outputdir):
+    pass
