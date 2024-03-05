@@ -1,5 +1,5 @@
 # This program must be run from scl-bioinfo root
-# python code/PC2P/main.py data/intermediate/data_yeast_rand.csv code/PC2P/results 1 2         (accepts .csv PPIN)
+# py code/PC2P/main.py data/intermediate/data_yeast_rand.csv code/PC2P/results 1 2         (accepts .csv PPIN)
 # python code/PC2P/main.py code/PC2P/Human/PIPS/PIPS_Corum_Graph.txt code/PC2P/results 1 2     (accepts .txt PPIN)
 # NOTE: Programming this must be generalizable so when using a different clustering algorithm it would be a quick transition
 
@@ -22,7 +22,8 @@ import eval_PC2P
 # argv[6] num_procs: only if mode 2, default 8, tells how many processes will be created for each call to pool
 
 # Get user-given and OS-based arguments (no ValueError validation)
-def get_opts() -> Tuple[str, str, int, int, None|int, None|int]:
+def get_opts() -> Tuple[str, str, str, int, int, None|int, None|int]:
+    
     osname = sys.platform
     printc("Detected platform: {}".format(osname))
     
@@ -60,7 +61,7 @@ def get_opts() -> Tuple[str, str, int, int, None|int, None|int]:
             printc("num_procs: " + str(num_procs))
             return osname, inputfile, outputdir, iters, mode, pool_thresh, num_procs
         # Return for parallel_ray
-        return osname, inputfile, iters, outputdir, mode, None, None
+        return osname, inputfile, outputdir, iters, mode, None, None
     else: print("Mode argument is not 1 or 2. Exiting."); sys.exit()
 
 # function to score the complex
@@ -125,13 +126,24 @@ def perform_cnp(args):
     printc("First 10 complexes, sorted by decreasing number of proteins:")
     print(*G_cnp_components[:10], sep="\n")
 
+    scorededges = {}
+    neighbours = {}
+    with open(inputfile) as edges_file:
+        for line in edges_file:
+            edge = line.split()
+            id_a = edge[0]
+            id_b = edge[1]
+            score = edge[2]
+            key = f"{id_a}|{id_b}" if id_a < id_b else f"{id_b}|{id_a}"
+            scorededges[key] = float(score)
+            
     with open(outputdir + 'G_PredictedComplexes_iter{}.txt'.format(i), 'w') as f:
         # complex === line
         for complex in G_cnp_components:
             # protein === node
             if len(complex) < 2: continue   # filter out single-protein complexes
 
-            # score the complex by their weighted weighted density
+            # score the complex by their weighted density
             score = get_score(complex, scorededges)
             f.write("(" + str(len(complex)) + "_" + str(score) + "): ")
             for protein in complex:
@@ -160,16 +172,6 @@ if __name__ == '__main__':
     
     ### Read the score edges file
     # Assumes the inputfile has scores
-    # scorededges = {}
-    # neighbours = {}
-    # with open(inputfile) as edges_file:
-    #     for line in edges_file:
-    #         edge = line.split()
-    #         id_a = edge[0]
-    #         id_b = edge[1]
-    #         score = edge[2]
-    #         key = f"{id_a}|{id_b}" if id_a < id_b else f"{id_b}|{id_a}"
-    #         scorededges[key] = float(score)
 
     ### Clustering
     # To run sequential code, we need to call Find_CNP from sequential.py

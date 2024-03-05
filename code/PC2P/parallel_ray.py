@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Mar 24 07:51:58 2020
-
-@author: SaRa Omranian
-"""
-
 # Assumes this file is run from the root
 import os
 from helper import printc

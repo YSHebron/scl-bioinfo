@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Mar 24 17:44:49 2020
-
-@author: saRa Omranian
-"""
-
 import networkx as nx
 import itertools as itert
 from operator import itemgetter

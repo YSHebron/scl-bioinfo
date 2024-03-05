@@ -20,23 +20,17 @@ def jaccard_similarity(P, C):
     return intersection_size / union_size
 
 if __name__ == '__main__':
+    ### complexes will contain gold standard
     complexes = dict()
-    complexfile = "Yeast/complexes_yeast.txt"
+    complexfile = "code/PC2P/Yeast/CYC2008_scl.txt"
     
-    ### Read complexes
     with open(complexfile) as f:
         for line in f:
-            temp = (line.split())[:2]
-            pid, cid = temp[0], temp[1]
-            if cid not in complexes.keys():
-                complexes[cid] = [pid]
-            else:
-                complexes[cid].append(pid)
-    
+            temp = line.split(' ', 1)
+            cid, pids = temp[0], temp[1].strip().split()
+            complexes[cid] = pids
+            
     print(complexes)
     
-    complexfile_new = "Yeast/CYC2008_scl.txt"
-    with open(complexfile_new, "w") as f:
-        for cid in complexes:
-            f.write("{0} {1}\n".format(cid, ' '.join(complexes[cid])))
-    
+    # pairplot for precision-recall
+    # plan out results format (using set of pairplots colorcoded according to either gold standard/ppi dataset/approach/clustering algorithm used used)
