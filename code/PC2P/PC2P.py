@@ -1,6 +1,5 @@
-# This program must be run from scl-bioinfo root
 # Do PC2P.py --help for help on running this program.
-# Sample run: 
+# Sample run: python PC2P.py dummy_CYC.txt results -p
 
 import os
 import sys
@@ -71,14 +70,6 @@ def perform_cnp(args):
     outputdir = outputdir + "/"
     if not os.path.isdir(outputdir):
         os.mkdir(outputdir)
-
-    # # For unweighted inputfile (default)
-    # nx.write_edgelist(G_copy, outputdir + "G_PredictedCNP_edgelist.txt", data=False)
-    # nx.write_edgelist(G_copy, outputdir + "G_PredictedCNP_edgelist.gz", data=False)
-    # # For weighted inputfile (not really used)
-    # nx.write_weighted_edgelist(G_copy, outputdir + "G_PredictedCNP_weightededgelist.txt")
-    # nx.write_weighted_edgelist(G_copy, outputdir + "G_PredictedCNP_weightededgelist.gz")
-    # # Note: Use gzip -dk file.gz to extract .gz in linux
 
     # We save each predicted cluster (complex) in the predicted CNP of G in one line
     # Each remaining connected component (predicted BSsG coherent partitions) is treated as its own cluster
@@ -163,6 +154,6 @@ if __name__ == '__main__':
             args_list = (G, i, osname, is_parallel, pool_thresh, num_procs, outputdir)
             perform_cnp(args_list)
              
-    ### Evaluation
+    ### Evaluation (call Analysis)
     
     printc("Algorithm took %s seconds to finish." % (time.time() - start_time))
