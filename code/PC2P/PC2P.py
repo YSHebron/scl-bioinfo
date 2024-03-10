@@ -1,6 +1,6 @@
 # This program must be run from scl-bioinfo root
-# Do main.py --help for help on running this program.
-# NOTE: Programming this must be generalizable so when using a different clustering algorithm it would be a quick transition
+# Do PC2P.py --help for help on running this program.
+# Sample run: 
 
 import os
 import sys
@@ -9,7 +9,6 @@ import pandas as pd
 import multiprocessing as mp
 import time
 from helper import printc
-from typing import Tuple
 import eval_PC2P
 
 def positive_int(x):
@@ -153,13 +152,17 @@ if __name__ == '__main__':
             # Prepare arguments for each iteration
             args_list = [(G, i, osname, is_parallel, pool_thresh, num_procs, outputdir) for i in range(0, iters)]
             # Use the pool to map the function to the arguments
-            pool.map(perform_cnp, args_list)
+            result = pool.map_async(perform_cnp, args_list)
+            while not result.ready():
+                time.sleep(1)
+            result = result.get()
+            pool.close()
+            pool.join()
     else:
         for i in range(0, iters):
             args_list = (G, i, osname, is_parallel, pool_thresh, num_procs, outputdir)
             perform_cnp(args_list)
              
     ### Evaluation
-    
     
     printc("Algorithm took %s seconds to finish." % (time.time() - start_time))

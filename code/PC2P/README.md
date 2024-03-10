@@ -8,15 +8,18 @@ PC2P is written in 2 formats: sequential and parallel.
 
 The parallel version is implemented with 2 packages in python: Ray and Multiprocess. The Ray implementation can be run on Mac and Linux operating systems, however, for Windows machine, you can use Multiprocess implementation.
 
-To run the program you need to call one of these implementations and pass your network to the function, please see main_Function.py for more details.
+To run the program you need to call one of these implementations and pass your network to the function, please see PC2P.py for more details.
 
-**SCL Note:** For the adapted PC2P, make sure to run everything on the scl-bioinfo `root` so code relative to current working directory will work properly.
-
-There is an implementation with Jupyter, in which I put some examples. In these examples, you can find the original network and the predicted clusters after applying PC2P along with the total number of removed edges to obtain these clusters.
+There is an implementation with Jupyter, in which we put some examples. In these examples, you can find the original network and the predicted clusters after applying PC2P along with the total number of removed edges to obtain these clusters.
 
 You can find PPINs for Human and Yeast in their respective folders with their gold standards, which we used to compare the predicted clusters with reference complexes.
 
-If you want to do further analysis and check how well the predicted clusters represent the reference complexes, please run PredictedClusters_Analysis.py in the Analysis folder for the predicted clusters from PC2P.
+If you want to do further analysis and check how well the predicted clusters represent the reference complexes, please run `PredictedClusters_Analysis.py` in the Analysis folder for the predicted clusters from PC2P.
+
+## SCL Notes
+
+* For the adapted PC2P, make sure to run everything on the scl-bioinfo `root` so code relative to current working directory will work properly.
+* PC2P is a greedy algorithm, hence its runtime tends to scale poorly with increasing number of protein-protein interactions. For easy testing and debugging, two small test weighted PPINs `dummy_CYC.txt` and `dummy_SGD.txt` has been provided which contains filtered edges from KroganCore.
 
 ## References
 
