@@ -41,11 +41,12 @@ def get_score(complex, edgesref):
     return score
 
 def perform_cnp(args):
-    G, i, osname, is_parallel, pool_thresh, num_procs, outputdir = args
-    iter_time = time.time()
+    G, i, inputfile, is_parallel, pool_thresh, num_procs, outputdir = args
+    osname = sys.platform
     print("Iteration", i)
     if not is_parallel:
         import sequential
+        printc("Hello from PC2P_Sequential.py! Current cwd :: " + os.getcwd())
         edge_cut = sequential.Find_CNP(G)
     else:
         if (osname == "linux"):
@@ -53,7 +54,7 @@ def perform_cnp(args):
             import ray
             num_cpus = psutil.cpu_count(logical=False)
             conda_env = "environment.yml"
-            runtime_env = {"conda": conda_env, "working_dir": "code/PC2P"}
+            runtime_env = {"conda": conda_env, "working_dir": "code/PC2P"}  # NOTE: This is why this should be run at the root
             ray.init(num_cpus=num_cpus, runtime_env=runtime_env)
             import parallel_ray
             edge_cut = parallel_ray.Find_CNPs_V2(G)
@@ -105,29 +106,33 @@ def perform_cnp(args):
                 f.write("%s " % protein)
             f.write("\n")
     
-    printc("Iteration {} took {} seconds to finish.".format(i, time.time() - iter_time))
+    return i
 
 if __name__ == '__main__':
-    osname = sys.platform
     inputfile, outputdir, iters, is_parallel, pool_thresh, num_procs = args.inputfile, args.outputdir, args.i, args.p, args.pool_thresh, args.num_procs
     
     start_time = time.time()
+    
+    ### Read the PPIN (given as a PPI dataset or edgelist)
+    # Assumes the inputfile has scores, which may or may not be used
     G = nx.Graph()
     if inputfile.endswith(".csv"):
-        # for .csv with header inputs
+        # for .csv with header edge lists
         df = pd.read_csv(inputfile)
         print(df)
         G = nx.from_pandas_edgelist(df, source = "p1", target = "p2", create_using = nx.Graph(), edge_attr = "score")
+    elif inputfile.endswith(".tsv"):
+        # for .tsv with header edge lists
+        df = pd.read_csv(inputfile, sep="\t")
+        print(df)
+        G = nx.from_pandas_edgelist(df, source = "p1", target = "p2", create_using = nx.Graph(), edge_attr = "score")
     elif inputfile.endswith(".txt"):
-        # for .txt no header inputs
+        # for .txt with no header edge lists
         G = nx.read_weighted_edgelist(inputfile, create_using = nx.Graph(), nodetype = str)
-    print(G)
+    printc(G)
     
     print("Size of V(G):", G.number_of_nodes())
     print("Size of E(G):", G.number_of_edges())
-    
-    ### Read the score edges file
-    # Assumes the inputfile has scores
 
     ### Clustering
     # To run sequential code, we need to call Find_CNP from sequential.py
@@ -141,9 +146,9 @@ if __name__ == '__main__':
     if not is_parallel:
         with mp.Pool(processes=mp.cpu_count()) as pool:
             # Prepare arguments for each iteration
-            args_list = [(G, i, osname, is_parallel, pool_thresh, num_procs, outputdir) for i in range(0, iters)]
+            args_list = [(G, i, inputfile, is_parallel, pool_thresh, num_procs, outputdir) for i in range(0, iters)]
             # Use the pool to map the function to the arguments
-            result = pool.map_async(perform_cnp, args_list)
+            result = pool.map_async(perform_cnp, args_list)            
             while not result.ready():
                 time.sleep(1)
             result = result.get()
@@ -151,7 +156,7 @@ if __name__ == '__main__':
             pool.join()
     else:
         for i in range(0, iters):
-            args_list = (G, i, osname, is_parallel, pool_thresh, num_procs, outputdir)
+            args_list = (G, i, inputfile, is_parallel, pool_thresh, num_procs, outputdir)
             perform_cnp(args_list)
              
     ### Evaluation (call Analysis)

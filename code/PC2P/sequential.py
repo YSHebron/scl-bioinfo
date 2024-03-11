@@ -1,15 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Mar 24 19:42:20 2020
-
-@author: somranian
-"""
-
-# Assumes this file is run from the root
 import os
-from helper import printc
-printc("Hello from PC2P_Sequential.py! Current cwd :: " + os.getcwd())
-
 from itertools import chain
 import numpy as np
 import networkx as nx
@@ -23,6 +12,7 @@ from networkx.algorithms.flow import shortest_augmenting_path
 import statistics as stat
 import collections
 import time
+from helper import printc
 
 
 def edgeCutSet_V2(cnp , G):
@@ -228,6 +218,6 @@ def Find_CNP(G, mixed_label = False):
             sorted_x.append(intList + strList) 
         edge_cut =  list(set(tuple(i) for i in (sorted_x)))
     
-    print("CNP loop ended at iteration {}".format(iter))
+    print("\nCNP loop ended at iteration {}".format(iter))
     return(edge_cut)
 
