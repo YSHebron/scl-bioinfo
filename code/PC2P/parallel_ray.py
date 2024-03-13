@@ -1,7 +1,6 @@
 # Assumes this file is run from the root
 import os
 from helper import printc
-printc("Hello from parallel_ray! Current cwd :: " + os.getcwd())
 
 import networkx as nx
 import itertools as itert
@@ -126,7 +125,7 @@ def CNP(G,v ,mixed_label = False):
         cutRatioN2 = (cutRatioN2_V4+cutRatioN2_V1)/2
     else:
         #find nodes to disconnect the complement of N2, change elemnt of node cuts to list
-#                 cut_node = [list(n) for n in list(nx.all_node_cuts(Complement_indN2,flow_func=shortest_augmenting_path))]
+        # cut_node = [list(n) for n in list(nx.all_node_cuts(Complement_indN2,flow_func=shortest_augmenting_path))]
         cut_node = my_cut_nodes_V4(Complement_indN2, mixed_label)
         if (len(cut_node)==0):
             return
@@ -177,7 +176,7 @@ def CNP(G,v ,mixed_label = False):
     result = {cnp_nodes:[v,min_ratio]}
     return(result)
 
-def Find_CNPs_V2(G, mixed_label = False):
+def Find_CNP(G, mixed_label = False):
     #Find all component of G
     G_components = list(nx.connected_components(G))
     G_temp = G.copy()
@@ -218,8 +217,8 @@ def Find_CNPs_V2(G, mixed_label = False):
                         Nodesto_NextRound.remove(n)
                 del G_components[0]
                 continue   
-    #I get the intersect incase we have multiple components. 
-#    At the end I have to add the nodes which are not present in the component to nodesto_NextRound
+    # I get the intersect incase we have multiple components. 
+    # At the end I have to add the nodes which are not present in the component to nodesto_NextRound
             nodes = Nodesto_NextRound.intersection(set(componentOfG.nodes()))
             if not nodes:
                 nodes = set(componentOfG.nodes())
@@ -230,11 +229,11 @@ def Find_CNPs_V2(G, mixed_label = False):
             results = result_objects
             results.extend(updated_results)
             scores = [list(r.values())[0][1] for r in results]
-#            print('scores: ',scores)
+            # print('scores: ',scores)
             indx = scores.index(min(scores))
             subgrf = list(results[indx].keys())[0]
             edge_cut.append(edgeCutSet_V2(subgrf,G_temp))
-            #finding second neighbors for all cnp nodes
+            # finding second neighbors for all cnp nodes
             result_objects2 = ray.get([second_Neighb.remote(G_temp,v) for v in subgrf.nodes()])
             results2 = result_objects2
             secondNeighb = []

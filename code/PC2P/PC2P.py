@@ -4,11 +4,13 @@
 import os
 import sys
 import networkx as nx
+import matplotlib.pyplot as plt
 import pandas as pd
 import multiprocessing as mp
 import time
 from helper import printc
 import eval_PC2P
+from typing import Tuple    # For explicit typesetting and hints
 
 def positive_int(x):
     i = int(x)
@@ -34,19 +36,23 @@ def get_score(complex, edgesref):
         for id2 in range(1,len(complex)):
            id_a = complex[id1]
            id_b = complex[id2]
-           key = f"{id_a}|{id_b}" if id_a < id_b else f"{id_b}|{id_a}"
+           key = (id_a, id_b) if id_a < id_b else (id_b, id_a)
            if key in edgesref:
                totalweight += edgesref[key]
-    score = totalweight*2 / ((len(complex) * (len(complex) -1)))
+    score = totalweight*2 / ((len(complex) * (len(complex)-1)))
     return score
 
-def perform_cnp(args):
-    G, i, inputfile, is_parallel, pool_thresh, num_procs, outputdir = args
+# Generate minimumm node cut (edge_cut) and apply it to G, scores components (complexes) of G
+# and evaluates G
+def perform_cnp(args: Tuple[nx.Graph, int, str, int, int, int, str]):
+    start_time = time.time()
+    G, i, is_parallel, pool_thresh, num_procs, outputdir = args
     osname = sys.platform
-    print("Iteration", i)
+    printc("Started process (iteration) %d..." % i)
+    edge_cut = []   # store edge_cut that emulates effect of min node cut (why not just use node_cut directly)
     if not is_parallel:
         import sequential
-        printc("Hello from PC2P_Sequential.py! Current cwd :: " + os.getcwd())
+        printc("Now running PC2P_Sequential.py! Current cwd :: " + os.getcwd())
         edge_cut = sequential.Find_CNP(G)
     else:
         if (osname == "linux"):
@@ -57,59 +63,57 @@ def perform_cnp(args):
             runtime_env = {"conda": conda_env, "working_dir": "code/PC2P"}  # NOTE: This is why this should be run at the root
             ray.init(num_cpus=num_cpus, runtime_env=runtime_env)
             import parallel_ray
-            edge_cut = parallel_ray.Find_CNPs_V2(G)
+            printc("Now running parallel_ray.py! Current cwd :: " + os.getcwd())
+            edge_cut = parallel_ray.Find_CNP(G)
         else:
             import parallel_multiprocess
-            printc("Now running parallel_multiprocess.py! :: " + os.getcwd())
+            printc("Now running parallel_multiprocess.py! Current cwd :: " + os.getcwd())
             edge_cut = parallel_multiprocess.Find_CNP(G, pool_thresh, num_procs)
-
-    ### Minimum Edge Cut
-    G_copy = G.copy()
-    G_copy.remove_edges_from(edge_cut) # G_copy now contains G's predicted CNP
     
-    ### Writing to results
-    outputdir = outputdir + "/"
-    if not os.path.isdir(outputdir):
-        os.mkdir(outputdir)
+    ### Apply minimum node cut (use pyplot)
+    G_cnp = G.copy()
+    G_cnp.remove_edges_from(edge_cut) # G_CNP now contains G's predicted CNP
 
     # We save each predicted cluster (complex) in the predicted CNP of G in one line
     # Each remaining connected component (predicted BSsG coherent partitions) is treated as its own cluster
     # We write one line per predicted cluster
     # Each cluster is represented as a set in G_cnp_components
-    G_cnp_components = list(nx.connected_components(G_copy))
+    G_cnp_components = list(nx.connected_components(G_cnp))
     G_cnp_components.sort(key=len, reverse=True)
     G_cnp_components = [sorted(list(cplx)) for cplx in G_cnp_components]
     printc("First 10 complexes, sorted by decreasing number of proteins:")
     print(*G_cnp_components[:10], sep="\n")
 
+    ### Prepare for Scoring Detected Clusters (done simultaneously with writing to result)
     scorededges = {}
-    neighbours = {}
-    with open(inputfile) as edges_file:
-        for line in edges_file:
-            edge = line.split()
-            id_a = edge[0]
-            id_b = edge[1]
-            score = edge[2]
-            key = f"{id_a}|{id_b}" if id_a < id_b else f"{id_b}|{id_a}"
-            scorededges[key] = float(score)
-            
+    for id_a, id_b, score in G.edges(data=True):
+        key = (id_a, id_b) if id_a < id_b else (id_b, id_a)
+        scorededges[key] = score["weight"]
+    
+    ### Writing to results
+    outputdir = outputdir + "/"
+    if not os.path.isdir(outputdir):
+        os.mkdir(outputdir)
     with open(outputdir + 'G_PredictedComplexes_iter{}.txt'.format(i), 'w') as f:
         # complex === line
         for complex in G_cnp_components:
             # protein === node
             if len(complex) < 2: continue   # filter out single-protein complexes
-
-            # score the complex by their weighted density
+            # Score the complex by their weighted density
+            # Each line: (len(complex)_score): p1 p2 p3 ...
             score = get_score(complex, scorededges)
             f.write("(" + str(len(complex)) + "_" + str(score) + "): ")
             for protein in complex:
                 f.write("%s " % protein)
             f.write("\n")
     
-    return i
+    printc("Iteration %d took %d seconds to finish." % (i, time.time() - start_time))
+    
+    ### Return G_cnp_components for analysis phase
+    return G_cnp_components
 
 if __name__ == '__main__':
-    inputfile, outputdir, iters, is_parallel, pool_thresh, num_procs = args.inputfile, args.outputdir, args.i, args.p, args.pool_thresh, args.num_procs
+    inputfile, outputdir, iters, is_parallel, pool_thresh, num_procs = str(args.inputfile), str(args.outputdir), int(args.i), bool(args.p), int(args.pool_thresh), int(args.num_procs)
     
     start_time = time.time()
     
@@ -117,48 +121,37 @@ if __name__ == '__main__':
     # Assumes the inputfile has scores, which may or may not be used
     G = nx.Graph()
     if inputfile.endswith(".csv"):
-        # for .csv with header edge lists
+        # for .csv with header p1, p2, and weight
         df = pd.read_csv(inputfile)
         print(df)
-        G = nx.from_pandas_edgelist(df, source = "p1", target = "p2", create_using = nx.Graph(), edge_attr = "score")
+        G = nx.from_pandas_edgelist(df, source = "p1", target = "p2", create_using = nx.Graph, edge_attr = "weight")
     elif inputfile.endswith(".tsv"):
-        # for .tsv with header edge lists
+        # for .tsv with header p1, p2, and weight
         df = pd.read_csv(inputfile, sep="\t")
         print(df)
-        G = nx.from_pandas_edgelist(df, source = "p1", target = "p2", create_using = nx.Graph(), edge_attr = "score")
+        G = nx.from_pandas_edgelist(df, source = "p1", target = "p2", create_using = nx.Graph, edge_attr = "weight")
     elif inputfile.endswith(".txt"):
         # for .txt with no header edge lists
-        G = nx.read_weighted_edgelist(inputfile, create_using = nx.Graph(), nodetype = str)
-    printc(G)
+        G = nx.read_weighted_edgelist(inputfile, create_using = nx.Graph, nodetype = str)
     
     print("Size of V(G):", G.number_of_nodes())
     print("Size of E(G):", G.number_of_edges())
 
-    ### Clustering
-    # To run sequential code, we need to call Find_CNP from sequential.py
-    # To run parallelized code in Windows and Unix, we need to call parallel_multiprocess.py 
-    # To run parallelized code in Linux and Mac, we need to call Find_CNP from parallel_ray.py
+    ### Clustering (Coherent Network Partitioning)
+    # To run sequential code, we call Find_CNP from sequential.py
+    # To run parallelized code, we call either parallel_multiprocess.py or parallel_ray.py 
     
-    # Parallel iterations for sequential mode: Create a Pool for parallel execution
-    # Sequential iterations for parallel mode
+    # Context below can perform sequential/parallel iterations in parallel
     # TODO: Justify iterations by using a stochastic approach
     #   (like by applying SWC before the parameter-free approach)
-    if not is_parallel:
-        with mp.Pool(processes=mp.cpu_count()) as pool:
-            # Prepare arguments for each iteration
-            args_list = [(G, i, inputfile, is_parallel, pool_thresh, num_procs, outputdir) for i in range(0, iters)]
-            # Use the pool to map the function to the arguments
-            result = pool.map_async(perform_cnp, args_list)            
-            while not result.ready():
-                time.sleep(1)
-            result = result.get()
-            pool.close()
-            pool.join()
-    else:
-        for i in range(0, iters):
-            args_list = (G, i, inputfile, is_parallel, pool_thresh, num_procs, outputdir)
-            perform_cnp(args_list)
-             
-    ### Evaluation (call Analysis)
+    with mp.Pool(processes=mp.cpu_count()) as pool:
+        args_list = [(G, i, is_parallel, pool_thresh, num_procs, outputdir) for i in range(0, iters)]
+        result = pool.map_async(perform_cnp, args_list)
+        while not result.ready():
+            time.sleep(1)
+        pool.close()
+        pool.join()
+
+    ### TODO: Evaluation (call Analysis)
     
-    printc("Algorithm took %s seconds to finish." % (time.time() - start_time))
+    printc("Algorithm took %d seconds to finish." % (time.time() - start_time))

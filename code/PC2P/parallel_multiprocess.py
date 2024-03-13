@@ -122,7 +122,7 @@ def CNP(G,v ,mixed_label = False):
         cutRatioN2 = (cutRatioN2_V4+cutRatioN2_V1)/2
     else:
         #find nodes to disconnect the complement of N2, change elemnt of node cuts to list
-#                 cut_node = [list(n) for n in list(nx.all_node_cuts(Complement_indN2,flow_func=shortest_augmenting_path))]
+        # cut_node = [list(n) for n in list(nx.all_node_cuts(Complement_indN2,flow_func=shortest_augmenting_path))]
         cut_node = my_cut_nodes_V4(Complement_indN2, mixed_label)
         if (len(cut_node)==0):
             return
@@ -163,7 +163,7 @@ def CNP(G,v ,mixed_label = False):
         #-----Calculating clustering coefficient is finished here!-------
         cutRatioN2_V4 = coherentCutRatio_V4(nx.degree(induced_N2),nx.degree(cnp_v,induced_N2.nodes()),cc)
         cutRatioN2_V1 = coherentCutRatio_V1(nx.degree(induced_N2),nx.degree(cnp_v,induced_N2.nodes()))
-        cutRatioN2 = (cutRatioN2_V4+cutRatioN2_V1)/2
+        cutRatioN2 = (cutRatioN2_V4+cutRatioN2_V1)/2    # NOTE: Takes the average of the clustering coefficient score function and regular score function (optimization)
     if cutRatioN1 < cutRatioN2:
         min_ratio = cutRatioN1
         cnp_nodes = induced_N1
@@ -278,18 +278,18 @@ def Find_CNP(G, pool_threshold = 50, num_procs = 4, mngd_list = None, mixed_labe
             Nodesto_NextRound = secondNeighb - set(subgrf.nodes())
             if nodes_diff:
                 Nodesto_NextRound = Nodesto_NextRound|nodes_diff
-#            print('next round nodes: ', Nodesto_NextRound)
+            # print('next round nodes: ', Nodesto_NextRound)
             updated_results = [results[i] for i,r in enumerate(results) if not (list(r.values())[0][0] in secondNeighb)]
-#            print("updated_results: ",updated_results)
-#            componentOfG.remove_nodes_from(subgrf.nodes())
+            # print("updated_results: ",updated_results)
+            # componentOfG.remove_nodes_from(subgrf.nodes())
             G_temp.remove_nodes_from(subgrf.nodes())
-#            components = list(nx.connected_components(componentOfG))
-#            del G_components[0]
-#            if components:
-#                G_components.extend(components)
+            # components = list(nx.connected_components(componentOfG))
+            # del G_components[0]
+            # if components:
+            #   G_components.extend(components)
             G_components = list(nx.connected_components(G_temp))
-#             G_components.sort(key=len)
-#            print("G_components: ",G_components)
+            # G_components.sort(key=len)
+            # print("G_components: ",G_components)
             print("end of round:", rounds, end="\r")
             rounds += 1
     edge_cut = [edge for sublist in edge_cut for edge in sublist]
@@ -326,74 +326,3 @@ def read_network(fname):
         parts = [canonical_protein_name(part) for part in line.strip().split() if not is_numeric(part)]
         known_proteins.append(set(parts))
     return known_proteins
-#----------------------------------------------------------------------------------
-
-# SCL Note: Transferred driver to main_Function.py
-# start_time = time.time()
-
-# STRING = nx.read_weighted_edgelist("PC2P/Human/STRING/STRING_Final.txt", create_using = nx.Graph(), nodetype = str)
-
-# Edge_cut_STRING = Find_CNP(STRING)
-# STRING_copy = STRING.copy()
-# STRING_copy.remove_edges_from(Edge_cut_STRING)
-
-# nx.write_edgelist(STRING_copy, "STRING_CNPPredicted_V4.edgelist.gz", data=False)
-# nx.write_weighted_edgelist(STRING_copy, 'STRING_CNPPredicted_V4.weighted.edgelist')
-
-# #----Reading Gold standard to get shared proteins
-
-# #MIPs = 'mips_3_100.txt'
-# #r_MIPs = read_network(MIPs)
-# #MIPS = set([r for s in r_MIPs for r in s])
-# #MIPS_STRING_Nodes = MIPS.intersection(set(STRING.nodes()))
-# #MIPSSTRING_Graph = STRING.subgraph(MIPS_STRING_Nodes)
-# #Edge_cut_STRING = Find_CNPs_V2(MIPSSTRING_Graph)
-
-# #STRING_copy = MIPSSTRING_Graph.copy()
-# #STRING_copy.remove_edges_from(Edge_cut_STRING)
-
-# #nx.write_edgelist(STRING_copy, "STRING_MIPS_MultiParallelV3.edgelist.gz", data=False)
-# #nx.write_weighted_edgelist(STRING_copy, 'STRING_MIPS_MultiParallelV3.weighted.edgelist')
-
-# #SGD = 'sgd.txt'
-# #r_SGD = read_network(SGD)
-# #SGD = set([r for s in r_SGD for r in s])
-# #SGD_STRING_Nodes = SGD.intersection(set(STRING.nodes()))
-# #SGDSTRING_Graph = STRING.subgraph(SGD_STRING_Nodes)
-# #Edge_cut_STRING = Find_CNPs_V2(SGDSTRING_Graph)
-# #
-# #STRING_copy = SGDSTRING_Graph.copy()
-# #STRING_copy.remove_edges_from(Edge_cut_STRING)
-# #
-# #nx.write_edgelist(STRING_copy, "STRING_SGD_MultiParallelV3.edgelist.gz", data=False)
-# #nx.write_weighted_edgelist(STRING_copy, 'STRING_SGD_MultiParallelV3.weighted.edgelist')
-
-
-# print("Number of edges to remove is:  ",len(Edge_cut_STRING))
-
-# STRING_cnp_components = list(nx.connected_components(STRING_copy))
-# STRING_cnp_components.sort(key=len, reverse=True)
-
-# with open('STRING_PredictedClusters_V4.txt', 'w') as f:
-#     for item in STRING_cnp_components:
-#         for node in item:
-#             f.write("%s " % node)
-#         f.write("\n")
-# #with open('STRING_SGD_Predicted_MultiParallelV3.txt', 'w') as f:
-# #    for item in STRING_cnp_components:
-# #        for node in item:
-# #            f.write("%s " % node)
-# #        f.write("\n")
-# #with open('STRING_MIPS_Predicted_MultiParallelV3.txt', 'w') as f:
-# #    for item in STRING_cnp_components:
-# #        for node in item:
-# #            f.write("%s " % node)
-# #        f.write("\n")
-
-# print("--- %s seconds ---" % (time.time() - start_time))
-
-# #ss = STRING.subgraph(STRING_cnp_components[100])
-# #if (nx.is_connected(nx.complement(ss))):
-# #    print("booo")
-# #else:
-# #    print("yoohoo")
