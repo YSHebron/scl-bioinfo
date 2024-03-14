@@ -141,16 +141,19 @@ if __name__ == '__main__':
     # To run sequential code, we call Find_CNP from sequential.py
     # To run parallelized code, we call either parallel_multiprocess.py or parallel_ray.py 
     
-    # Context below can perform sequential/parallel iterations in parallel
     # TODO: Justify iterations by using a stochastic approach
     #   (like by applying SWC before the parameter-free approach)
-    with mp.Pool(processes=mp.cpu_count()) as pool:
-        args_list = [(G, i, is_parallel, pool_thresh, num_procs, outputdir) for i in range(0, iters)]
-        result = pool.map_async(perform_cnp, args_list)
-        while not result.ready():
-            time.sleep(1)
-        pool.close()
-        pool.join()
+    if not is_parallel:
+        with mp.Pool(processes=mp.cpu_count() if mp.cpu_count() <= iters else iters) as pool:
+            args_list = [(G, i, is_parallel, pool_thresh, num_procs, outputdir) for i in range(0, iters)]
+            result = pool.map_async(perform_cnp, args_list)
+            while not result.ready():
+                time.sleep(1)
+            pool.close()
+            pool.join()
+    else:
+        for i in range(0, iters):
+            perform_cnp([G, i, is_parallel, pool_thresh, num_procs, outputdir])
 
     ### TODO: Evaluation (call Analysis)
     
