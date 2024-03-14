@@ -1,6 +1,6 @@
-rawPPI = "code/PC2P/Yeast/KroganCore/krogan2006_core.txt"
+rawPPI = "code/PC2P/Yeast/KroganExt/krogan2006_extended.txt"
 
-goldStandard = "code/PC2P/Yeast/CYC2008_complexes.txt"
+goldStandard = "code/PC2P/Yeast/SGD_complexes.txt"
 
 with open(rawPPI) as f1, open(goldStandard) as f2:
     present = set()
@@ -21,10 +21,10 @@ with open(rawPPI) as f1, open(goldStandard) as f2:
     print(scorededges)
     
     import os
-    outputdir = "code/PC2P/Yeast/KroganCore"
+    outputdir = "code/PC2P/Yeast/KroganExt"
     if not os.path.isdir(outputdir):
         os.mkdir(outputdir)
-    with open(outputdir + '/KroganCore_CYC_weighted.txt', 'w') as f:
+    with open(outputdir + '/KroganExt_SGD_weighted.txt', 'w') as f:
         for key in scorededges:
             if key[0] in present or key[1] in present:
                 f.write("%s %s %f\n" % (key[0], key[1], scorededges[key]))   
