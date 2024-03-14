@@ -44,9 +44,9 @@ def get_score(complex, edgesref):
 
 # Generate minimumm node cut (edge_cut) and apply it to G, scores components (complexes) of G
 # and evaluates G
-def perform_cnp(args: Tuple[nx.Graph, int, str, int, int, int, str]):
+def perform_cnp(args: Tuple[nx.Graph, int, str, str, bool, int, int]):
     start_time = time.time()
-    G, i, is_parallel, pool_thresh, num_procs, outputdir = args
+    G, i, inputfile, outputdir, is_parallel, pool_thresh, num_procs = args
     osname = sys.platform
     printc("Started process (iteration) %d..." % i)
     edge_cut = []   # store edge_cut that emulates effect of min node cut (why not just use node_cut directly)
@@ -94,7 +94,13 @@ def perform_cnp(args: Tuple[nx.Graph, int, str, int, int, int, str]):
     outputdir = outputdir + "/"
     if not os.path.isdir(outputdir):
         os.mkdir(outputdir)
-    with open(outputdir + 'G_PredictedComplexes_iter{}.txt'.format(i), 'w') as f:
+    if osname == "linux":
+        filename = inputfile.split("/")[-1].split("_")
+        filename = filename[0] + "_" + filename[1] + "_" + "Predicted"
+    else:
+        filename = inputfile.split("\\")[-1].split("_")
+        filename = filename[0] + "_" + filename[1] + "_" + "Predicted"
+    with open(outputdir + '{}_iter{}.txt'.format(filename, i), 'w') as f:
         # complex === line
         for complex in G_cnp_components:
             # protein === node
@@ -111,6 +117,14 @@ def perform_cnp(args: Tuple[nx.Graph, int, str, int, int, int, str]):
     
     ### Return G_cnp_components for analysis phase
     return G_cnp_components
+
+def graph_stats(G: nx.Graph):
+    printc("Properties of G")
+    print("Size of V(G):", G.number_of_nodes())
+    print("Size of E(G):", G.number_of_edges())
+    print("Number of Components:", nx.number_connected_components(G))
+    print("Average clustering coefficient:", round(nx.average_clustering(G), 2))
+    print("Max Diameter:", max(map(nx.diameter, [G.subgraph(c).copy() for c in nx.connected_components(G)])))
 
 if __name__ == '__main__':
     inputfile, outputdir, iters, is_parallel, pool_thresh, num_procs = str(args.inputfile), str(args.outputdir), int(args.i), bool(args.p), int(args.pool_thresh), int(args.num_procs)
@@ -134,18 +148,19 @@ if __name__ == '__main__':
         # for .txt with no header edge lists
         G = nx.read_weighted_edgelist(inputfile, create_using = nx.Graph, nodetype = str)
     
-    print("Size of V(G):", G.number_of_nodes())
-    print("Size of E(G):", G.number_of_edges())
+    printc("Processing inputfile %s" % inputfile)
+    graph_stats(G)
 
     ### Clustering (Coherent Network Partitioning)
     # To run sequential code, we call Find_CNP from sequential.py
     # To run parallelized code, we call either parallel_multiprocess.py or parallel_ray.py 
     
+    # NOTE: Found an MCL implementation in Python, might be useful
     # TODO: Justify iterations by using a stochastic approach
     #   (like by applying SWC before the parameter-free approach)
     if not is_parallel:
         with mp.Pool(processes=mp.cpu_count() if mp.cpu_count() <= iters else iters) as pool:
-            args_list = [(G, i, is_parallel, pool_thresh, num_procs, outputdir) for i in range(0, iters)]
+            args_list = [(G, i, inputfile, outputdir, is_parallel, pool_thresh, num_procs) for i in range(0, iters)]
             result = pool.map_async(perform_cnp, args_list)
             while not result.ready():
                 time.sleep(1)
@@ -153,7 +168,7 @@ if __name__ == '__main__':
             pool.join()
     else:
         for i in range(0, iters):
-            perform_cnp([G, i, is_parallel, pool_thresh, num_procs, outputdir])
+            perform_cnp([G, i, inputfile, outputdir, is_parallel, pool_thresh, num_procs])
 
     ### TODO: Evaluation (call Analysis)
     
