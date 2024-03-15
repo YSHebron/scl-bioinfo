@@ -79,6 +79,7 @@ def perform_cnp(args: Tuple[nx.Graph, int, str, str, bool, int, int]):
     # Each remaining connected component (predicted BSsG coherent partitions) is treated as its own cluster
     # We write one line per predicted cluster
     # Each cluster is represented as a set in G_cnp_components
+    # TODO: Sort output by score, not by size
     G_cnp_components = list(nx.connected_components(G_cnp))
     G_cnp_components.sort(key=len, reverse=True)
     G_cnp_components = [sorted(list(cplx)) for cplx in G_cnp_components]
@@ -168,7 +169,5 @@ if __name__ == '__main__':
     else:
         for i in range(0, iters):
             perform_cnp([G, i, inputfile, outputdir, is_parallel, pool_thresh, num_procs])
-
-    ### TODO: Evaluation (call Analysis)
-    
+            
     printc("Algorithm took %d seconds to finish." % (time.time() - start_time))
