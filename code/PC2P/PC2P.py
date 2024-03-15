@@ -9,8 +9,9 @@ import pandas as pd
 import multiprocessing as mp
 import time
 from helper import printc
-import eval_PC2P
 from typing import Tuple    # For explicit typesetting and hints
+
+import PC2P_eval
 
 def positive_int(x):
     i = int(x)
@@ -161,9 +162,7 @@ if __name__ == '__main__':
     if not is_parallel:
         with mp.Pool(processes=mp.cpu_count() if mp.cpu_count() <= iters else iters) as pool:
             args_list = [(G, i, inputfile, outputdir, is_parallel, pool_thresh, num_procs) for i in range(0, iters)]
-            result = pool.map_async(perform_cnp, args_list)
-            while not result.ready():
-                time.sleep(1)
+            pool.map_async(perform_cnp, args_list)  # removed spin lock to improve performance, terminate instead through taskmgr
             pool.close()
             pool.join()
     else:

@@ -10,7 +10,7 @@ function inputfile($inputdir, $ppin, $gldstd) {
 }
 
 foreach ($ppin in $ppins) {
-    foreach($gldstd in $gldstds) {
+    foreach ($gldstd in $gldstds) {
         python $code (inputfile $inputdir $ppin $gldstd) $outputdir -p --pool_thresh $pool_thresh
         Write-Output ================
     }
