@@ -128,7 +128,7 @@ def precision_Jaccard(reference,predicted, threshold=0.5):
     counter = 0
     for pred in predicted:
         for ref in reference:
-            score = jaccard(ref,pred)
+            score = jaccard(ref.proteins,pred.proteins)
             if score >= threshold:
                 counter += 1
                 break
@@ -138,7 +138,7 @@ def recall_Jaccard(reference,predicted, threshold=0.5):
     counter = 0
     for ref in reference:
         for pred in predicted:
-            score = jaccard(ref,pred)
+            score = jaccard(ref.proteins,pred.proteins)
             if score >= threshold:
                 counter += 1
                 break
