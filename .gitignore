@@ -177,6 +177,7 @@ qclq.txt
 
 ### PC2P Prediction Artifacts
 code/PC2P/results
+code/PC2P/xval
 
 ### VSCode Artifacts
 backup

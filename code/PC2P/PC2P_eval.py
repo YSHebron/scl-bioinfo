@@ -49,7 +49,7 @@ def CmatchesP(C, P, match_thresh):
     
     return Jaccard(C.proteins,P.proteins)
 
-def calc_prec_rec_como_pred(matchscore_thr, clusters, refs, matched_complexes_ref):
+def calc_prec_rec_como_pred(matchscore_thr, clusters, refs, matched_complexes_ref, f):
     results = []
 
     correct_clusters = {}
@@ -78,6 +78,7 @@ def calc_prec_rec_como_pred(matchscore_thr, clusters, refs, matched_complexes_re
     for cluster in correct_clusters:
         clusters_copy.remove(cluster)
 
+    print("Num predicted clusters = ", len(clusters))
     print("\tNum correct clusters = ", len(correct_clusters))
     print("\tNum correct small clusters = ", len(correct_smallclusters))
     print("\tNum complexes matched = ", len(matched_complexes_ref))
@@ -88,7 +89,7 @@ def calc_prec_rec_como_pred(matchscore_thr, clusters, refs, matched_complexes_re
         tmparray = [cluster.score, 0, cluster, {}]
         results.append(tmparray)
 
-    ### Calculate Precision and Recall for Score Threshold score_thresh
+    ### Calculate Precision and Recall for Score Threshold score_thresh output to outputdir
     # precision = TP/(TP+FP) = corrects/predicts, recall = TP/(TP+FN) = matched/len(refs)
     predicts = 0    # Complexes predicted so far
     corrects = 0
@@ -99,13 +100,15 @@ def calc_prec_rec_como_pred(matchscore_thr, clusters, refs, matched_complexes_re
     auc_prevrecall = 0
     matched_complexes = {}
 
-    printc("Threshold\tPreds\tPrecision\tRecall")
+    print("Threshold\tPreds\tPrecision\tRecall")
+    # f.write("Threshold\tPreds\tPrecision\tRecall")
     for cluster in sorted(results, key=lambda x: x[0], reverse=True):
         if cluster[0] != score_thresh:
             recall = matched/len(refs)   # Without train-test split, all our refs are technically test complexes
             if (score_thresh != -1 and recall > rec_thresh):
                 precision = corrects/predicts
-                print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, corrects, precision, recall))
+                print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, predicts, precision, recall))
+                f.write("%.6f\t%d\t%.6f\t%.6f\n" % (score_thresh, predicts, precision, recall))
                 
                 # Prepare for next calculations
                 while (rec_thresh < recall): rec_thresh += 0.01
@@ -126,19 +129,29 @@ def calc_prec_rec_como_pred(matchscore_thr, clusters, refs, matched_complexes_re
 
     if predicts > 0:
         recall = matched / len(refs)
-        print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, corrects, precision, recall))
+        print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, predicts, precision, recall))
+        f.write("%.6f\t%d\t%.6f\t%.6f\n" % (score_thresh, predicts, precision, recall))
     else:
         recall = matched / len(refs)
         precision = 0
-        print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, corrects, precision, recall))
+        print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, predicts, precision, recall))
+        f.write("%.6f\t%d\t%.6f\t%.6f\n" % (score_thresh, predicts, precision, recall))
+
+    auc += (recall - auc_prevrecall) * (corrects/predicts)
+    print("\nAUC\t%.6f\n\n" % (auc))
 
 if __name__ == '__main__':
     # Set parameters
+    osname = sys.platform
     match_thresh = 0.5
-    
+    inputfile = "code\PC2P\Results\Collins_CYCFiltered\Collins_CYC_Predicted_iter0.txt"
+    complex_file = "code\PC2P\Yeast\CYC_complexes.txt"
+    outputdir = r".\code\PC2P\xval"
+    i = 0
+
     # refs: reference complexes in the gold standard
     refs = []
-    with open("code\PC2P\Yeast\CYC_complexes.txt") as f:
+    with open(complex_file) as f:
         for lineno, line in enumerate(f, 1):
             # Let lineno be the complex id
             proteins = line.split()
@@ -151,7 +164,7 @@ if __name__ == '__main__':
     # Clusters are defined here as objects, with predicts as a set of clusters
     # Alternatively, predicts: { cid: { proteins: set(p1, p2, ...), score: float } }
     clusters = []
-    with open("code\PC2P\Results\Collins_CYCFiltered\Collins_CYC_Predicted_iter0.txt") as f:
+    with open(inputfile) as f:
         for lineno, line in enumerate(f, 1):
             # Let lineno be the cluster id
             raw = line.split()
@@ -160,8 +173,19 @@ if __name__ == '__main__':
             cluster.matches = 0
             clusters.append(cluster)
     clusters.sort(key = lambda x: x.score, reverse=True)
+
+    outputdir = outputdir + "\\"
+    if not os.path.isdir(outputdir):
+        os.mkdir(outputdir)
+    if osname == "linux":
+        filename = inputfile.split("/")[-1].split("_")
+        filename = filename[0] + "_" + filename[1] + "_" + "Xval"
+    else:
+        filename = inputfile.split("\\")[-1].split("_")
+        filename = filename[0] + "_" + filename[1] + "_" + "Xval"
     
-    calc_prec_rec_como_pred(match_thresh, clusters, refs, {})
+    with open(outputdir + '{}_iter{}.txt'.format(filename, i), 'w') as f:
+        calc_prec_rec_como_pred(match_thresh, clusters, refs, {}, f)
     
     ### Calculate Precision and Recall for Score Threshold s
     # precision = TP/(TP+FP) = TP/len(predicts), recall = TP/(TP+FN) = TP/len(gldstd)
