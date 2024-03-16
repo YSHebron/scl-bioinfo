@@ -1,65 +1,84 @@
-PPINNAME = "Collins"
-PPINFILE = "collins2007.txt"
-GLDSTDNAME = "CYC2008"
-OUTPUTDIR = "code/PC2P/NewDatasets"
+import os
 
-def filterPerProtein():
-    pass
-
-def filterPerProteinPair():
-    pass
-
-def directFilter():
-    pass
-
-# rawPPI = "code/PC2P/Yeast/%s/%s" % (PPINNAME, PPINFILE)
-# goldStandard = "code/PC2P/Yeast/%s_complexes.txt" % GLDSTDNAME
-
-# present = set()
-# scorededges = {}
-# with open(goldStandard) as gldstd, open(rawPPI) as raw:
-#     for line in gldstd:
-#         complex = line.split()
-#         for i in range(0, len(complex)):
-#             for j in range(0, len(complex)):
-#                 if i == j: continue
-#                 p1, p2 = complex[i], complex[j]
-#                 present.add((p1, p2) if p1 < p2 else (p2, p1))
-#     print(present)
-    
-#     for line in raw:
-#         p1, p2, weight = line.split()
-#         key = (p1, p2) if p1 < p2 else (p2, p1)
-#         scorededges[key] = float(weight)
-                
-#     print(scorededges)
-    
-# import os
-# if not os.path.isdir(OUTPUTDIR):
-#     os.mkdir(OUTPUTDIR)
-# with open(OUTPUTDIR + '/%s_%s_Weighted.txt' % (PPINNAME, GLDSTDNAME), 'w') as f:
-#     for key in scorededges:
-#         if key in present:
-#             f.write("%s %s %f\n" % (key[0], key[1], scorededges[key]))   
-
-
-def directfilter(rawPPI, intermediate):
+def filterPerProtein(ppinname, ppinfile, gldstd, outputdir, species = "Yeast"):
+    filtering = "perprotein"
+    rawPPIN = "code/PC2P/{}/{}/{}".format(species, ppinname, ppinfile)
+    reffile = "code/PC2P/{}/{}_complexes.txt".format(species, gldstd)
+    outputfile = outputdir + "/{}_{}_{}_weighted.txt".format(ppinname, gldstd, filtering)
+    present = set()
     scorededges = {}
-    with open(rawPPI) as raw:
-        for line in raw:
+    with open(reffile) as f1, open(rawPPIN) as f2:
+        for line in f1:
+            for pid in line.split():
+                present.add(pid)
+        for line in f2:
             p1, p2, weight = line.split()
             key = (p1, p2) if p1 < p2 else (p2, p1)
             scorededges[key] = float(weight)
-    
-    lineno = 0
-    with open(intermediate) as interm, open("code/PC2P/Collins_CYC_Weighted_Direct.txt", "w+") as f:
+            
+    if not os.path.isdir(outputdir):
+        os.mkdir(outputdir)
+    with open(outputfile, 'w+') as f:
+        for key in scorededges:
+            if key[0] in present or key[1] in present:
+                f.write("%s %s %f\n" % (key[0], key[1], scorededges[key]))  
+
+def filterPerPair(ppinname, ppinfile, gldstd, outputdir, species = "Yeast"):
+    filtering = "perpair"
+    rawPPIN = "code/PC2P/{}/{}/{}".format(species, ppinname, ppinfile)
+    reffile = "code/PC2P/{}/{}_complexes.txt".format(species, gldstd)
+    outputfile = outputdir + "/{}_{}_{}_weighted.txt".format(ppinname, gldstd, filtering)
+    present = set()
+    scorededges = {}
+    with open(reffile) as f1, open(rawPPIN) as f2:
+        for line in f1:
+            for p1 in line.split():
+                for p2 in line.split():
+                    if p1 == p2: continue
+                    present.add(frozenset([p1, p2]))
+        for line in f2:
+            p1, p2, weight = line.split()
+            key = (p1, p2) if p1 < p2 else (p2, p1)
+            scorededges[key] = float(weight)
+            
+    if not os.path.isdir(outputdir):
+        os.mkdir(outputdir)
+    with open(outputfile, 'w+') as f:
+        for key in scorededges:
+            if frozenset(key) in present:
+                f.write("%s %s %f\n" % (key[0], key[1], scorededges[key]))   
+
+def filterDirect(ppinname, ppinfile, gldstd, outputdir, species = "Yeast"):
+    filtering = "direct"
+    rawPPIN = "code/PC2P/{}/{}/{}".format(species, ppinname, ppinfile)
+    directfile = "code/PC2P/{}/{}/{}_{}_Graph.txt".format(species, ppinname, ppinname, gldstd)
+    outputfile = outputdir + "/{}_{}_{}_weighted.txt".format(ppinname, gldstd, filtering)
+    scorededges = {}
+    with open(rawPPIN) as f1, open(directfile) as f2:
+        for line in f1:
+            p1, p2, weight = line.split()
+            key = (p1, p2) if p1 < p2 else (p2, p1)
+            scorededges[key] = float(weight)
+    with open(directfile) as interm, open(outputfile, "w+") as f:
         for line in interm:
             p1, p2 = line.split()
-            for pair in scorededges:
-                if pair == (p1, p2) or pair == (p2, p1):
-                    f.write("%s %s %f\n" % (p1, p2, scorededges[pair]))
-                    lineno += 1
-    
-    print("Number of pairs", lineno)
-                    
-directfilter("code/PC2P/Yeast/Collins/collins2007.txt", "code/PC2P/Yeast/Collins/Collins_CYC_Graph.txt")
+            linepair = (p1, p2) if p1 < p2 else (p2, p1)
+            for key in scorededges:
+                if linepair == key:
+                    f.write("%s %s %f\n" % (linepair[0], linepair[1], scorededges[key]))
+                         
+if __name__ == '__main__':
+    # Raw, unfiltered Omranian PPINs with scored edges
+    # NOTE: Because Omranian's Human PPINs are completely unweighted, we defer their inclusion.
+    species = "Yeast"
+    ppins = {"Collins": "collins2007.txt",
+            "Gavin": "gavin2006_socioaffinities_rescaled.txt",
+            "KroganCore" : "krogan2006_core.txt",
+            "KroganExt" : "krogan2006_extended.txt" }
+    gldstds = ["CYC", "SGD"]
+    outputdir = "code/PC2P/{}/FilteredPPINs".format(species)
+    for ppinname in ppins.keys():
+        for gldstd in gldstds:
+            filterPerProtein(ppinname, ppins[ppinname], gldstd, outputdir)
+            filterPerPair(ppinname, ppins[ppinname], gldstd, outputdir)
+            filterDirect(ppinname, ppins[ppinname], gldstd, outputdir)

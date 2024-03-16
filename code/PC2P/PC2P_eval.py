@@ -29,7 +29,7 @@ if __name__ == '__main__':
     
     # refs: reference complexes in the gold standard
     refs = []
-    with open("code\PC2P\Yeast\CYC2008_complexes.txt") as f:
+    with open("code\PC2P\Yeast\CYC_complexes.txt") as f:
         for lineno, line in enumerate(f, 1):
             # Let lineno be the complex id
             proteins = line.split()
@@ -42,7 +42,7 @@ if __name__ == '__main__':
     # Clusters are defined here as objects, with predicts as a set of clusters
     # Alternatively, predicts: { cid: { proteins: set(p1, p2, ...), score: float } }
     clusters = []
-    with open("code\PC2P\CollinsWeightedDirect\Collins_CYC_Predicted_iter0.txt") as f:
+    with open("code\PC2P\ResultsNew\Collins_CYC_Predicted_iter0.txt") as f:
         for lineno, line in enumerate(f, 1):
             # Let lineno be the cluster id
             raw = line.split()
