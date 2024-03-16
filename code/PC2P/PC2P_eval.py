@@ -42,7 +42,7 @@ if __name__ == '__main__':
     # Clusters are defined here as objects, with predicts as a set of clusters
     # Alternatively, predicts: { cid: { proteins: set(p1, p2, ...), score: float } }
     clusters = []
-    with open("code\PC2P\ResultsNew\Collins_CYC2008_Predicted_iter0.txt") as f:
+    with open("code\PC2P\CollinsWeightedDirect\Collins_CYC_Predicted_iter0.txt") as f:
         for lineno, line in enumerate(f, 1):
             # Let lineno be the cluster id
             raw = line.split()
@@ -106,7 +106,7 @@ if __name__ == '__main__':
     printc("=========OMRANIAN==========")
     print("Precision: %.6f" % pc.precision_Jaccard(refs, clusters))
     print("Recall: %.6f" % pc.recall_Jaccard(refs, clusters))
-    print("Recall: %.6f" % pc.F_measure_Jaccard(refs, clusters))
+    print("F-Measure: %.6f" % pc.F_measure_Jaccard(refs, clusters))
         
     # Positive Predictive Value / Accuracy / Quality
     # True Positive Rate / Quantity
