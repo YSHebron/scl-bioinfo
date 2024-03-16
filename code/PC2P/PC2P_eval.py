@@ -5,6 +5,7 @@ import os
 import sys
 from helper import printc
 from typing import Tuple
+import PredictedClusters_Analysis as pc
 
 # To emulate Yong and Wong for predicts, we also add number of correct matches
 class Cluster:
@@ -28,7 +29,7 @@ if __name__ == '__main__':
     
     # refs: reference complexes in the gold standard
     refs = []
-    with open("code\PC2P\Yeast\SGD_complexes.txt") as f:
+    with open("code\PC2P\Yeast\CYC2008_complexes.txt") as f:
         for lineno, line in enumerate(f, 1):
             # Let lineno be the complex id
             proteins = line.split()
@@ -41,7 +42,7 @@ if __name__ == '__main__':
     # Clusters are defined here as objects, with predicts as a set of clusters
     # Alternatively, predicts: { cid: { proteins: set(p1, p2, ...), score: float } }
     clusters = []
-    with open("code\PC2P\Results\KroganExt_SGD_Predicted_iter0.txt") as f:
+    with open("code\PC2P\Results\Collins_CYC_Predicted_iter0.txt") as f:
         for lineno, line in enumerate(f, 1):
             # Let lineno be the cluster id
             raw = line.split()
@@ -101,6 +102,11 @@ if __name__ == '__main__':
     
     print("Precision: %.6f" % precision)
     print("Recall: %.6f" % recall)
+    
+    printc("=========OMRANIAN==========")
+    print("Precision: %.6f" % pc.precision_Jaccard(refs, clusters))
+    print("Recall: %.6f" % pc.recall_Jaccard(refs, clusters))
+    print("Recall: %.6f" % pc.F_measure_Jaccard(refs, clusters))
         
     # Positive Predictive Value / Accuracy / Quality
     # True Positive Rate / Quantity
