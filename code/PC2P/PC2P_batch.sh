@@ -7,5 +7,5 @@ pool_thresh=100
 
 for $inputfile in "$inputdir"/*
 do
-    python $code $inputfile -p --pool_thresh $pool_thresh
+    python $code $inputfile $outputdir -p --pool_thresh $pool_thresh
 done
