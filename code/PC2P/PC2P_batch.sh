@@ -8,4 +8,5 @@ pool_thresh=100
 for inputfile in "$inputdir"/*
 do
     python $codepath $inputfile $outputdir -p --pool_thresh $pool_thresh
+    echo ================
 done
