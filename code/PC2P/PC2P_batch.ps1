@@ -12,7 +12,7 @@ $ppins = (Get-ChildItem ".\code\PC2P\Yeast\FilteredPPINs" -Recurse).FullName
 if (-Not $evalonly) {
     foreach ($ppin in $ppins) {
         python $code $ppin $outputdir -p --pool_thresh $pool_thresh
-        Write-Output ===========================
+        Write-Output ===========================`n
     }
     
 }
@@ -26,7 +26,7 @@ foreach ($dir in $predicteddirs) {
         $gldstd = ($filenamesonly[$i] -split '_')[1]
         # python .\code\PC2P\PC2P_eval.py predictsfile complexfile outputdir
         python .\code\PC2P\PC2P_eval.py $filestoeval[$i] (".\code\PC2P\Yeast\$gldstd"+"_complexes.txt") ".\code\PC2P\Analysis\Evaluation"
-        Write-Output ===========================
+        Write-Output ""
     }
 }
 

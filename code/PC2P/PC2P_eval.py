@@ -56,7 +56,7 @@ def CmatchesP(C, P, match_thresh):
     
     return Jaccard(C.proteins,P.proteins)
 
-def calc_prec_rec_comp_pred(matchscore_thr, clusters, refs, matched_complexes_ref, outputdir):
+def calc_prec_rec_comp_pred(matchscore_thr, clusters, refs, matched_complexes_ref, outputdir, quiet=True):
     results = []
 
     correct_clusters = {}
@@ -69,7 +69,7 @@ def calc_prec_rec_comp_pred(matchscore_thr, clusters, refs, matched_complexes_re
         for ref in refs:
             matchscore = CmatchesP(cluster, ref, matchscore_thr)
             if matchscore >= matchscore_thr:
-                # print(str(ref.proteins) + " and " + str(cluster.proteins) + "are correct\n")
+                # print(f"{str(ref.proteins)} and {str(cluster.proteins)} are correct")
                 correct_clusters[cluster] = 1
                 if len(cluster.proteins) <= 3:
                     correct_smallclusters[cluster] = 1
@@ -85,11 +85,11 @@ def calc_prec_rec_comp_pred(matchscore_thr, clusters, refs, matched_complexes_re
     for cluster in correct_clusters:
         clusters_copy.remove(cluster)
 
-    print("Num predicted clusters = ", len(clusters))
-    print("\tNum correct clusters = ", len(correct_clusters))
-    print("\tNum correct small clusters = ", len(correct_smallclusters))
-    print("\tNum complexes matched = ", len(matched_complexes_ref))
-    print("\tNum clusters not correct = ", len(clusters_copy))
+    # print("Num predicted clusters = ", len(clusters))
+    # print("\tNum correct clusters = ", len(correct_clusters))
+    # print("\tNum correct small clusters = ", len(correct_smallclusters))
+    # print("\tNum complexes matched = ", len(matched_complexes_ref))
+    # print("\tNum clusters not correct = ", len(clusters_copy))
 
     # append to the results array the incorrect clusers
     for cluster in clusters_copy:
@@ -107,14 +107,14 @@ def calc_prec_rec_comp_pred(matchscore_thr, clusters, refs, matched_complexes_re
     auc_prevrecall = 0
     matched_complexes = {}
 
-    print("Threshold\tPreds\tPrecision\tRecall")
-    # f.write("Threshold\tPreds\tPrecision\tRecall")
+    print(f.name.split("/")[1])
+    if not quiet: print("Threshold\tPreds\tPrecision\tRecall")
     for cluster in sorted(results, key=lambda x: x[0], reverse=True):
         if cluster[0] != score_thresh:
             recall = matched/len(refs)   # Without train-test split, all our refs are technically test complexes
             if (score_thresh != -1 and recall > rec_thresh):
                 precision = corrects/predicts
-                print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, predicts, precision, recall))
+                if not quiet: print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, predicts, precision, recall))
                 f.write("%.6f\t%d\t%.6f\t%.6f\n" % (score_thresh, predicts, precision, recall))
                 
                 # Prepare for next calculations
@@ -136,21 +136,19 @@ def calc_prec_rec_comp_pred(matchscore_thr, clusters, refs, matched_complexes_re
 
     if predicts > 0:
         recall = matched / len(refs)
-        print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, predicts, precision, recall))
+        if not quiet: print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, predicts, precision, recall))
         f.write("%.6f\t%d\t%.6f\t%.6f\n" % (score_thresh, predicts, precision, recall))
     else:
         recall = matched / len(refs)
         precision = 0
-        print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, predicts, precision, recall))
+        if not quiet: print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, predicts, precision, recall))
         f.write("%.6f\t%d\t%.6f\t%.6f\n" % (score_thresh, predicts, precision, recall))
 
     auc += (recall - auc_prevrecall) * (corrects/predicts)
-    print("\nAUC\t%.6f" % (auc))
+    print("\nAUC:\t\t%.6f" % auc)
 
 if __name__ == '__main__':
     predictsfile, complexfile, outputdir = str(args.predictsfile), str(args.complexfile), str(args.outputdir)
-    printc("Predicts File: " + predictsfile)
-    printc("Complex File: " + complexfile)
     # Set parameters
     osname = sys.platform
     match_thresh = 0.5
@@ -190,29 +188,16 @@ if __name__ == '__main__':
         filename = predictsfile.split("\\")[-1].split("_")
     filename = f"{filename[0]}_{filename[1]}_{filename[2]}_eval"
     
-    with open(outputdir + '{}_iter{}.txt'.format(filename, i), 'w') as f:
-        calc_prec_rec_comp_pred(match_thresh, clusters, refs, {}, f)
-    
     ### Calculate Precision and Recall for Score Threshold s
     # precision = TP/(TP+FP) = TP/len(predicts), recall = TP/(TP+FN) = TP/len(gldstd)
-    printc("Overall precision and recall")
-    TP = 0
-    for P in clusters:
-        for C in refs:
-            if Jaccard(P.proteins, C.proteins) > 0.5:
-                TP += 1
-                break; # found a match
+    # Positive Predictive Value / Accuracy / Quality
+    # True Positive Rate / Quantity
+    with open(outputdir + '{}_iter{}.txt'.format(filename, i), 'w') as f:
+        calc_prec_rec_comp_pred(match_thresh, clusters, refs, {}, f, quiet=False)
     
-    precision = TP/len(clusters)    # Positive Predictive Value / Accuracy / Quality
-    recall = TP/len(refs)           # True Positive Rate / Quantity
-    
-    print("Precision: %.6f" % precision)
-    print("Recall: %.6f" % recall)
-    
-    printc("=========OMRANIAN==========")
-    print("Precision: %.6f" % pc.precision_Jaccard(refs, clusters))
-    print("Recall: %.6f" % pc.recall_Jaccard(refs, clusters))
-    print("F-Measure: %.6f" % pc.F_measure_Jaccard(refs, clusters))
+    print("Precision:\t%.6f" % pc.precision_Jaccard(refs, clusters))
+    print("Recall:\t\t%.6f" % pc.recall_Jaccard(refs, clusters))
+    print("F-score:\t%.6f" % pc.F_measure_Jaccard(refs, clusters))
         
     # Positive Predictive Value / Accuracy / Quality
     # True Positive Rate / Quantity
