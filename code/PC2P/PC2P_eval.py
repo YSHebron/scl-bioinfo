@@ -9,7 +9,7 @@ import PredictedClusters_Analysis as pc
 
 import argparse
 parser = argparse.ArgumentParser(description='Evaluate results of PC2P (or other clustering algorithm). Must follow line format (size_score): p1 p2 ...)')
-parser.add_argument('predictsfile', type=str, help='relpath to predicted clusters file')
+parser.add_argument('predictsfile', type=str, help='abspath to predicted clusters file')
 parser.add_argument('complexfile', type=str, help='relpath to gold standard complex file')
 parser.add_argument('outputdir', type=str, help='relpath to output dir for evaluation results')
 args = parser.parse_args()
@@ -107,7 +107,11 @@ def calc_prec_rec_comp_pred(matchscore_thr, clusters, refs, matched_complexes_re
     auc_prevrecall = 0
     matched_complexes = {}
 
-    print(f.name.split("/")[1])
+    filtering = f.name.split("/")[0].split("\\")[-1]
+    filename = f.name.split("/")[1]
+    print(filtering)
+    print(filename)
+    f.write(f"{filtering}\n{filename}\n")
     if not quiet: print("Threshold\tPreds\tPrecision\tRecall")
     for cluster in sorted(results, key=lambda x: x[0], reverse=True):
         if cluster[0] != score_thresh:
@@ -145,7 +149,7 @@ def calc_prec_rec_comp_pred(matchscore_thr, clusters, refs, matched_complexes_re
         f.write("%.6f\t%d\t%.6f\t%.6f\n" % (score_thresh, predicts, precision, recall))
 
     auc += (recall - auc_prevrecall) * (corrects/predicts)
-    print("\nAUC:\t\t%.6f" % auc)
+    print("AUC:\t\t%.6f" % auc)
 
 if __name__ == '__main__':
     predictsfile, complexfile, outputdir = str(args.predictsfile), str(args.complexfile), str(args.outputdir)
@@ -193,7 +197,7 @@ if __name__ == '__main__':
     # Positive Predictive Value / Accuracy / Quality
     # True Positive Rate / Quantity
     with open(outputdir + '{}_iter{}.txt'.format(filename, i), 'w') as f:
-        calc_prec_rec_comp_pred(match_thresh, clusters, refs, {}, f, quiet=False)
+        calc_prec_rec_comp_pred(match_thresh, clusters, refs, {}, f, quiet=True)
     
     print("Precision:\t%.6f" % pc.precision_Jaccard(refs, clusters))
     print("Recall:\t\t%.6f" % pc.recall_Jaccard(refs, clusters))

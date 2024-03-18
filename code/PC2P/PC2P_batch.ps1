@@ -17,16 +17,17 @@ if (-Not $evalonly) {
     
 }
 
-$predicteddirs = @("FilteredMP", "FilteredRay", "FilteredSequential")
+$predicteddirs = @("FilteredSequential", "FilteredMP", "FilteredRay")
 
-foreach ($dir in $predicteddirs) {
-    $filestoeval = (Get-ChildItem ".\code\PC2P\Results\$dir" -Recurse).FullName
-    $filenamesonly = (Get-ChildItem ".\code\PC2P\Results\$dir" -Recurse).Name
+foreach ($filtering in $predicteddirs) {
+    $filestoeval = (Get-ChildItem ".\code\PC2P\Results\$filtering" -Recurse).FullName
+    $filenamesonly = (Get-ChildItem ".\code\PC2P\Results\$filtering" -Recurse).Name
+    Clear-Content ".\code\PC2P\Analysis\$filtering\auc_only.txt"
     for ($i=0; $i -lt $filestoeval.Length; $i++) {
         $gldstd = ($filenamesonly[$i] -split '_')[1]
         # python .\code\PC2P\PC2P_eval.py predictsfile complexfile outputdir
-        python .\code\PC2P\PC2P_eval.py $filestoeval[$i] (".\code\PC2P\Yeast\$gldstd"+"_complexes.txt") ".\code\PC2P\Analysis\Evaluation"
-        Write-Output ""
+        python .\code\PC2P\PC2P_eval.py $filestoeval[$i] (".\code\PC2P\Yeast\$gldstd"+"_complexes.txt") ".\code\PC2P\Analysis\$filtering" | Out-File ".\code\PC2P\Analysis\$filtering\auc_only.txt" -Append
+        Write-Output "" | Out-File ".\code\PC2P\Analysis\$filtering\auc_only.txt" -Append
     }
 }
 
