@@ -180,6 +180,7 @@ def Find_CNP(G, pool_threshold = 50, num_procs = 4, mngd_list = None, mixed_labe
     edge_cut = []
     rounds = 1
     while len(G_components) != 0:
+        print("Start of round:", rounds, end="\r")
         componentOfG = G.subgraph(G_components[0]).copy() #we get the first component and find cnp
         if rounds==1:
             if len(componentOfG.nodes()) <= 3:
@@ -218,7 +219,6 @@ def Find_CNP(G, pool_threshold = 50, num_procs = 4, mngd_list = None, mixed_labe
             updated_results = [results_1[i] for i,r in enumerate(results_1) if not(list(r.values())[0][0] in secondNeighb)]
             G_temp.remove_nodes_from(subgrf_1.nodes())
             G_components = list(nx.connected_components(G_temp))
-            print("end of round:", rounds, end="\r")
             del nodes
             rounds += 1
         else:
@@ -290,7 +290,6 @@ def Find_CNP(G, pool_threshold = 50, num_procs = 4, mngd_list = None, mixed_labe
             G_components = list(nx.connected_components(G_temp))
             # G_components.sort(key=len)
             # print("G_components: ",G_components)
-            print("end of round:", rounds, end="\r")
             rounds += 1
     edge_cut = [edge for sublist in edge_cut for edge in sublist]
     if not mixed_label:

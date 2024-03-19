@@ -11,8 +11,6 @@ import time
 from helper import printc
 from typing import Tuple    # For explicit typesetting and hints
 
-import PC2P_eval
-
 def positive_int(x):
     i = int(x)
     if i < 1:
@@ -27,7 +25,7 @@ parser.add_argument('-i', metavar='ITERS', type=int, default=1, help='num of clu
 parser.add_argument('-p', action='store_true', help='assert for parallel mode (default sequential)')
 parops = parser.add_argument_group('parallel options', description='if parallel mode is enabled with -p, the following options may be set')
 parops.add_argument('--pool_thresh', nargs='?', type=positive_int, default=100, const=100, help='num of graph components to selectively trigger parallelization (for mp only, default 100)')
-parops.add_argument('--num_procs', nargs='?', type=positive_int, default=8, const=8, help='num of processes created by each call to pool (for mp only, default 8)')
+parops.add_argument('--num_procs', nargs='?', type=positive_int, default=16, const=8, help='num of processes created by each call to pool (for mp only, default 8)')
 args = parser.parse_args()
 
 # function to score the complex

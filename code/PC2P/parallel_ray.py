@@ -183,6 +183,7 @@ def Find_CNP(G, mixed_label = False):
     edge_cut = []
     rounds = 1
     while len(G_components) != 0:
+        print("Start of round:", rounds, end="\r")
         componentOfG = G.subgraph(G_components[0]).copy() #we get the first component and find cnp
         if rounds==1:
             if len(componentOfG.nodes()) <= 3:
@@ -204,7 +205,6 @@ def Find_CNP(G, mixed_label = False):
             updated_results = [results_1[i] for i,r in enumerate(results_1) if not(list(r.values())[0][0] in secondNeighb)]
             G_temp.remove_nodes_from(subgrf_1.nodes())
             G_components = list(nx.connected_components(G_temp))
-            print("end of round:", rounds, end="\r")
             del nodes
             rounds += 1
         else:
@@ -245,7 +245,6 @@ def Find_CNP(G, mixed_label = False):
             updated_results = [results[i] for i,r in enumerate(results) if not (list(r.values())[0][0] in secondNeighb)]
             G_temp.remove_nodes_from(subgrf.nodes())
             G_components = list(nx.connected_components(G_temp))
-            print("end of round:", rounds, end="\r")
             rounds += 1
     edge_cut = [edge for sublist in edge_cut for edge in sublist]
     if not mixed_label:
