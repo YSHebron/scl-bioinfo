@@ -85,7 +85,8 @@ def second_Neighb(G,v):
     neighbor2 = list(set(neighbor2))
     return(neighbor2)
     
-def CNP(G,v ,mixed_label = False):  
+def CNP(G, v, mixed_label = False):
+    start_time = time.time()
     cnp_v = G.copy()
     neighbor1 = list(cnp_v.neighbors(v))
     neighbor1.extend([v])
@@ -171,10 +172,10 @@ def CNP(G,v ,mixed_label = False):
         min_ratio = cutRatioN2
         cnp_nodes = induced_N2
     result = {cnp_nodes:[v,min_ratio]}
+    print("CNP call took: ", time.time() - start_time)
     return(result)
 
-def Find_CNP(G, pool_threshold = 50, num_procs = 4, mngd_list = None, mixed_label = False):
-    #Find all component of G
+def Find_CNP(G: nx.Graph, pool_threshold = 50, num_procs = 4, mngd_list = None, mixed_label = False):
     G_components = list(nx.connected_components(G))
     G_temp = G.copy()
     edge_cut = []
@@ -185,20 +186,15 @@ def Find_CNP(G, pool_threshold = 50, num_procs = 4, mngd_list = None, mixed_labe
         if rounds==1:
             if len(componentOfG.nodes()) <= 3:
                 del G_components[0]
-                continue  
+                continue
             nodes = list(componentOfG.nodes())
-            # SCL Note: Selectively Parallelizing using Pool.apply()
             if (len(nodes) > pool_threshold):
-                # Step 1: Init multiprocessing.Pool()
                 pool = mp.Pool(num_procs)
-                # Step 2: `pool.apply` the `howmany_within_range()`
                 result_objects_1 = [pool.apply_async(CNP, args=(componentOfG,v,mixed_label)) for v in nodes]
                 results_1 = [r1.get() for r1 in result_objects_1]
                 pool.close()
                 pool.join()
             else: results_1 = [CNP(componentOfG,v,mixed_label) for v in nodes]
-            # result_objects is a list of pool.ApplyResult objects
-
             scores_1 = [list(r.values())[0][1] for r in results_1]
             indx_1 = scores_1.index(min(scores_1))
             subgrf_1 = list(results_1[indx_1].keys())[0]
@@ -224,11 +220,9 @@ def Find_CNP(G, pool_threshold = 50, num_procs = 4, mngd_list = None, mixed_labe
         else:
             if len(componentOfG.nodes()) <= 3:
                 for i,r in enumerate(updated_results):
-            # print(type(componentOfG.nodes()),"in result")
                     if ( list(r.values())[0][0] in list(componentOfG.nodes()) ):
                         del updated_results[i]
                 for i,n in enumerate(list(Nodesto_NextRound)):
-            # print(type(componentOfG.nodes()),"in Nodes")
                     if ( n in list(componentOfG.nodes()) ):
                         Nodesto_NextRound.remove(n)
                 del G_components[0]
@@ -236,14 +230,11 @@ def Find_CNP(G, pool_threshold = 50, num_procs = 4, mngd_list = None, mixed_labe
             # I get the intersect incase we have multiple components. 
             # At the end I have to add the nodes which are not present in the component to nodesto_NextRound
             nodes = Nodesto_NextRound.intersection(set(componentOfG.nodes()))
-            # print("nodes of component of G",set(componentOfG.nodes()))
             if not nodes:
                 nodes = set(componentOfG.nodes())
                 nodes_diff = Nodesto_NextRound 
             else:
                 nodes_diff = Nodesto_NextRound - set(componentOfG.nodes())
-            # print("Nodes in round",rounds," is ",nodes)
-            # print("Nodes in diffff",rounds," is ",nodes_diff)
             if (len(nodes) > pool_threshold):
                 pool = mp.Pool(mp.cpu_count())
                 result_objects = [pool.apply_async(CNP, args=(componentOfG,v,mixed_label)) for v in nodes]
@@ -252,14 +243,10 @@ def Find_CNP(G, pool_threshold = 50, num_procs = 4, mngd_list = None, mixed_labe
                 pool.join()
             else: results = [CNP(componentOfG,v,mixed_label) for v in nodes]
             # result_objects is a list of pool.ApplyResult objects
-            # print('result',results)
             results.extend(updated_results)
             scores = [list(r.values())[0][1] for r in results]
-            # print('scores: ',scores)
             indx = scores.index(min(scores))
             subgrf = list(results[indx].keys())[0]
-            # print('subgrf: ',list(subgrf))
-            # edge_cut.append(edgeCutSet_V2(subgrf,componentOfG)) 
             edge_cut.append(edgeCutSet_V2(subgrf,G_temp))
             #finding second neighbors for all cnp nodes
             
@@ -278,18 +265,9 @@ def Find_CNP(G, pool_threshold = 50, num_procs = 4, mngd_list = None, mixed_labe
             Nodesto_NextRound = secondNeighb - set(subgrf.nodes())
             if nodes_diff:
                 Nodesto_NextRound = Nodesto_NextRound|nodes_diff
-            # print('next round nodes: ', Nodesto_NextRound)
             updated_results = [results[i] for i,r in enumerate(results) if not (list(r.values())[0][0] in secondNeighb)]
-            # print("updated_results: ",updated_results)
-            # componentOfG.remove_nodes_from(subgrf.nodes())
             G_temp.remove_nodes_from(subgrf.nodes())
-            # components = list(nx.connected_components(componentOfG))
-            # del G_components[0]
-            # if components:
-            #   G_components.extend(components)
             G_components = list(nx.connected_components(G_temp))
-            # G_components.sort(key=len)
-            # print("G_components: ",G_components)
             rounds += 1
     edge_cut = [edge for sublist in edge_cut for edge in sublist]
     if not mixed_label:
@@ -301,7 +279,6 @@ def Find_CNP(G, pool_threshold = 50, num_procs = 4, mngd_list = None, mixed_labe
             strList=sorted([i for i in edge_cut[i] if type(i) is str])
             sorted_x.append(intList + strList) 
         edge_cut =  list(set(tuple(i) for i in (sorted_x)))
-    # mngd_list.extend(edge_cut)
     printc("Algorithm took {} rounds".format(rounds))
     return(edge_cut)
 

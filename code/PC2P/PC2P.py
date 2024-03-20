@@ -8,14 +8,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import multiprocessing as mp
 import time
-from helper import printc
+import numpy as np
+import scipy as sp
+from helper import printc, positive_int, graph_stats, graph_memory
 from typing import Tuple    # For explicit typesetting and hints
-
-def positive_int(x):
-    i = int(x)
-    if i < 1:
-        raise ValueError('Nonpositive values are not allowed')
-    return i
 
 import argparse
 parser = argparse.ArgumentParser(description='Perform PC2P on PPI dataset and evaluate results. Can work with csv (with header p1, p2, score) or txt (no header) inputs. For scored clusters, use weighted edge list.')
@@ -124,13 +120,6 @@ def perform_cnp(args: Tuple[nx.Graph, int, str, str, bool, int, int]):
     ### Return G_cnp_components for analysis phase
     return G_cnp_components
 
-def graph_stats(G: nx.Graph):
-    printc("Properties of G")
-    print("Size of V(G):", G.number_of_nodes())
-    print("Size of E(G):", G.number_of_edges())
-    print("Number of Components:", nx.number_connected_components(G))
-    print("Average clustering coefficient:", round(nx.average_clustering(G), 2))
-    print("Max Diameter:", max(map(nx.diameter, [G.subgraph(c).copy() for c in nx.connected_components(G)])))
 
 if __name__ == '__main__':
     inputfile, outputdir, iters, is_parallel, pool_thresh, num_procs = str(args.inputfile), str(args.outputdir), int(args.i), bool(args.p), int(args.pool_thresh), int(args.num_procs)
@@ -156,6 +145,7 @@ if __name__ == '__main__':
     
     printc("Processing inputfile %s" % inputfile)
     graph_stats(G)
+    graph_memory(G)
 
     ### Clustering (Coherent Network Partitioning)
     # To run sequential code, we call Find_CNP from sequential.py

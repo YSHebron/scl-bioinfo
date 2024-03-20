@@ -177,7 +177,6 @@ def CNP(G,v ,mixed_label = False):
     return(result)
 
 def Find_CNP(G, mixed_label = False):
-    #Find all component of G
     G_components = list(nx.connected_components(G))
     G_temp = G.copy()
     edge_cut = []
@@ -188,7 +187,7 @@ def Find_CNP(G, mixed_label = False):
         if rounds==1:
             if len(componentOfG.nodes()) <= 3:
                 del G_components[0]
-                continue  
+                continue
             nodes = list(componentOfG.nodes())
             result_objects_1 = ray.get([CNP.remote(componentOfG,v,mixed_label) for v in nodes])
             results_1 = result_objects_1
@@ -217,8 +216,8 @@ def Find_CNP(G, mixed_label = False):
                         Nodesto_NextRound.remove(n)
                 del G_components[0]
                 continue   
-    # I get the intersect incase we have multiple components. 
-    # At the end I have to add the nodes which are not present in the component to nodesto_NextRound
+            # I get the intersect incase we have multiple components. 
+            # At the end I have to add the nodes which are not present in the component to nodesto_NextRound
             nodes = Nodesto_NextRound.intersection(set(componentOfG.nodes()))
             if not nodes:
                 nodes = set(componentOfG.nodes())
