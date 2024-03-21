@@ -12,6 +12,7 @@ import numpy as np
 import scipy as sp
 from helper import printc, positive_int, graph_stats, graph_memory
 from typing import Tuple    # For explicit typesetting and hints
+import igraph
 
 import argparse
 parser = argparse.ArgumentParser(description='Perform PC2P on PPI dataset and evaluate results. Can work with csv (with header p1, p2, score) or txt (no header) inputs. For scored clusters, use weighted edge list.')

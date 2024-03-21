@@ -51,6 +51,6 @@ def graph_memory(G: nx.Graph):
     edge_mem = sum([sys.getsizeof(e) for e in G.edges])
     node_mem = sum([sys.getsizeof(n) for n in G.nodes])
 
-    print("Edge memory:", edge_mem)
-    print("Node memory:", node_mem)
-    print("Total memory:", edge_mem + node_mem)
+    print("Edge memory: %.6f MB" % (edge_mem/10**6))
+    print("Node memory: %.6f MB" % (node_mem/10**6))
+    print("Total memory: %.6f MB" % ((edge_mem + node_mem)/10**6))

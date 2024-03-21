@@ -5,6 +5,7 @@ from networkx.algorithms.flow import shortest_augmenting_path
 import multiprocessing as mp
 import time
 from helper import printc
+import sys
 
 def edgeCutSet_V2(cnp , G):
     """ This function find edges that connect the component to the rest of graph."""
@@ -177,7 +178,7 @@ def CNP(args):
     # print("CNP call took: ", time.time() - start_time)
     return(result)
 
-def Find_CNP(G: nx.Graph, pool_threshold = 50, num_procs = 4, mngd_list = None, mixed_label = False):
+def Find_CNP(G: nx.Graph, pool_threshold = 100, num_procs = 16, mngd_list = None, mixed_label = False):
     G_components = list(nx.connected_components(G))
     G_temp = G.copy()
     edge_cut = []
@@ -190,8 +191,8 @@ def Find_CNP(G: nx.Graph, pool_threshold = 50, num_procs = 4, mngd_list = None, 
                 del G_components[0]
                 continue
             nodes = list(componentOfG.nodes())
-            pool = mp.Pool(num_procs)
             if len(nodes) > pool_threshold:
+                pool = mp.Pool(num_procs)
                 results_1 = pool.map(CNP, [(componentOfG,v,mixed_label) for v in nodes])
                 pool.close()
                 pool.join()
@@ -201,8 +202,8 @@ def Find_CNP(G: nx.Graph, pool_threshold = 50, num_procs = 4, mngd_list = None, 
             subgrf_1 = list(results_1[indx_1].keys())[0]
             edge_cut.append(edgeCutSet_V2(subgrf_1,componentOfG)) 
             #finding second neighbors for all cnp nodes
-            pool = mp.Pool(num_procs)
             if len(nodes) > pool_threshold:
+                pool = mp.Pool(num_procs)
                 results2 = pool.map(second_Neighb, [(componentOfG,v) for v in subgrf_1.nodes()])
                 pool.close()
                 pool.join()
