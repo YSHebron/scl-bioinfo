@@ -146,6 +146,7 @@ if __name__ == '__main__':
     printc("Processing inputfile %s" % inputfile)
     graph_stats(G)
     graph_memory(G)
+    print(nx.to_numpy_array(G))
 
     ### Clustering (Coherent Network Partitioning)
     # To run sequential code, we call Find_CNP from sequential.py

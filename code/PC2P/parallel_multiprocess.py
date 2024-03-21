@@ -78,15 +78,17 @@ def coherentCutRatio_V4(deg_cnp, deg_G,cluster_coef):
     return(score)  
 
 """ Finding Second neighborhood of node v """
-def second_Neighb(G,v):
+def second_Neighb(args):
+    G, v = args
     neighbor1 = list(G.neighbors(v))
     neighbor2 = neighbor1[:]
     [neighbor2.extend(list(G.neighbors(n))) for n in neighbor1]
     neighbor2 = list(set(neighbor2))
     return(neighbor2)
     
-def CNP(G, v, mixed_label = False):
-    start_time = time.time()
+def CNP(args):
+    G, v, mixed_label = args
+    # start_time = time.time()
     cnp_v = G.copy()
     neighbor1 = list(cnp_v.neighbors(v))
     neighbor1.extend([v])
@@ -172,7 +174,7 @@ def CNP(G, v, mixed_label = False):
         min_ratio = cutRatioN2
         cnp_nodes = induced_N2
     result = {cnp_nodes:[v,min_ratio]}
-    print("CNP call took: ", time.time() - start_time)
+    # print("CNP call took: ", time.time() - start_time)
     return(result)
 
 def Find_CNP(G: nx.Graph, pool_threshold = 50, num_procs = 4, mngd_list = None, mixed_label = False):
@@ -188,25 +190,23 @@ def Find_CNP(G: nx.Graph, pool_threshold = 50, num_procs = 4, mngd_list = None, 
                 del G_components[0]
                 continue
             nodes = list(componentOfG.nodes())
-            if (len(nodes) > pool_threshold):
-                pool = mp.Pool(num_procs)
-                result_objects_1 = [pool.apply_async(CNP, args=(componentOfG,v,mixed_label)) for v in nodes]
-                results_1 = [r1.get() for r1 in result_objects_1]
+            pool = mp.Pool(num_procs)
+            if len(nodes) > pool_threshold:
+                results_1 = pool.map(CNP, [(componentOfG,v,mixed_label) for v in nodes])
                 pool.close()
                 pool.join()
-            else: results_1 = [CNP(componentOfG,v,mixed_label) for v in nodes]
+            else: results_1 = [CNP((componentOfG,v,mixed_label)) for v in nodes]
             scores_1 = [list(r.values())[0][1] for r in results_1]
             indx_1 = scores_1.index(min(scores_1))
             subgrf_1 = list(results_1[indx_1].keys())[0]
             edge_cut.append(edgeCutSet_V2(subgrf_1,componentOfG)) 
             #finding second neighbors for all cnp nodes
-            if (len(nodes) > pool_threshold):
-                pool = mp.Pool(num_procs)
-                result_objects2 = [pool.apply_async(second_Neighb, args=(componentOfG,v)) for v in subgrf_1.nodes()]
-                results2 = [r.get() for r in result_objects2]
+            pool = mp.Pool(num_procs)
+            if len(nodes) > pool_threshold:
+                results2 = pool.map(second_Neighb, [(componentOfG,v) for v in subgrf_1.nodes()])
                 pool.close()
                 pool.join()
-            else: results2 = [second_Neighb(componentOfG,v) for v in subgrf_1.nodes()]
+            else: results2 = [second_Neighb((componentOfG,v)) for v in subgrf_1.nodes()]
             # result_objects is a list of pool.ApplyResult objects
             secondNeighb = []
             [secondNeighb.extend(s) for s in results2]
@@ -235,13 +235,12 @@ def Find_CNP(G: nx.Graph, pool_threshold = 50, num_procs = 4, mngd_list = None, 
                 nodes_diff = Nodesto_NextRound 
             else:
                 nodes_diff = Nodesto_NextRound - set(componentOfG.nodes())
-            if (len(nodes) > pool_threshold):
+            if len(nodes) > pool_threshold:
                 pool = mp.Pool(mp.cpu_count())
-                result_objects = [pool.apply_async(CNP, args=(componentOfG,v,mixed_label)) for v in nodes]
-                results = [r.get() for r in result_objects]
+                results = pool.map(CNP, [(componentOfG,v,mixed_label) for v in nodes])
                 pool.close()
                 pool.join()
-            else: results = [CNP(componentOfG,v,mixed_label) for v in nodes]
+            else: results = [CNP((componentOfG,v,mixed_label)) for v in nodes]
             # result_objects is a list of pool.ApplyResult objects
             results.extend(updated_results)
             scores = [list(r.values())[0][1] for r in results]
@@ -250,13 +249,12 @@ def Find_CNP(G: nx.Graph, pool_threshold = 50, num_procs = 4, mngd_list = None, 
             edge_cut.append(edgeCutSet_V2(subgrf,G_temp))
             #finding second neighbors for all cnp nodes
             
-            if (len(nodes) > pool_threshold):
+            if len(nodes) > pool_threshold:
                 pool = mp.Pool(mp.cpu_count())
-                result_objects2 = [pool.apply_async(second_Neighb, args=(G_temp,v)) for v in subgrf.nodes()]
-                results2 = [r.get() for r in result_objects2]
+                results2 = pool.map(second_Neighb, [(G_temp,v) for v in subgrf.nodes()])
                 pool.close()
                 pool.join()
-            else: results2 = [second_Neighb(G_temp,v) for v in subgrf.nodes()]
+            else: results2 = [second_Neighb((G_temp,v)) for v in subgrf.nodes()]
             
             # result_objects is a list of pool.ApplyResult objects
             secondNeighb = []

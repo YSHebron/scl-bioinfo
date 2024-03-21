@@ -45,7 +45,7 @@ def graph_stats(G: nx.Graph):
     print("Size of E(G):", G.number_of_edges())
     print("Number of Components:", nx.number_connected_components(G))
     print("Average clustering coefficient:", round(nx.average_clustering(G), 2))
-    print("Max Diameter:", max(map(nx.diameter, [G.subgraph(c).copy() for c in nx.connected_components(G)])))
+    # print("Max Diameter:", max(map(nx.diameter, [G.subgraph(c).copy() for c in nx.connected_components(G)])))
     
 def graph_memory(G: nx.Graph):
     edge_mem = sum([sys.getsizeof(e) for e in G.edges])
