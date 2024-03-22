@@ -280,24 +280,3 @@ def Find_CNP(G: nx.Graph, pool_threshold = 100, num_procs = 16, mngd_list = None
         edge_cut =  list(set(tuple(i) for i in (sorted_x)))
     printc("Algorithm took {} rounds".format(rounds))
     return(edge_cut)
-
-
-#----------------------------------------------------------------------------------
-#-------------Reading MIPS and SGD
-def is_numeric(x):
-    """Returns whether the given string can be interpreted as a number."""
-    try:
-        float(x)
-        return True
-    except:
-        return False
-def canonical_protein_name(name):
-    """Returns the canonical name of a protein by performing a few simple
-    transformations on the name."""
-    return name.strip().upper()
-def read_network(fname):
-    known_proteins = list()
-    for line in open(fname):
-        parts = [canonical_protein_name(part) for part in line.strip().split() if not is_numeric(part)]
-        known_proteins.append(set(parts))
-    return known_proteins

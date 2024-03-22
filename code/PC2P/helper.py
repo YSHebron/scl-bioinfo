@@ -54,3 +54,24 @@ def graph_memory(G: nx.Graph):
     print("Edge memory: %.6f MB" % (edge_mem/10**6))
     print("Node memory: %.6f MB" % (node_mem/10**6))
     print("Total memory: %.6f MB" % ((edge_mem + node_mem)/10**6))
+    
+def is_numeric(x: str):
+    """Returns whether the given string can be interpreted as a number."""
+    try:
+        float(x)
+        return True
+    except:
+        return False
+
+def canonical_protein_name(name: str):
+    """Returns the canonical name of a protein by performing a few simple
+    transformations on the name."""
+    return name.strip().upper()
+
+def read_network(fname: str):
+    """Returns a list of all the protein pairs {p1, p2} in a weighted or unweighted edge file."""
+    known_proteins = list()
+    for line in open(fname):
+        parts = [canonical_protein_name(part) for part in line.strip().split() if not is_numeric(part)]
+        known_proteins.append(set(parts))
+    return known_proteins
