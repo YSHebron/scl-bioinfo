@@ -16,5 +16,5 @@ dependencies:
   - scipy=1.11.3
   - termcolor=2.1.0
   - perl
-  - igraph=0.11.4
-prefix: /home/yshebron/miniconda3/envs/scl
+  - python-igraph=0.11.4
+prefix: /home/yenzy_urson_hebron/miniconda3/envs/scl
