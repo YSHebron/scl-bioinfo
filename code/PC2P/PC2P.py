@@ -49,7 +49,7 @@ def perform_cnp(args: Tuple[nx.Graph, int, str, str, bool, int, int]):
         printc("Now running PC2P_Sequential.py! Current cwd :: " + os.getcwd())
         edge_cut = sequential.Find_CNP(G)
     else:
-        if osname == "linux" and not bool(args.f):
+        if osname == "linux":
             # num_cpus = psutil.cpu_count(logical=False)
             conda_env = "environment_ray.yml"
             runtime_env = {"conda": conda_env}
