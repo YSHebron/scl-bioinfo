@@ -3,11 +3,12 @@
 #SBATCH --nodes=4
 #SBATCH --exclusive
 #SBATCH --tasks-per-node=1
-#SBATCH --mem=32GB
+#SBATCH --mem-per-cpu=16GB
 #SBATCH --cpus-per-task=4
 #SBATCH --output=/home/yshebron/scl-bioinfo/test.out
 
 # Activate your environment, source command is required
+# BUG: installed ray in env base is 2.7.0 while we have 2.8.0 (figure out how to activate scl env inside a ray worker node)
 module load miniconda3
 source /opt/miniconda3/etc/profile.d/conda.sh
 conda activate scl
