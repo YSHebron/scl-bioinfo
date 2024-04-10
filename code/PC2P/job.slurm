@@ -5,7 +5,7 @@
 #SBATCH --tasks-per-node=1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem-per-cpu=2GB
-#SBATCH --output=/home/yshebron/test.out
+#SBATCH --output=/home/yshebron/scl-bioinfo/test.out
 
 # Activate your environment, source command is required
 module load miniconda3
