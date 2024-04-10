@@ -57,6 +57,7 @@ def perform_cnp(args: Tuple[nx.Graph, int, str, str, bool, int, int]):
             # num_cpus = psutil.cpu_count(logical=False)
             conda_env = "environment.yml"
             runtime_env = {"conda": conda_env, "working_dir": "code/PC2P"}  # NOTE: This is why this should be run at the root
+            print(ray.__version__)
             ray.init(runtime_env=runtime_env)
             import parallel_ray
             printc("Now running parallel_ray.py! Current cwd :: " + os.getcwd())
