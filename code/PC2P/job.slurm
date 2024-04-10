@@ -2,7 +2,7 @@
 #SBATCH --job-name=scl1
 #SBATCH --nodes=4
 #SBATCH --exclusive
-#SBATCH --tasts-per-node=1
+#SBATCH --tasks-per-node=1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem-per-cpu=2GB
 #SBATCH --output=/home/yshebron/test.out
