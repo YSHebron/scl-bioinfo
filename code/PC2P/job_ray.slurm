@@ -11,7 +11,7 @@
 # BUG: installed ray in env base is 2.7.0 while we have 2.8.0 (figure out how to activate scl env inside a ray worker node)
 module load miniconda3
 source /opt/miniconda3/etc/profile.d/conda.sh
-conda activate scl
+conda activate scl-ray
 
 # Getting the node names
 nodes=$(scontrol show hostnames "$SLURM_JOB_NODELIST")
@@ -44,7 +44,9 @@ srun --nodes=1 --ntasks=1 -w "$head_node" \
 
 # Insert your code here.
 cd ~/scl-bioinfo
-srun -u python code/PC2P/PC2P.py code/PC2P/Yeast/Integrated_CYC_ppirel.txt code/PC2P/Results/Integrated -p
+srun -u python /code/PC2P/PC2P.py ./code/PC2P/Yeast/FilteredPPINs/Collins_SGD_perprotein_weighted.txt ./code/PC2P/Results/Dummy -p
+# srun -u python /code/PC2P/PC2P.py ./code/PC2P/Yeast/FilteredPPINs/Collins_SGD_perprotein_weighted.txt ./code/PC2P/Results/Dummy -f
+# srun -u python code/PC2P/PC2P.py code/PC2P/Yeast/Integrated_CYC_ppirel.txt code/PC2P/Results/Integrated -p
 
 # [Optional] You can run other commands here
 
