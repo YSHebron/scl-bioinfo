@@ -3,7 +3,7 @@
 #SBATCH --nodes=4
 #SBATCH --exclusive
 #SBATCH --tasks-per-node=1
-#SBATCH --cpus-per-task=16
+#SBATCH --cpus-per-task=64
 #SBATCH --mem-per-cpu=4GB
 #SBATCH --output=/home/yshebron/scl-bioinfo/test.out
 
@@ -13,8 +13,8 @@ source /opt/miniconda3/etc/profile.d/conda.sh
 conda activate scl-ray
 
 # Getting the node names
-nodes=$(scontrol show hostnames "$SLURM_JOB_NODELIST")
-nodes_array=($nodes)
+# nodes=$(scontrol show hostnames "$SLURM_JOB_NODELIST")
+nodes_array=("n013" "n015" "n016" "n019")
 
 head_node=${nodes_array[0]}
 head_node_ip=$(srun --nodes=1 --ntasks=1 -w "$head_node" hostname --ip-address)
