@@ -3,8 +3,8 @@
 #SBATCH --nodes=4
 #SBATCH --exclusive
 #SBATCH --tasks-per-node=1
-#SBATCH --mem-per-cpu=16GB
 #SBATCH --cpus-per-task=4
+#SBATCH --mem-per-cpu=16GB
 #SBATCH --output=/home/yshebron/scl-bioinfo/test.out
 
 # Activate your environment, source command is required
@@ -40,6 +40,24 @@ echo "Starting HEAD at $head_node"
 srun --nodes=1 --ntasks=1 -w "$head_node" \
     ray start --head --node-ip-address="$head_node_ip" --port=$port \
     --num-cpus "${SLURM_CPUS_PER_TASK}" --block &
+
+# optional, though may be useful in certain versions of Ray < 1.0.
+sleep 10
+
+# number of nodes other than the head node
+worker_num=$((SLURM_JOB_NUM_NODES - 1))
+
+for ((i = 1; i <= worker_num; i++)); do
+    node_i=${nodes_array[$i]}
+    echo "Starting WORKER $i at $node_i"
+    srun --nodes=1 --ntasks=1 -w "$node_i" \
+        ray start --address "$ip_head" \
+        --num-cpus "${SLURM_CPUS_PER_TASK}" --num-gpus "${SLURM_GPUS_PER_TASK}" --block &
+    sleep 5
+done
+
+# Ensure that when our program starts, it will connect to the active ray cluster
+sleep 10
 
 # Insert your code here.
 cd ~/scl-bioinfo
