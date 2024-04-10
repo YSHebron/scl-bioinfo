@@ -3,8 +3,9 @@
 #SBATCH --nodes=4
 #SBATCH --exclusive
 #SBATCH --tasks-per-node=1
+#SBATCH --mem=32GB
 #SBATCH --cpus-per-task=4
-#SBATCH --mem-per-cpu=2GB
+#SBATCH --mem-per-cpu=8GB
 #SBATCH --output=/home/yshebron/scl-bioinfo/test.out
 
 # Activate your environment, source command is required
