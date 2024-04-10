@@ -61,8 +61,8 @@ sleep 10
 
 # Insert your code here.
 cd ~/scl-bioinfo
-python -u code/PC2P/PC2P.py code/PC2P/Yeast/FilteredPPINs/Collins_SGD_perprotein_weighted.txt code/PC2P/Results/Dummy -p
-# python -u code/PC2P/PC2P.py code/PC2P/Yeast/FilteredPPINs/Collins_SGD_perprotein_weighted.txt code/PC2P/Results/Dummy -f
+# python -u code/PC2P/PC2P.py code/PC2P/Yeast/FilteredPPINs/Collins_SGD_perprotein_weighted.txt code/PC2P/Results/Dummy -p
+python -u code/PC2P/PC2P.py code/PC2P/Yeast/FilteredPPINs/Collins_CYC_perprotein_weighted.txt code/PC2P/Results/Dummy -p
 # python -u code/PC2P/PC2P.py code/PC2P/Yeast/Integrated_CYC_ppirel.txt code/PC2P/Results/Integrated -p
 
 # [Optional] You can run other commands here
