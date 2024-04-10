@@ -20,6 +20,7 @@ parser.add_argument('inputfile', type=str, help='relpath to PPI dataset')
 parser.add_argument('outputdir', type=str, help='relpath to output dir for predicted complexes (CNPs)')
 parser.add_argument('-i', metavar='ITERS', type=int, default=1, help='num of clustering iterations to produce (default 1)')
 parser.add_argument('-p', action='store_true', help='assert for parallel mode (default sequential)')
+parser.add_argument('-f', action='store_true', help='assert to force mp')
 parops = parser.add_argument_group('parallel options', description='if parallel mode is enabled with -p, the following options may be set')
 parops.add_argument('--pool_thresh', nargs='?', type=positive_int, default=100, const=100, help='num of graph components to selectively trigger parallelization (for mp only, default 100)')
 parops.add_argument('--num_procs', nargs='?', type=positive_int, default=16, const=8, help='num of processes created by each call to pool (for mp only, default 8)')
@@ -51,7 +52,7 @@ def perform_cnp(args: Tuple[nx.Graph, int, str, str, bool, int, int]):
         printc("Now running PC2P_Sequential.py! Current cwd :: " + os.getcwd())
         edge_cut = sequential.Find_CNP(G)
     else:
-        if (osname == "linux"):
+        if osname == "linux" and not bool(args.f):
             import psutil
             import ray
             # num_cpus = psutil.cpu_count(logical=False)
