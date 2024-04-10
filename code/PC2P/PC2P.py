@@ -85,20 +85,16 @@ def perform_cnp(args: Tuple[nx.Graph, int, str, str, bool, int, int]):
     
     ### Writing to results
     outputdir = outputdir + "/"
-    if not os.path.isdir(outputdir):
-        os.mkdir(outputdir)
-    if osname == "linux":
+    if not os.path.exists(outputdir):
+        os.mkdirs(outputdir)
+    if "/" in inputfile:
         temp = inputfile.split("/")[-1].split("_")
-        if len(temp) > 3:
-            filename = f"{temp[0]}_{temp[1]}_{temp[2]}_Predicted"
-        else:
-            filename = f"{temp[0]}_{temp[1]}_Predicted"
     else:
         temp = inputfile.split("\\")[-1].split("_")
-        if len(temp) > 3:
-            filename = f"{temp[0]}_{temp[1]}_{temp[2]}_Predicted"
-        else:
-            filename = f"{temp[0]}_{temp[1]}_Predicted"
+    if len(temp) > 3:
+        filename = f"{temp[0]}_{temp[1]}_{temp[2]}_Predicted"
+    else:
+        filename = f"{temp[0]}_{temp[1]}_Predicted"
     with open(outputdir + '{}_iter{}.txt'.format(filename, i), 'w') as f:
         # complex === line
         for complex in G_cnp_components:
