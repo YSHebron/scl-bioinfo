@@ -42,7 +42,7 @@ srun --nodes=1 --ntasks=1 -w "$head_node" \
     --num-cpus "${SLURM_CPUS_PER_TASK}" --block &
 
 # optional, though may be useful in certain versions of Ray < 1.0.
-sleep 30
+sleep 10
 
 # number of nodes other than the head node
 worker_num=$((SLURM_JOB_NUM_NODES - 1))
@@ -53,17 +53,14 @@ for ((i = 1; i <= worker_num; i++)); do
     srun --nodes=1 --ntasks=1 -w "$node_i" \
         ray start --address "$ip_head" \
         --num-cpus "${SLURM_CPUS_PER_TASK}" --block &
-    sleep 30
+    sleep 5
 done
-
-# Ensure that when our program starts, it will connect to the active ray cluster
-sleep 5
 
 # Insert your code here.
 cd ~/scl-bioinfo
 # python -u code/PC2P/PC2P.py code/PC2P/Yeast/FilteredPPINs/Collins_SGD_perprotein_weighted.txt code/PC2P/Results/Dummy -p
-python -u code/PC2P/PC2P.py code/PC2P/Yeast/FilteredPPINs/Collins_CYC_perprotein_weighted.txt code/PC2P/Results/Dummy -p
-# python -u code/PC2P/PC2P.py code/PC2P/Yeast/Integrated_CYC_ppirel.txt code/PC2P/Results/Integrated -p
+# python -u code/PC2P/PC2P.py code/PC2P/Yeast/FilteredPPINs/Collins_CYC_perprotein_weighted.txt code/PC2P/Results/Dummy -p
+python -u code/PC2P/PC2P.py code/PC2P/Yeast/Integrated_CYC_ppirel.txt code/PC2P/Results/Integrated -p
 
 # [Optional] You can run other commands here
 
