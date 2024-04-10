@@ -86,7 +86,7 @@ def perform_cnp(args: Tuple[nx.Graph, int, str, str, bool, int, int]):
     ### Writing to results
     outputdir = outputdir + "/"
     if not os.path.exists(outputdir):
-        os.mkdirs(outputdir)
+        os.makedirs(outputdir)
     if "/" in inputfile:
         temp = inputfile.split("/")[-1].split("_")
     else:
