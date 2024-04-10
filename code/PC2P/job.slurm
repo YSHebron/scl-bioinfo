@@ -4,7 +4,6 @@
 #SBATCH --exclusive
 #SBATCH --tasks-per-node=1
 #SBATCH --cpus-per-task=4
-#SBATCH --gpus-per-task=0
 #SBATCH --mem-per-cpu=2GB
 #SBATCH --output=/home/yshebron/scl-bioinfo/test.out
 
@@ -40,11 +39,11 @@ echo "IP Head: $ip_head"
 echo "Starting HEAD at $head_node"
 srun --nodes=1 --ntasks=1 -w "$head_node" \
     ray start --head --node-ip-address="$head_node_ip" --port=$port \
-    --num-cpus "${SLURM_CPUS_PER_TASK}" --num-gpus "${SLURM_GPUS_PER_TASK}" --block &
+    --num-cpus "${SLURM_CPUS_PER_TASK}" --block &
 
 # Insert your code here.
 cd ~/scl-bioinfo
-# srun -u python code/PC2P/PC2P.py code/PC2P/Yeast/Integrated_CYC_ppirel.txt code/PC2P/Results/Integrated -p
+srun -u python code/PC2P/PC2P.py code/PC2P/Yeast/Integrated_CYC_ppirel.txt code/PC2P/Results/Integrated -p
 
 # [Optional] You can run other commands here
 

@@ -54,10 +54,10 @@ def perform_cnp(args: Tuple[nx.Graph, int, str, str, bool, int, int]):
         if (osname == "linux"):
             import psutil
             import ray
-            num_cpus = psutil.cpu_count(logical=False)
+            # num_cpus = psutil.cpu_count(logical=False)
             conda_env = "environment.yml"
             runtime_env = {"conda": conda_env, "working_dir": "code/PC2P"}  # NOTE: This is why this should be run at the root
-            ray.init(num_cpus=num_cpus, runtime_env=runtime_env)
+            ray.init(runtime_env=runtime_env)
             import parallel_ray
             printc("Now running parallel_ray.py! Current cwd :: " + os.getcwd())
             edge_cut = parallel_ray.Find_CNP(G)
