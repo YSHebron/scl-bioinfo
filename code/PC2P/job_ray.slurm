@@ -13,8 +13,8 @@ source /opt/miniconda3/etc/profile.d/conda.sh
 conda activate scl-ray
 
 # Getting the node names
-# nodes=$(scontrol show hostnames "$SLURM_JOB_NODELIST")
-nodes_array=("n013" "n015" "n016" "n019")
+nodes=$(scontrol show hostnames "$SLURM_JOB_NODELIST")
+nodes_array=($nodes)
 
 head_node=${nodes_array[0]}
 head_node_ip=$(srun --nodes=1 --ntasks=1 -w "$head_node" hostname --ip-address)
