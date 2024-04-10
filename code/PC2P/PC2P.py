@@ -52,7 +52,7 @@ def perform_cnp(args: Tuple[nx.Graph, int, str, str, bool, int, int]):
         if osname == "linux":
             # num_cpus = psutil.cpu_count(logical=False)
             conda_env = "environment_ray.yml"
-            runtime_env = {"conda": conda_env, "workind_dir": "code/PC2P"}
+            runtime_env = {"conda": conda_env, "working_dir": "code/PC2P"}
             ray.init(runtime_env=runtime_env)
             print(ray.available_resources())
             import parallel_ray

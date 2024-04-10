@@ -42,7 +42,7 @@ srun --nodes=1 --ntasks=1 -w "$head_node" \
     --num-cpus "${SLURM_CPUS_PER_TASK}" --block &
 
 # optional, though may be useful in certain versions of Ray < 1.0.
-sleep 10
+sleep 5
 
 # number of nodes other than the head node
 worker_num=$((SLURM_JOB_NUM_NODES - 1))
@@ -57,7 +57,7 @@ for ((i = 1; i <= worker_num; i++)); do
 done
 
 # Ensure that when our program starts, it will connect to the active ray cluster
-sleep 10
+sleep 5
 
 # Insert your code here.
 cd ~/scl-bioinfo
