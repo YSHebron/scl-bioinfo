@@ -9,6 +9,7 @@
 
 # Activate your environment, source command is required
 module load miniconda3
+source /opt/miniconda3/etc/profile.d/conda.sh
 conda activate scl
 
 # Insert your code here.
