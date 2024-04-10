@@ -1,4 +1,4 @@
-name: scl-2
+name: scl
 channels:
   - defaults
 dependencies:
