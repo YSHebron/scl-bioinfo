@@ -3,16 +3,13 @@
 
 import os
 import sys
+import ray
 import networkx as nx
-import matplotlib.pyplot as plt
 import pandas as pd
 import multiprocessing as mp
 import time
-import numpy as np
-import scipy as sp
 from helper import printc, positive_int, graph_stats, graph_memory
 from typing import Tuple    # For explicit typesetting and hints
-import igraph
 
 import argparse
 parser = argparse.ArgumentParser(description='Perform PC2P on PPI dataset and evaluate results. Can work with csv (with header p1, p2, score) or txt (no header) inputs. For scored clusters, use weighted edge list.')
@@ -53,8 +50,6 @@ def perform_cnp(args: Tuple[nx.Graph, int, str, str, bool, int, int]):
         edge_cut = sequential.Find_CNP(G)
     else:
         if osname == "linux" and not bool(args.f):
-            import psutil
-            import ray
             # num_cpus = psutil.cpu_count(logical=False)
             conda_env = "environment.yml"
             runtime_env = {"conda": conda_env, "working_dir": "code/PC2P"}  # NOTE: This is why this should be run at the root
@@ -108,7 +103,8 @@ def perform_cnp(args: Tuple[nx.Graph, int, str, str, bool, int, int]):
         # complex === line
         for complex in G_cnp_components:
             # protein === node
-            if len(complex) < 2: continue   # filter out single-protein complexes
+            if len(complex) < 2:
+                continue   # filter out single-protein complexes
             # Score the complex by their weighted density
             # Each line: (len(complex)_score): p1 p2 p3 ...
             score = get_score(complex, scorededges)
