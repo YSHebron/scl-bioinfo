@@ -3,7 +3,7 @@
 #SBATCH --nodes=4
 #SBATCH --exclusive
 #SBATCH --tasks-per-node=1
-#SBATCH --cpus-per-task=64
+#SBATCH --cpus-per-task=32
 #SBATCH --mem-per-cpu=4GB
 #SBATCH --output=/home/yshebron/scl-bioinfo/test.out
 
