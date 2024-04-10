@@ -1,10 +1,9 @@
 #!/bin/bash
 #SBATCH --job-name=scl1
-#SBATCH --nodes=4
+#SBATCH --nodes=6
 #SBATCH --exclusive
 #SBATCH --tasks-per-node=1
-#SBATCH --cpus-per-task=32
-#SBATCH --mem-per-cpu=32GB
+#SBATCH --cpus-per-task=60
 #SBATCH --output=/home/yshebron/scl-bioinfo/test.out
 
 # Activate your environment, source command is required
