@@ -109,17 +109,20 @@ def calc_prec_rec_comp_pred(matchscore_thr, clusters, refs, matched_complexes_re
     print(filtering)
     print(filename)
     f.write(f"{filtering}\n{filename}\n")
-    if not quiet: print("Threshold\tPreds\tPrecision\tRecall")
+    if not quiet:
+        print("Threshold\tPreds\tPrecision\tRecall")
     for cluster in sorted(results, key=lambda x: x[0], reverse=True):
         if cluster[0] != score_thresh:
             recall = matched/len(refs)   # Without train-test split, all our refs are technically test complexes
             if (score_thresh != -1 and recall > rec_thresh):
                 precision = corrects/predicts
-                if not quiet: print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, predicts, precision, recall))
+                if not quiet:
+                    print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, predicts, precision, recall))
                 f.write("%.6f\t%d\t%.6f\t%.6f\n" % (score_thresh, predicts, precision, recall))
                 
                 # Prepare for next calculations
-                while (rec_thresh < recall): rec_thresh += 0.01
+                while (rec_thresh < recall):
+                    rec_thresh += 0.01
                 auc += (recall - auc_prevrecall) * (corrects/predicts)
                 auc_prevrecall = recall
             score_thresh = cluster[0]
@@ -137,12 +140,14 @@ def calc_prec_rec_comp_pred(matchscore_thr, clusters, refs, matched_complexes_re
 
     if predicts > 0:
         recall = matched / len(refs)
-        if not quiet: print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, predicts, precision, recall))
+        if not quiet:
+            print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, predicts, precision, recall))
         f.write("%.6f\t%d\t%.6f\t%.6f\n" % (score_thresh, predicts, precision, recall))
     else:
         recall = matched / len(refs)
         precision = 0
-        if not quiet: print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, predicts, precision, recall))
+        if not quiet:
+            print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, predicts, precision, recall))
         f.write("%.6f\t%d\t%.6f\t%.6f\n" % (score_thresh, predicts, precision, recall))
 
     auc += (recall - auc_prevrecall) * (corrects/predicts)
