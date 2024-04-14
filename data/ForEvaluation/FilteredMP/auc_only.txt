@@ -1,0 +1,168 @@
+FilteredMP
+Collins_CYC_direct_eval_iter0.txt
+AUC:		0.262557
+Precision:	0.853403
+Recall:		0.455882
+F-score:	0.594296
+
+FilteredMP
+Collins_CYC_perpair_eval_iter0.txt
+AUC:		0.346490
+Precision:	0.904306
+Recall:		0.531863
+F-score:	0.669791
+
+FilteredMP
+Collins_CYC_perprotein_eval_iter0.txt
+AUC:		0.227129
+Precision:	0.685185
+Recall:		0.399510
+F-score:	0.504728
+
+FilteredMP
+Collins_SGD_direct_eval_iter0.txt
+AUC:		0.260997
+Precision:	0.790850
+Recall:		0.433437
+F-score:	0.559972
+
+FilteredMP
+Collins_SGD_perpair_eval_iter0.txt
+AUC:		0.342445
+Precision:	0.827381
+Recall:		0.507740
+F-score:	0.629298
+
+FilteredMP
+Collins_SGD_perprotein_eval_iter0.txt
+AUC:		0.233604
+Precision:	0.640000
+Recall:		0.399381
+F-score:	0.491838
+
+FilteredMP
+Gavin_CYC_direct_eval_iter0.txt
+AUC:		0.170676
+Precision:	0.727273
+Recall:		0.318627
+F-score:	0.443119
+
+FilteredMP
+Gavin_CYC_perpair_eval_iter0.txt
+AUC:		0.310791
+Precision:	0.885246
+Recall:		0.460784
+F-score:	0.606090
+
+FilteredMP
+Gavin_CYC_perprotein_eval_iter0.txt
+AUC:		0.126288
+Precision:	0.344398
+Recall:		0.227941
+F-score:	0.274322
+
+FilteredMP
+Gavin_SGD_direct_eval_iter0.txt
+AUC:		0.222424
+Precision:	0.730159
+Recall:		0.337461
+F-score:	0.461588
+
+FilteredMP
+Gavin_SGD_perpair_eval_iter0.txt
+AUC:		0.284649
+Precision:	0.843972
+Recall:		0.433437
+F-score:	0.572735
+
+FilteredMP
+Gavin_SGD_perprotein_eval_iter0.txt
+AUC:		0.150341
+Precision:	0.415205
+Recall:		0.256966
+F-score:	0.317459
+
+FilteredMP
+KroganCore_CYC_direct_eval_iter0.txt
+AUC:		0.228170
+Precision:	0.732394
+Recall:		0.419118
+F-score:	0.533141
+
+FilteredMP
+KroganCore_CYC_perpair_eval_iter0.txt
+AUC:		0.325588
+Precision:	0.844749
+Recall:		0.507353
+F-score:	0.633955
+
+FilteredMP
+KroganCore_CYC_perprotein_eval_iter0.txt
+AUC:		0.123131
+Precision:	0.358974
+Recall:		0.323529
+F-score:	0.340331
+
+FilteredMP
+KroganCore_SGD_direct_eval_iter0.txt
+AUC:		0.253823
+Precision:	0.722892
+Recall:		0.414861
+F-score:	0.527179
+
+FilteredMP
+KroganCore_SGD_perpair_eval_iter0.txt
+AUC:		0.283960
+Precision:	0.810976
+Recall:		0.470588
+F-score:	0.595578
+
+FilteredMP
+KroganCore_SGD_perprotein_eval_iter0.txt
+AUC:		0.144276
+Precision:	0.319865
+Recall:		0.325077
+F-score:	0.322450
+
+FilteredMP
+KroganExt_CYC_direct_eval_iter0.txt
+AUC:		0.185911
+Precision:	0.601732
+Recall:		0.372549
+F-score:	0.460185
+
+FilteredMP
+KroganExt_CYC_perpair_eval_iter0.txt
+AUC:		0.322026
+Precision:	0.853333
+Recall:		0.526961
+F-score:	0.651561
+
+FilteredMP
+KroganExt_CYC_perprotein_eval_iter0.txt
+AUC:		0.078481
+Precision:	0.197002
+Recall:		0.240196
+F-score:	0.216465
+
+FilteredMP
+KroganExt_SGD_direct_eval_iter0.txt
+AUC:		0.230752
+Precision:	0.623596
+Recall:		0.380805
+F-score:	0.472856
+
+FilteredMP
+KroganExt_SGD_perpair_eval_iter0.txt
+AUC:		0.294657
+Precision:	0.808140
+Recall:		0.492260
+F-score:	0.611835
+
+FilteredMP
+KroganExt_SGD_perprotein_eval_iter0.txt
+AUC:		0.109855
+Precision:	0.186567
+Recall:		0.266254
+F-score:	0.219399
+
