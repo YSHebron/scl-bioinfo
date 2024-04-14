@@ -1,7 +1,7 @@
-ppin = "code/PC2P/Yeast/data_yeast.txt"
-ppin_new = "code/PC2P/Yeast/Integrated_CYC_ppirel.txt"      # this is the necessary filename format
-complex = "code/PC2P/Yeast/complexes_yeast.txt"
-complex_new = "code/PC2P/Yeast/CYC_complexes_integ.txt"
+ppin = "data/Yeast/data_yeast.txt"
+ppin_new = "data/Yeast/Integrated_CYC_ppirel.txt"      # this is the necessary filename format
+complex = "data/Yeast/complexes_yeast.txt"
+complex_new = "data/Yeast/CYC_complexes_integ.txt"
 
 def write_new_ppin(ppin, ppin_new):
     with open(ppin, "r") as f1, open(ppin_new, "w+") as f2:
