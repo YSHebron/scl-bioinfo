@@ -17,7 +17,6 @@ parser.add_argument('inputfile', type=str, help='relpath to PPI dataset')
 parser.add_argument('outputdir', type=str, help='relpath to output dir for predicted complexes (CNPs)')
 parser.add_argument('-i', metavar='ITERS', type=int, default=1, help='num of clustering iterations to produce (default 1)')
 parser.add_argument('-p', action='store_true', help='assert for parallel mode (default sequential)')
-parser.add_argument('-f', action='store_true', help='assert to force mp')
 parops = parser.add_argument_group('parallel options', description='if parallel mode is enabled with -p, the following options may be set')
 parops.add_argument('--pool_thresh', nargs='?', type=positive_int, default=100, const=100, help='num of graph components to selectively trigger parallelization (for mp only, default 100)')
 parops.add_argument('--num_procs', nargs='?', type=positive_int, default=16, const=8, help='num of processes created by each call to pool (for mp only, default 8)')
@@ -96,21 +95,24 @@ def perform_cnp(args: Tuple[nx.Graph, int, str, str, bool, int, int]):
         filename = f"{temp[0]}_{temp[1]}_{temp[2]}_Predicted"
     else:
         filename = f"{temp[0]}_{temp[1]}_Predicted"
+    single_prots = 0
     with open(outputdir + '{}_iter{}.txt'.format(filename, i), 'w') as f:
         # complex === line
         for complex in G_cnp_components:
             # protein === node
             if len(complex) < 2:
-                continue   # filter out single-protein complexes
+                single_prots += 1
+                continue   # filter out single-protein complexes # NOTE: What if we reattempt PC2P with them?
             # Score the complex by their weighted density
             # Each line: (len(complex)_score): p1 p2 p3 ...
             score = get_score(complex, scorededges)
-            f.write("(" + str(len(complex)) + "_" + str(score) + "): ")
+            f.write(f"({len(complex)}_{score}): ")
             for protein in complex:
                 f.write("%s " % protein)
             f.write("\n")
     
     printc("Iteration %d took %d seconds to finish." % (i, time.time() - start_time))
+    print("Number of excluded proteins: {}".format(single_prots))
     
     ### Return G_cnp_components for analysis phase
     return G_cnp_components
