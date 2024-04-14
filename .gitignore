@@ -187,7 +187,7 @@ backup
 data_yeast.txt
 data_human.txt
 tempCodeRunner*
-test.py
+test*
 
 # Zone Identifier (related to WSL)
 *_Zone.Identifier

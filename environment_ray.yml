@@ -1,8 +1,8 @@
-name: scl
+name: scl-ray
 channels:
   - defaults
 dependencies:
-  - python=3.11.8
+  - python=3.10.9
   - perl
   - pip
   - pip:

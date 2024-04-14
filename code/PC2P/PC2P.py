@@ -3,16 +3,13 @@
 
 import os
 import sys
+import ray
 import networkx as nx
-import matplotlib.pyplot as plt
 import pandas as pd
 import multiprocessing as mp
 import time
-import numpy as np
-import scipy as sp
 from helper import printc, positive_int, graph_stats, graph_memory
 from typing import Tuple    # For explicit typesetting and hints
-import igraph
 
 import argparse
 parser = argparse.ArgumentParser(description='Perform PC2P on PPI dataset and evaluate results. Can work with csv (with header p1, p2, score) or txt (no header) inputs. For scored clusters, use weighted edge list.')
@@ -51,13 +48,12 @@ def perform_cnp(args: Tuple[nx.Graph, int, str, str, bool, int, int]):
         printc("Now running PC2P_Sequential.py! Current cwd :: " + os.getcwd())
         edge_cut = sequential.Find_CNP(G)
     else:
-        if (osname == "linux"):
-            import psutil
-            import ray
-            num_cpus = psutil.cpu_count(logical=False)
-            conda_env = "environment.yml"
-            runtime_env = {"conda": conda_env, "working_dir": "code/PC2P"}  # NOTE: This is why this should be run at the root
-            ray.init(num_cpus=num_cpus, runtime_env=runtime_env)
+        if osname == "linux":
+            # num_cpus = psutil.cpu_count(logical=False)
+            conda_env = "environment_ray.yml"
+            runtime_env = {"conda": conda_env, "working_dir": "code/PC2P"}
+            ray.init(runtime_env=runtime_env)
+            print(ray.available_resources())
             import parallel_ray
             printc("Now running parallel_ray.py! Current cwd :: " + os.getcwd())
             edge_cut = parallel_ray.Find_CNP(G)
@@ -89,34 +85,34 @@ def perform_cnp(args: Tuple[nx.Graph, int, str, str, bool, int, int]):
     
     ### Writing to results
     outputdir = outputdir + "/"
-    if not os.path.isdir(outputdir):
-        os.mkdir(outputdir)
-    if osname == "linux":
+    if not os.path.exists(outputdir):
+        os.makedirs(outputdir)
+    if "/" in inputfile:
         temp = inputfile.split("/")[-1].split("_")
-        if len(temp) > 3:
-            filename = f"{temp[0]}_{temp[1]}_{temp[2]}_Predicted"
-        else:
-            filename = f"{temp[0]}_{temp[1]}_Predicted"
     else:
         temp = inputfile.split("\\")[-1].split("_")
-        if len(temp) > 3:
-            filename = f"{temp[0]}_{temp[1]}_{temp[2]}_Predicted"
-        else:
-            filename = f"{temp[0]}_{temp[1]}_Predicted"
+    if len(temp) > 3:
+        filename = f"{temp[0]}_{temp[1]}_{temp[2]}_Predicted"
+    else:
+        filename = f"{temp[0]}_{temp[1]}_Predicted"
+    single_prots = 0
     with open(outputdir + '{}_iter{}.txt'.format(filename, i), 'w') as f:
         # complex === line
         for complex in G_cnp_components:
             # protein === node
-            if len(complex) < 2: continue   # filter out single-protein complexes
+            if len(complex) < 2:
+                single_prots += 1
+                continue   # filter out single-protein complexes # NOTE: What if we reattempt PC2P with them?
             # Score the complex by their weighted density
             # Each line: (len(complex)_score): p1 p2 p3 ...
             score = get_score(complex, scorededges)
-            f.write("(" + str(len(complex)) + "_" + str(score) + "): ")
+            f.write(f"({len(complex)}_{score}): ")
             for protein in complex:
                 f.write("%s " % protein)
             f.write("\n")
     
     printc("Iteration %d took %d seconds to finish." % (i, time.time() - start_time))
+    print("Number of excluded proteins: {}".format(single_prots))
     
     ### Return G_cnp_components for analysis phase
     return G_cnp_components

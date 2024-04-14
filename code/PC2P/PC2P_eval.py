@@ -3,12 +3,9 @@
 import argparse
 import os
 import sys
-from helper import printc
-from typing import Tuple
 import PredictedClusters_Analysis as pc
 
-import argparse
-parser = argparse.ArgumentParser(description='Evaluate results of PC2P (or other clustering algorithm). Must follow line format (size_score): p1 p2 ...)')
+parser = argparse.ArgumentParser(description='Evaluate results of PC2P (or other clustering algorithm). Must follow line format (size_score): p1 p2 ...')
 parser.add_argument('predictsfile', type=str, help='abspath to predicted clusters file')
 parser.add_argument('complexfile', type=str, help='relpath to gold standard complex file')
 parser.add_argument('outputdir', type=str, help='relpath to output dir for evaluation results')
