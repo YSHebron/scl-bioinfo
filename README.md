@@ -8,3 +8,11 @@ Root folder will contain the entrypoint to our pipeline.
 
 * Moved long-runner.sh and simple-trainer.py to personal backup.
 * Moved randomized yeast data to personal backup.
+
+## TODOs
+
+* Filter integrated dataset before PC2P.
+* Apply negatome filtering.
+* Produce other pre- and post-processing steps for PC2P or the BSS family.
+* Create evaluation that will benchmark main algo based on performance of other classical clustering methods (like MCL).
+* Try other BSS family algorithms.
