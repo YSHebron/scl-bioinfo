@@ -4,6 +4,7 @@ channels:
 dependencies:
   - python=3.11.8
   - perl
+  - bioconda::mcl
   - pip
   - pip:
     - jupyter

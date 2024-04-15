@@ -1,13 +1,7 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Mar  7 17:13:57 2020
-
-@author: somranian
-"""
+from mwmatching import maxWeightMatching
 
 """ Nepusz, T., Yu, H. & Paccanaro, A., 2012. Detecting overlapping protein complexes in protein-protein
     interaction networks. Nature Methods, Volume 9, pp. 471-472."""
-from mwmatching import maxWeightMatching
 
 
 def canonical_protein_name(name):
@@ -15,18 +9,18 @@ def canonical_protein_name(name):
     transformations on the name."""
     return name.strip().upper()
 
+
 def is_numeric(x):
     """Returns whether the given string can be interpreted as a number."""
-    try:
-        float(x)
+    if isinstance(x, float):
         return True
-    except:
-        return False
+
 
 def matching_score(set1, set2):
     """Calculates the matching score between two sets (e.g., a cluster and a complex)
     using the approach of Bader et al, 2001"""
-    return len(set1.intersection(set2))**2 / (float(len(set1)) * len(set2))
+    return len(set1.intersection(set2)) ** 2 / (float(len(set1)) * len(set2))
+
 
 def maximum_matching_ratio(reference, predicted, score_threshold=0.2):
     scores = {}
@@ -40,37 +34,42 @@ def maximum_matching_ratio(reference, predicted, score_threshold=0.2):
             if score <= score_threshold:
                 continue
 
-            scores[id1, id2+n] = score
-    print('score is:' ,scores)
-    print('fully matched V1',count,'out of',n)
+            scores[id1, id2 + n] = score
+    print("score is:", scores)
+    print("fully matched V1", count, "out of", n)
     inpt = [(v1, v2, w) for (v1, v2), w in scores.items()]
     mates = maxWeightMatching(inpt)
     score = sum(scores[i, mate] for i, mate in enumerate(mates) if i < mate)
     return score / n
 
+
 def clusteringwise_sensitivity(reference, predicted):
-    num, den = 0., 0.
+    num, den = 0.0, 0.0
     for complx in reference:
         den += len(complx)
         num += max(len(complx.intersection(cluster)) for cluster in predicted)
-    if den == 0.:
-        return 0.
+    if den == 0.0:
+        return 0.0
     return num / den
+
 
 def positive_predictive_value(reference, predicted):
-    num, den = 0., 0.
+    num, den = 0.0, 0.0
     for cluster in predicted:
         isects = [len(cluster.intersection(compl)) for compl in reference]
-        isects.append(0.)
+        isects.append(0.0)
         num += max(isects)
         den += sum(isects)
-    if den == 0.:
-        return 0.
+    if den == 0.0:
+        return 0.0
     return num / den
 
+
 def accuracy(reference, predicted):
-    return (clusteringwise_sensitivity(reference, predicted) * \
-            positive_predictive_value(reference, predicted)) ** 0.5
+    return (
+        clusteringwise_sensitivity(reference, predicted)
+        * positive_predictive_value(reference, predicted)
+    ) ** 0.5
 
 
 def fraction_matched(reference, predicted, score_threshold=0.25):
@@ -85,9 +84,10 @@ def fraction_matched(reference, predicted, score_threshold=0.25):
 
     return result / len(reference)
 
+
 def clusteringwise_separation(reference, predicted):
     intersections = {}
-    marginal_sums = [0.] * len(predicted), [0.] * len(reference)
+    marginal_sums = [0.0] * len(predicted), [0.0] * len(reference)
     for i, cluster in enumerate(predicted):
         for j, compl in enumerate(reference):
             isect = len(cluster.intersection(compl))
@@ -96,8 +96,8 @@ def clusteringwise_separation(reference, predicted):
             marginal_sums[0][i] += isect
             marginal_sums[1][j] += isect
 
-    separations_complex = [0.] * len(reference)
-    separations_cluster = [0.] * len(predicted)
+    separations_complex = [0.0] * len(reference)
+    separations_cluster = [0.0] * len(predicted)
     for i, cluster in enumerate(predicted):
         s = marginal_sums[0][i]
         for j, compl in enumerate(reference):
@@ -112,40 +112,52 @@ def clusteringwise_separation(reference, predicted):
     avg_sep_cluster = sum(separations_cluster) / len(separations_cluster)
     return (avg_sep_complex * avg_sep_cluster) ** 0.5
 
-def read_network(fname,l):
+
+def read_network(fname, min_size):
     known_proteins = list()
     for line in open(fname):
-        parts = [canonical_protein_name(part) for part in line.strip().split() if not is_numeric(part)]
-        if(len(parts)>=l):
+        parts = [
+            canonical_protein_name(part)
+            for part in line.strip().split()
+            if not is_numeric(part)
+        ]
+        if len(parts) >= min_size:
             known_proteins.append(set(parts))
     return known_proteins
+
+
 ###########################################################################
 
-def jaccard(set1,set2):
-    return ((len(set1.intersection(set2)))/(float(len(set1))+len(set2)-len(set1.intersection(set2))))
 
-def precision_Jaccard(reference,predicted, threshold=0.5):
+def jaccard(set1, set2):
+    return (len(set1.intersection(set2))) / (
+        float(len(set1)) + len(set2) - len(set1.intersection(set2))
+    )
+
+
+def precision_Jaccard(reference, predicted, threshold=0.5):
     counter = 0
     for pred in predicted:
         for ref in reference:
-            score = jaccard(ref.proteins,pred.proteins)
+            score = jaccard(ref.proteins, pred.proteins)
             if score >= threshold:
                 counter += 1
                 break
     return counter / float(len(predicted))
 
-def recall_Jaccard(reference,predicted, threshold=0.5):
+
+def recall_Jaccard(reference, predicted, threshold=0.5):
     counter = 0
     for ref in reference:
         for pred in predicted:
-            score = jaccard(ref.proteins,pred.proteins)
+            score = jaccard(ref.proteins, pred.proteins)
             if score >= threshold:
                 counter += 1
                 break
     return counter / float(len(reference))
 
-def F_measure_Jaccard(reference,predicted, threshold = 0.5):
-    p = precision_Jaccard(reference,predicted,threshold)
-    r = recall_Jaccard(reference,predicted,threshold)
-    return( (2*p*r)/(p + r))      
-    
+
+def F_measure_Jaccard(reference, predicted, threshold=0.5):
+    p = precision_Jaccard(reference, predicted, threshold)
+    r = recall_Jaccard(reference, predicted, threshold)
+    return (2 * p * r) / (p + r)

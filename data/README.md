@@ -45,6 +45,8 @@ If you need the gitignore'd files, you may find it in our Teams.
 
 Omranian's comparative study used five (5) datasets. The first four are comprised of Collins, Gavin, KroganCore, and KroganExt, which are used for the protein complex prediction. The predicted complexes are then benchmarked against the fifth one, the gold standard CYC2008. You may find the first four in `data/curated/Omranian`, while CYC2008 are already in `data`.
 
+**NOTICE**: The Omranian datasets on Yeast will now be our main datasets. Further modifications can be done to edit the scoring or compositiong of the datasets.
+
 ## On Edge Weights
 
 Note that the edge weights between proteins may indicate any of the following (as specified by the dataset):

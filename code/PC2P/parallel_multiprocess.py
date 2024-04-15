@@ -1,11 +1,7 @@
 import networkx as nx
-import itertools as itert
 from operator import itemgetter
-from networkx.algorithms.flow import shortest_augmenting_path
 import multiprocessing as mp
-import time
 from helper import printc
-import sys
 
 def edgeCutSet_V2(cnp , G):
     """ This function find edges that connect the component to the rest of graph."""
@@ -50,8 +46,8 @@ def my_cut_nodes_V4(G,mixed_label = False):
     else:
         sorted_x = []
         for i in range(len(cut_node)):
-            intList=sorted([i for i in cut_node[i] if type(i) is int])
-            strList=sorted([i for i in cut_node[i] if type(i) is str])
+            intList=sorted([i for i in cut_node[i] if isinstance(i, int)])
+            strList=sorted([i for i in cut_node[i] if isinstance(i, str)])
             sorted_x.append(intList + strList) 
         cut_node =  list(set(tuple(i) for i in (sorted_x)))
     return(cut_node)
@@ -196,7 +192,8 @@ def Find_CNP(G: nx.Graph, pool_threshold = 100, num_procs = 16, mngd_list = None
                 results_1 = pool.map(CNP, [(componentOfG,v,mixed_label) for v in nodes])
                 pool.close()
                 pool.join()
-            else: results_1 = [CNP((componentOfG,v,mixed_label)) for v in nodes]
+            else:
+                results_1 = [CNP((componentOfG,v,mixed_label)) for v in nodes]
             scores_1 = [list(r.values())[0][1] for r in results_1]
             indx_1 = scores_1.index(min(scores_1))
             subgrf_1 = list(results_1[indx_1].keys())[0]
@@ -207,13 +204,14 @@ def Find_CNP(G: nx.Graph, pool_threshold = 100, num_procs = 16, mngd_list = None
                 results2 = pool.map(second_Neighb, [(componentOfG,v) for v in subgrf_1.nodes()])
                 pool.close()
                 pool.join()
-            else: results2 = [second_Neighb((componentOfG,v)) for v in subgrf_1.nodes()]
+            else:
+                results2 = [second_Neighb((componentOfG,v)) for v in subgrf_1.nodes()]
             # result_objects is a list of pool.ApplyResult objects
             secondNeighb = []
             [secondNeighb.extend(s) for s in results2]
             secondNeighb = set(secondNeighb)
             Nodesto_NextRound = secondNeighb - set(subgrf_1.nodes())
-            updated_results = [results_1[i] for i,r in enumerate(results_1) if not(list(r.values())[0][0] in secondNeighb)]
+            updated_results = [results_1[i] for i,r in enumerate(results_1) if list(r.values())[0][0] not in secondNeighb]
             G_temp.remove_nodes_from(subgrf_1.nodes())
             G_components = list(nx.connected_components(G_temp))
             del nodes
@@ -241,7 +239,8 @@ def Find_CNP(G: nx.Graph, pool_threshold = 100, num_procs = 16, mngd_list = None
                 results = pool.map(CNP, [(componentOfG,v,mixed_label) for v in nodes])
                 pool.close()
                 pool.join()
-            else: results = [CNP((componentOfG,v,mixed_label)) for v in nodes]
+            else:
+                results = [CNP((componentOfG,v,mixed_label)) for v in nodes]
             # result_objects is a list of pool.ApplyResult objects
             results.extend(updated_results)
             scores = [list(r.values())[0][1] for r in results]
@@ -255,7 +254,8 @@ def Find_CNP(G: nx.Graph, pool_threshold = 100, num_procs = 16, mngd_list = None
                 results2 = pool.map(second_Neighb, [(G_temp,v) for v in subgrf.nodes()])
                 pool.close()
                 pool.join()
-            else: results2 = [second_Neighb((G_temp,v)) for v in subgrf.nodes()]
+            else:
+                results2 = [second_Neighb((G_temp,v)) for v in subgrf.nodes()]
             
             # result_objects is a list of pool.ApplyResult objects
             secondNeighb = []
@@ -264,7 +264,7 @@ def Find_CNP(G: nx.Graph, pool_threshold = 100, num_procs = 16, mngd_list = None
             Nodesto_NextRound = secondNeighb - set(subgrf.nodes())
             if nodes_diff:
                 Nodesto_NextRound = Nodesto_NextRound|nodes_diff
-            updated_results = [results[i] for i,r in enumerate(results) if not (list(r.values())[0][0] in secondNeighb)]
+            updated_results = [results[i] for i,r in enumerate(results) if list(r.values())[0][0] not in secondNeighb]
             G_temp.remove_nodes_from(subgrf.nodes())
             G_components = list(nx.connected_components(G_temp))
             rounds += 1
@@ -274,8 +274,8 @@ def Find_CNP(G: nx.Graph, pool_threshold = 100, num_procs = 16, mngd_list = None
     else:
         sorted_x = []
         for i in range(len(edge_cut)):
-            intList=sorted([i for i in edge_cut[i] if type(i) is int])
-            strList=sorted([i for i in edge_cut[i] if type(i) is str])
+            intList=sorted([i for i in edge_cut[i] if isinstance(i, int)])
+            strList=sorted([i for i in edge_cut[i] if isinstance(i, str)])
             sorted_x.append(intList + strList) 
         edge_cut =  list(set(tuple(i) for i in (sorted_x)))
     printc("Algorithm took {} rounds".format(rounds))
