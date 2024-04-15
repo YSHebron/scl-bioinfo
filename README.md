@@ -14,7 +14,16 @@ For `code/PC2P` and other algos pending to be implemented here, the pipeline ste
 * Insert ensemble clustering instructions.
 * Finally, to analyze the (working) results, run `code/PC2P_eval.py`. The required input file format is `<ppinname>_<gldstdname>_<filtering>_predicted.txt`. There are currently two output files produced: the first one is `<ppinname>_<gldstdname>_<filtering>_eval.txt` (note the change in stem suffix) which contains precision-recall datapoints for each score threshold (based on recall levels) and the second one is an overall `auc_only.txt` file that contains a summary of the performance metrics (NOTE: rename to `summary.txt`). The output file line format is still not fixed and may be reformatted to aid in the plotting. Currently, no plots are being produced.
 
-Note that the program names here are tentative due to the ongoing nature of the research. Lastly, if needed, save the Results and Analysis outputs of an important run in a different directory to avoid them getting rewritten when the pipeline is rerun.
+```sh
+# Sample run from start to finish
+# filter_then_score.py is to be run via a shell script.
+pytho
+```
+
+**Remarks**
+
+* Note that the program names here are tentative due to the ongoing nature of the research.
+* If needed, save the Results and Analysis outputs of an important run in a different directory to avoid them getting rewritten when the pipeline is rerun.
 
 ### Proposed Pipeline
 
@@ -22,10 +31,10 @@ Note that the program names here are tentative due to the ongoing nature of the 
 DataPreparation >> { Preprocessing | Clustering >> {PC2P, FINCH, ONCQS, DECOMP, MCL}* | Postprocessing } >> Evaluation
 ```
 
-Remarks:
+**Remarks:**
 
 * `DataPreparation` will involve `data/Yeast > data/Yeast`.
-* `Preprocessing`, `Clustering`, and `Postprocessing` will involve `data/Yeast > data/Results`.
+* `Preprocessing`, `Clustering`, and `Postprocessing` will involve `data/Yeast > data/Results`. Human protein clusters are nice-to-haves.
 * `Evaluation` will involve `data/Results > data/Analysis`.
 * Chosen ensemble clustering algorithms may involve DECOMP and MCL as these are technically unsupervised and effectively parameter free or at least tuning free (MCL parameters will be set without further tuning).
 
@@ -87,12 +96,10 @@ Yeast PPI Datasets (and GO annotation):
 
 Yeast Gold Standards:
 
-* CYC2008 (2008)
-* SGD GSE3431 (2010)
+* CYC2008 (2008) (`data/Yeast/CYC_complexes.txt`)
+* SGD GSE3431 (2010) (`data/Yeast/SGD_complexes.txt`)
 
-If you need the gitignore'd files, you may find it in our Teams.
-
-`data/results` will contain the results of this project, which are performance evaluations and such.
+`data/Yeast/CYC_complexes.txt` and `data/Yeast/CYC_complexes_integrated.txt` are the same. If you need the gitignore'd files, you may find it in our Teams.
 
 ## Cayetano (2022) Datasets
 

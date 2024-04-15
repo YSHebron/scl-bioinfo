@@ -162,6 +162,7 @@ cython_debug/
 ## SCL Specified Ignores
 
 data/curated
+**/Dummy
 
 ### Yong and Wong Prediction Artifacts
 code/integrated/yeast_predict_output
