@@ -1,8 +1,9 @@
 #!/bin/bash
+# This program can both perform batch clustering and batch evaluation of the results of the clustering.
 
 codepath="code/PC2P/PC2P.py"
-inputdir="code/PC2P/Yeast/FilteredPPINs"
-outputdir="code/PC2P/Results/FilteredRay"
+inputdir="data/Yeast/FilteredPPINs"
+outputdir="data/Results/PC2P/FilteredRay"
 pool_thresh=100
 
 for inputfile in "$inputdir"/*

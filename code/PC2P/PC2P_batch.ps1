@@ -1,10 +1,12 @@
+# This program can both perform batch clustering and batch evaluation of the results of the clustering.
+
 param (
     [switch]$evalonly = $false
 )
 
 $code = ".\code\PC2P\PC2P.py"
-$inputdir = ".\code\PC2P\Yeast\FilteredPPINs"
-$outputdir = ".\code\PC2P\Results\FromFiltered"
+$inputdir = ".\data\Yeast\FilteredPPINs"
+$outputdir = ".\data\Results\FromFiltered"
 $pool_thresh = 100
 
 $ppins = (Get-ChildItem ".\code\PC2P\Yeast\FilteredPPINs" -Recurse).FullName

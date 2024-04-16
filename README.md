@@ -15,23 +15,23 @@ For `code/PC2P` and other algos pending to be implemented here, the pipeline ste
 * Finally, to analyze the (working) results, run `code/PC2P_eval.py`. The required input file format is `<ppinname>_<gldstdname>_<filtering>_predicted.txt`. There are currently two output files produced: the first one is `<ppinname>_<gldstdname>_<filtering>_eval.txt` (note the change in stem suffix) which contains precision-recall datapoints for each score threshold (based on recall levels) and the second one is an overall `auc_only.txt` file that contains a summary of the performance metrics (NOTE: rename to `summary.txt`). The output file line format is still not fixed and may be reformatted to aid in the plotting. Currently, no plots are being produced.
 
 ```sh
-# Sample run from start to finish
+# Sample run from start to finish, no shell scripting.
 # filter_then_score.py is to be run via a shell script.
-pytho
+# Run clustering (mp parallel)
+python code/PC2P/PC2P.py data/Yeast/FilteredPPINs/Collins_CYC_direct_weighted.txt data/Results/Dummy -p
+# Run evaluation
+python code/PC2P/PC2P_eval.py data/Results/Dummy/Dummy_CYC_testonly_predicted.txt data/Yeast/CYC_complexes.txt data/Analysis/Dummy
 ```
-
-**Remarks**
 
 * Note that the program names here are tentative due to the ongoing nature of the research.
 * If needed, save the Results and Analysis outputs of an important run in a different directory to avoid them getting rewritten when the pipeline is rerun.
+* For further help, run the programs with the `--help` flag.
 
 ### Proposed Pipeline
 
 ```sh
 DataPreparation >> { Preprocessing | Clustering >> {PC2P, FINCH, ONCQS, DECOMP, MCL}* | Postprocessing } >> Evaluation
 ```
-
-**Remarks:**
 
 * `DataPreparation` will involve `data/Yeast > data/Yeast`.
 * `Preprocessing`, `Clustering`, and `Postprocessing` will involve `data/Yeast > data/Results`. Human protein clusters are nice-to-haves.

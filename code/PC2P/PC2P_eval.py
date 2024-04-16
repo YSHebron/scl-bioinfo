@@ -1,12 +1,14 @@
 # Program that evaluates predicted complexes by getting the precision and recall
-# python code/PC2P/eval_PC2P.py code/PC2P/results/KroganExt/G_PredictedComplexes_iter0.txt
+# Do PC2P_eval.py --help for help on running this program.
+# Sample run: python code/PC2P/PC2P_eval.py data/Results/Dummy/Dummy_CYC_testonly_predicted.txt data/Yeast/CYC_complexes.txt data/Analysis/Dummy
+
 import argparse
-import os
-import sys
 import PredictedClusters_Analysis as pc
+from helper import printc
+from pathlib import Path
 
 parser = argparse.ArgumentParser(description='Evaluate results of PC2P (or other clustering algorithm). Must follow line format (size_score): p1 p2 ...')
-parser.add_argument('predictsfile', type=str, help='abspath to predicted clusters file')
+parser.add_argument('predictsfile', type=str, help='relpath to predicted clusters file')
 parser.add_argument('complexfile', type=str, help='relpath to gold standard complex file')
 parser.add_argument('outputdir', type=str, help='relpath to output dir for evaluation results')
 args = parser.parse_args()
@@ -53,7 +55,7 @@ def CmatchesP(C, P, match_thresh):
     
     return Jaccard(C.proteins,P.proteins)
 
-def calc_prec_rec_comp_pred(matchscore_thr, clusters, refs, matched_complexes_ref, outputdir, quiet=True):
+def calc_prec_rec_comp_pred(matchscore_thr, clusters, refs, matched_complexes_ref, outputfile: Path, quiet=True):
     results = []
 
     correct_clusters = {}
@@ -104,8 +106,9 @@ def calc_prec_rec_comp_pred(matchscore_thr, clusters, refs, matched_complexes_re
     auc_prevrecall = 0
     matched_complexes = {}
 
-    filtering = f.name.split("/")[0].split("\\")[-1]
-    filename = f.name.split("/")[1]
+    f = outputfile.open("w")
+    filtering = outputfile.stem.split("_")[2]
+    filename = outputfile.name
     print(filtering)
     print(filename)
     f.write(f"{filtering}\n{filename}\n")
@@ -141,28 +144,31 @@ def calc_prec_rec_comp_pred(matchscore_thr, clusters, refs, matched_complexes_re
     if predicts > 0:
         recall = matched / len(refs)
         if not quiet:
-            print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, predicts, precision, recall))
-        f.write("%.6f\t%d\t%.6f\t%.6f\n" % (score_thresh, predicts, precision, recall))
+            print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, predicts, corrects/predicts, recall))
+        f.write("%.6f\t%d\t%.6f\t%.6f\n" % (score_thresh, predicts, corrects/predicts, recall))
     else:
         recall = matched / len(refs)
         precision = 0
         if not quiet:
-            print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, predicts, precision, recall))
-        f.write("%.6f\t%d\t%.6f\t%.6f\n" % (score_thresh, predicts, precision, recall))
+            print("%.6f\t%d\t%.6f\t%.6f" % (score_thresh, predicts, corrects/predicts, recall))
+        f.write("%.6f\t%d\t%.6f\t%.6f\n" % (score_thresh, predicts, corrects/predicts, recall))
+    f.close()
 
     auc += (recall - auc_prevrecall) * (corrects/predicts)
     print("AUC:\t\t%.6f" % auc)
 
+
 if __name__ == '__main__':
-    predictsfile, complexfile, outputdir = str(args.predictsfile), str(args.complexfile), str(args.outputdir)
+    predictsfile, complexfile, outputdir = Path(args.predictsfile), Path(args.complexfile), Path(args.outputdir)
+    printc("Predicts File:\t%s" % predictsfile)
+    printc("Complex File:\t%s" % complexfile)
+    printc("Output File:\t%s" % Path(outputdir, predictsfile.stem.removesuffix("_predicted") + "_eval.txt"))
     # Set parameters
-    osname = sys.platform
     match_thresh = 0.5
-    i = 0
 
     # refs: reference complexes in the gold standard
     refs = []
-    with open(complexfile) as f:
+    with complexfile.open() as f:
         for lineno, line in enumerate(f, 1):
             # Let lineno be the complex id
             proteins = line.split()
@@ -175,7 +181,7 @@ if __name__ == '__main__':
     # Clusters are defined here as objects, with predicts as a set of clusters
     # Alternatively, predicts: { cid: { proteins: set(p1, p2, ...), score: float } }
     clusters = []
-    with open(predictsfile) as f:
+    with predictsfile.open() as f:
         for lineno, line in enumerate(f, 1):
             # Let lineno be the cluster id
             raw = line.split()
@@ -185,21 +191,15 @@ if __name__ == '__main__':
             clusters.append(cluster)
     clusters.sort(key = lambda x: x.score, reverse=True)
 
-    outputdir = outputdir + "/"
-    if not os.path.isdir(outputdir):
-        os.mkdir(outputdir)
-    if osname == "linux":
-        filename = predictsfile.split("/")[-1].split("_")
-    else:
-        filename = predictsfile.split("\\")[-1].split("_")
-    filename = f"{filename[0]}_{filename[1]}_{filename[2]}_eval"
+    if not outputdir.is_dir():
+        outputdir.mkdir(parents=True)
+    outputfile = Path(outputdir, predictsfile.stem.removesuffix("_predicted") + "_eval.txt")
     
     ### Calculate Precision and Recall for Score Threshold s
     # precision = TP/(TP+FP) = TP/len(predicts), recall = TP/(TP+FN) = TP/len(gldstd)
     # Positive Predictive Value / Accuracy / Quality
     # True Positive Rate / Quantity
-    with open(outputdir + '{}_iter{}.txt'.format(filename, i), 'w') as f:
-        calc_prec_rec_comp_pred(match_thresh, clusters, refs, {}, f, quiet=True)
+    calc_prec_rec_comp_pred(match_thresh, clusters, refs, {}, outputfile, quiet=True)
     
     print("Precision:\t%.6f" % pc.precision_Jaccard(refs, clusters))
     print("Recall:\t\t%.6f" % pc.recall_Jaccard(refs, clusters))

@@ -237,7 +237,7 @@ def Find_CNP(G, mixed_label = False):
             Nodesto_NextRound = secondNeighb - set(subgrf.nodes())
             if nodes_diff:
                 Nodesto_NextRound = Nodesto_NextRound|nodes_diff
-            updated_results = [results[i] for i,r in enumerate(results) if not list(r.values())[0][0] not in secondNeighb]
+            updated_results = [results[i] for i,r in enumerate(results) if list(r.values())[0][0] not in secondNeighb]
             G_temp.remove_nodes_from(subgrf.nodes())
             G_components = list(nx.connected_components(G_temp))
             rounds += 1
