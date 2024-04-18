@@ -1,5 +1,6 @@
 # Do PC2P.py --help for help on running this program.
 # Sample run: python code/PC2P/PC2P.py data/Yeast/FilteredPPINs/Collins_CYC_direct_weighted.txt data/Results/Dummy -p
+# TODO: Hub proteins
 
 import os
 import ray

@@ -1,0 +1,38 @@
+# This workflow will install Miniconda then test the clustering and evaluation algos on the scl environment.
+# TODO: Add filtering step to the test soon.
+name: scl-test-1
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4.1.2
+    - name: Setup environment (scl)
+      uses: conda-incubator/setup-miniconda@v3.0.3
+      with:
+        python-version: 3.11.8
+        environment-file: environment.yml
+        activate-environment: scl
+        auto-activate-base: false
+    - name: Test clustering using Collins CYC perpair PPIN (sequential)
+      run: python code/PC2P/PC2P.py data/Yeast/FilteredPPINs/Collins_CYC_perpair_weighted.txt data/Results/Dummy
+    - name: Test clustering using Collins CYC perpair PPIN (parallel-mp)
+      run: python code/PC2P/PC2P.py data/Yeast/FilteredPPINs/Collins_CYC_perpair_weighted.txt data/Results/Dummy -p mp
+    - name: Evaluate predictions from Collins CYC perpair PPIN
+      run: python code/PC2P/PC2P_eval.py data/Results/Dummy/Collins_CYC_perpair_predicted.txt data/Yeast/CYC_complexes.txt data/Analysis/Dummy
+      
+      
+              

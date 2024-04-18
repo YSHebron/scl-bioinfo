@@ -109,8 +109,6 @@ def calc_prec_rec_comp_pred(matchscore_thr, clusters, refs, matched_complexes_re
     f = outputfile.open("w")
     filtering = outputfile.stem.split("_")[2]
     filename = outputfile.name
-    print(filtering)
-    print(filename)
     f.write(f"{filtering}\n{filename}\n")
     if not quiet:
         print("Threshold\tPreds\tPrecision\tRecall")

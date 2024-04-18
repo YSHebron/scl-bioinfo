@@ -30,10 +30,10 @@ python code/PC2P/PC2P_eval.py data/Results/Dummy/Dummy_CYC_testonly_predicted.tx
 ### Proposed Pipeline
 
 ```sh
-DataPreparation >> { Preprocessing | Clustering >> {PC2P, FINCH, ONCQS, DECOMP, MCL}* | Postprocessing } >> Evaluation
+DataPreparation >> { Preprocessing >> {Hub Decomposition} | Clustering >> {PC2P, FINCH, ONCQS, MCL}* | Postprocessing >> {Return Hub Proteins, Ensemble Clustering} } >> Evaluation
 ```
 
-* `DataPreparation` will involve `data/Yeast > data/Yeast`.
+* `DataPreparation` (with filtering) will involve `data/Yeast (PPIN Name) > data/Yeas (FilteredPPINs)t`.
 * `Preprocessing`, `Clustering`, and `Postprocessing` will involve `data/Yeast > data/Results`. Human protein clusters are nice-to-haves.
 * `Evaluation` will involve `data/Results > data/Analysis`.
 * Chosen ensemble clustering algorithms may involve DECOMP and MCL as these are technically unsupervised and effectively parameter free or at least tuning free (MCL parameters will be set without further tuning).

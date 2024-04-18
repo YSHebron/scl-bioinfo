@@ -159,12 +159,19 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-## SCL Specified Ignores
-
+## Large Files and Backup Files
+backup
 data/curated
-**/Dummy
+data_yeast.txt
+data_human.txt 
 
-### Yong and Wong Prediction Artifacts
+# Testing and Dummies (all files prefixed with test and dummy will be ignored)
+**/Dummy
+tempCodeRunner*
+test*
+dummy*
+
+# Yong and Wong Prediction Artifacts
 code/integrated/yeast_predict_output
 code/integrated/yeast_xval_output
 code/integrated/human_predict_output
@@ -176,19 +183,11 @@ prtn.temp.ids
 qcliques.sum
 qclq.txt
 
-### PC2P Prediction Artifacts
-code/PC2P/results
-code/PC2P/xval
-
-### VSCode Artifacts
-backup
+# VSCode Artifacts
 .vscode
 .Rproj.user
 .Rhistory
-data_yeast.txt
-data_human.txt
-tempCodeRunner*
-test*
+.markdownlint.json
 
 # Zone Identifier (related to WSL)
 *_Zone.Identifier

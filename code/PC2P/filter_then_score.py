@@ -3,6 +3,7 @@ import os
 Note that this program only works for the Yeast datasets.
 This has effectively demonstrated that the perpair filtering is the best filtering.
 """
+# TODO: Negatome
 
 def filterPerProtein(ppinname, ppinfile, gldstd, outputdir, species="Yeast"):
     filtering = "perprotein"
