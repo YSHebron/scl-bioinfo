@@ -1,0 +1,34 @@
+=====PC2P=====
+(scl) PS C:\UPDLabs\scl-bioinfo> python code/PC2P/PC2P_eval.py data/Results/PC2P/Integrated_CYC_nofilter_predicted.txt data/Yeast/CYC_complexes.txt data/Analysis/Dummy
+Predicts File:  data\Results\PC2P\Integrated_CYC_nofilter_predicted.txt
+Complex File:   data\Yeast\CYC_complexes.txt
+Output File:    data\Analysis\Dummy\Integrated_CYC_nofilter_eval.txt
+AUC:            0.126144
+Precision:      0.150873
+Recall:         0.313725
+F-score:        0.203757
+
+# Precision and Recalls are Means
+=====Integrated=====
+AUC:            0.394788606701445
+Precision:      0.181793280862118
+Recall:         0.825885558583106
+F-score:        0.0814137408469939
+
+=====SWC=====
+AUC:            0.224131621480256
+Precision:      0.300492610837438
+Recall:         0.35558583106267
+F-score:        0.3257260349642480
+
+=====DECOMP=====
+AUC:            0.135133100625673
+Precision:      0.121333333333333
+Recall:         0.25149863760218
+F-score:        0.1636939447681780
+
+=====SSS=====
+AUC:            0.144507227944803
+Precision:      0.00585500764975874
+Recall:         0.543051771117166
+F-score:        0.0115851084267849
