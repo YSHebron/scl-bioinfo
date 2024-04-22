@@ -183,7 +183,7 @@ if __name__ == '__main__':
         for lineno, line in enumerate(f, 1):
             # Let lineno be the cluster id
             raw = line.split()
-            proteins, score = raw[1:], float(raw[0].split("_")[1].strip("):"))
+            proteins, score = raw[1:], float(raw[0].split("_")[-1].strip("):"))
             cluster = Cluster(proteins, score, lineno)
             cluster.matches = 0
             clusters.append(cluster)

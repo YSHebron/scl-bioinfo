@@ -52,9 +52,11 @@ data/
 
 * Moved long-runner.sh and simple-trainer.py to personal backup.
 * Moved randomized yeast data to personal backup.
+* In preparation for further experiments on generalized clustering algorithms, we have made separate folders inside the `data/Results/` and `data/Analysis/` labeled by which clustering algorithm produced them.
 
 ## TODOs
 
+* Wrap up TODOs in initial Gantt Chart.
 * Filter integrated dataset before PC2P.
 * Apply negatome filtering.
 * Produce other pre- and post-processing steps for PC2P or the BSS family.
@@ -101,17 +103,17 @@ Yeast Gold Standards:
 
 `data/Yeast/CYC_complexes.txt` and `data/Yeast/CYC_complexes_integrated.txt` are the same. If you need the gitignore'd files, you may find it in our Teams.
 
-## Cayetano (2022) Datasets
+### Cayetano (2022) Datasets
 
 `data` also contains the raw DIP and SWC datasets used by Cayetano, procured directly from [https://github.com/avancayetano/cs199-bioinformatics]. You may find these in `data/curated/Cayetano`.
 
-## Omranian (2022) Datasets
+### Omranian (2022) Datasets
 
 Omranian's comparative study used 4 Yeast datasets and 2 Human datasets. The Yeast datasets four are comprised of Collins, Gavin, KroganCore, and KroganExt, which are used for the protein complex prediction. The predicted complexes are then benchmarked against the fifth one, the gold standard CYC2008. You may find the first four in `data/curated/Omranian`, while CYC2008 are already in `data`.
 
 **NOTICE**: The Omranian datasets on Yeast will now be our main datasets. Further modifications can be done to edit the scoring or compositiong of the datasets.
 
-## On Edge Weights
+### On Edge Weights
 
 Note that the edge weights between proteins may indicate any of the following (as specified by the dataset):
 
