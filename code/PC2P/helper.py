@@ -1,5 +1,6 @@
 import networkx as nx
 import sys
+import os
 from termcolor import colored
 
 
@@ -113,3 +114,53 @@ def read_network(fname: str):
         ]
         known_proteins.append(set(parts))
     return known_proteins
+
+
+def filterPerProtein(ppinname, ppinfile, gldstd, outputdir, species="Yeast"):
+    filtering = "perprotein"
+    rawPPIN = "code/PC2P/{}/{}/{}".format(species, ppinname, ppinfile)
+    reffile = "code/PC2P/{}/{}_complexes.txt".format(species, gldstd)
+    outputfile = outputdir + "/{}_{}_{}_weighted.txt".format(
+        ppinname, gldstd, filtering
+    )
+    present = set()
+    scorededges = {}
+    with open(reffile) as f1, open(rawPPIN) as f2:
+        for line in f1:
+            for pid in line.split():
+                present.add(pid)
+        for line in f2:
+            p1, p2, weight = line.split()
+            key = (p1, p2) if p1 < p2 else (p2, p1)
+            scorededges[key] = float(weight)
+
+    if not os.path.isdir(outputdir):
+        os.mkdir(outputdir)
+    with open(outputfile, "w+") as f:
+        for key in scorededges:
+            if key[0] in present or key[1] in present:
+                f.write("%s %s %f\n" % (key[0], key[1], scorededges[key]))
+                
+                
+def filterDirect(ppinname, ppinfile, gldstd, outputdir, species="Yeast"):
+    filtering = "direct"
+    rawPPIN = "code/PC2P/{}/{}/{}".format(species, ppinname, ppinfile)
+    directfile = "code/PC2P/{}/{}/{}_{}_Graph.txt".format(
+        species, ppinname, ppinname, gldstd
+    )
+    outputfile = outputdir + "/{}_{}_{}_weighted.txt".format(
+        ppinname, gldstd, filtering
+    )
+    scorededges = {}
+    with open(rawPPIN) as f1:
+        for line in f1:
+            p1, p2, weight = line.split()
+            key = (p1, p2) if p1 < p2 else (p2, p1)
+            scorededges[key] = float(weight)
+    with open(directfile) as interm, open(outputfile, "w+") as f:
+        for line in interm:
+            p1, p2 = line.split()
+            linepair = (p1, p2) if p1 < p2 else (p2, p1)
+            for key in scorededges:
+                if linepair == key:
+                    f.write("%s %s %f\n" % (linepair[0], linepair[1], scorededges[key]))
