@@ -188,6 +188,11 @@ qclq.txt
 .Rproj.user
 .Rhistory
 .markdownlint.json
+.gitattributes
+.idea
+
+# Prototypes
+code/denoise_1
 
 # Zone Identifier (related to WSL)
 *_Zone.Identifier

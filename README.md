@@ -6,7 +6,7 @@ Root folder will eventually contain the entrypoint to our pipeline.
 
 ## Usage
 
-For `code/PC2P` and other algos pending to be implemented here, the pipeline steps are described below. Note that preprocessing (e.g. filtering), clustering, postprocessing (e.g. ensembling), and evaluation steps are still separate. And take note of the required file name formats.
+For `code/PC2P` and other algos pending to be implemented here, the pipeline steps are described below. Note that preprocessing (e.g. filtering), clustering, postprocessing (e.g. ensembling), and evaluation steps are still separate. Please take note of the required file name formats.
 
 * Prepare the datasets using `filter_then_score.py` and other included pre-processing programs.
 * In particular for `filter_then_score.py`, it performs perprotein and perpair, and/or direct filtering on the selected dataset. Selected dataset has no required filename. `filter_then_score.py` has parameters `ppinname`, `gldstdname`, . We currently only have two `gldstdname` for Yeast, `CYC` and `SGD`. Use `Corum` for human. The outputfile will have the following format: `<ppinname>_<gldstdname>_<filtering>_weighted.txt`. File name may differ based on other PPIN denoising or manipulation step. Each line here has the format `p1 p2 score`. A tab-delimited format (`.tsv`) are also available particularly for use by FINCH-Clustering.
@@ -122,3 +122,11 @@ Note that the edge weights between proteins may indicate any of the following (a
 * Distance of the interaction, as used with shortest paths computation
 
 Please consult the data source for specifications.
+
+### Dataset Updates
+
+We are expanding our testing from just S. Cerevisiae PPINs to also include H. Sapiens, D. Melanogasater, E. Coli, and C. Elegans datasets.
+
+#### PPIN Sources for S. Cerevisiae
+
+[Insert data sources here from IntAct or some other Interactome database]
