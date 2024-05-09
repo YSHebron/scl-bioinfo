@@ -190,6 +190,7 @@ qclq.txt
 .markdownlint.json
 .gitattributes
 .idea
+*png
 
 # Prototypes
 code/denoise_1
