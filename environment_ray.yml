@@ -16,3 +16,4 @@ dependencies:
     - scipy
     - termcolor
     - igraph
+    - finch-clust
