@@ -4,7 +4,7 @@
 
 import argparse
 import PredictedClusters_Analysis as pc
-from helper import printc
+from utils import printc
 from pathlib import Path
 
 parser = argparse.ArgumentParser(description='Evaluate results of PC2P (or other clustering algorithm). Must follow line format (size_score): p1 p2 ...')

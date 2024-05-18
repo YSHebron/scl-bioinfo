@@ -1,7 +1,7 @@
 import networkx as nx
 from operator import itemgetter
 import multiprocessing as mp
-from helper import printc
+from utils import printc
 
 def edgeCutSet_V2(cnp , G):
     """ This function find edges that connect the component to the rest of graph."""

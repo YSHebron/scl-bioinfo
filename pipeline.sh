@@ -40,12 +40,24 @@ while getopts ":hi:r:o:" opt; do
             ;;
         i)
             ppinfile=$OPTARG
+            if [[ ! -f $ppinfile ]]; then 
+                echo "$ppinfile is not a valid file."
+                exit 1
+            fi
             ;;
         r)
             reffile=$OPTARG
+            if [[ ! -f $reffile ]]; then 
+                echo "$reffile is not a valid file."
+                exit 1
+            fi
             ;;
         o)
             outputdir=$OPTARG
+            if [[ ! -d $outputdir ]]; then 
+                echo "$outputdir is not a valid directory."
+                exit 1
+            fi
             ;;
         \?)
             echo "Invalid option: -$OPTARG."
@@ -57,6 +69,12 @@ while getopts ":hi:r:o:" opt; do
             ;;
     esac
 done
+
+echo "Running P5COMP..."
+printf "CWD:\t%s\n" "$(pwd)"
+printf "PPIN:\t%s\n" "$(realpath "$ppinfile")"
+printf "Ref:\t%s\n" "$(realpath "$reffile")"
+printf "Output:\t%s\n" "$(realpath "$outputdir")"
 
 # Denoising
 ## Filtering

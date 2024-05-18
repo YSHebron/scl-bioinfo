@@ -1,5 +1,5 @@
 # Assumes this file is run from the root
-from helper import printc
+from utils import printc
 import networkx as nx
 from operator import itemgetter
 import ray
