@@ -83,14 +83,10 @@ def perform_cnp(G, inputfile, outputdir, parallel, pool_thresh, num_procs):
     if not outputdir.is_dir():
         outputdir.mkdir(parents=True)
     outputfile = Path(outputdir, inputfile.stem.removesuffix("_weighted") + "_predicted.txt")
-    single_prots = 0
     with outputfile.open("w") as f:
         # complex === line
         for complex in G_cnp_components:
             # protein === node
-            if len(complex) < 2:
-                single_prots += 1
-                continue   # filter out single-protein complexes # NOTE: What if we reattempt PC2P with them?
             # Score the complex by their weighted density
             # Each line: (len(complex)_score): p1 p2 p3 ...
             score = get_score(complex, scorededges)
@@ -98,9 +94,7 @@ def perform_cnp(G, inputfile, outputdir, parallel, pool_thresh, num_procs):
             for protein in complex:
                 f.write("%s " % protein)
             f.write("\n")
-    
-    print("Number of excluded proteins: {}".format(single_prots))
-    
+        
     ### Return G_cnp_components for analysis phase
     return G_cnp_components
 
