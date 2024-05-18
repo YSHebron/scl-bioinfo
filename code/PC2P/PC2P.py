@@ -4,11 +4,10 @@
 
 import ray
 import networkx as nx
-import pandas as pd
 import time
 import argparse
 from pathlib import Path
-from helper import printc, positive_int, graph_stats, graph_memory
+from utils import read_ppin_to_graph, printc, positive_int, graph_stats, graph_memory
 
 parser = argparse.ArgumentParser(description='Perform PC2P on PPI dataset and evaluate results. Can work with csv (with header p1, p2, score) or txt (no header) inputs. For scored clusters, use weighted edge list.')
 parser.add_argument('inputfile', type=Path, help='relpath to PPI dataset to be processed')
@@ -82,22 +81,7 @@ if __name__ == '__main__':
     
     start_time = time.time()
     
-    ### Read the PPIN (given as a PPI dataset or edgelist)
-    # Assumes the inputfile has scores, which may or may not be used
-    G = nx.Graph()
-    if inputfile.suffix == ".csv":
-        # for .csv with header p1, p2, and weight
-        df = pd.read_csv(inputfile)
-        print(df)
-        G = nx.from_pandas_edgelist(df, source = "p1", target = "p2", create_using = nx.Graph, edge_attr = "weight")
-    elif inputfile.suffix == ".tsv":
-        # for .tsv with header p1, p2, and weight
-        df = pd.read_csv(inputfile, sep="\t")
-        print(df)
-        G = nx.from_pandas_edgelist(df, source = "p1", target = "p2", create_using = nx.Graph, edge_attr = "weight")
-    elif inputfile.suffix == ".txt":
-        # for .txt with no header edge lists
-        G = nx.read_weighted_edgelist(inputfile, create_using = nx.Graph, nodetype = str)
+    G = read_ppin_to_graph(inputfile)
     
     printc("CWD:\t%s " % Path.cwd())
     printc("Input:\t%s" % inputfile)

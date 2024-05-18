@@ -1,7 +1,7 @@
 import os
 import argparse
 from pathlib import Path
-from helper import printc
+from utils import printc
 """Filter then rescore:
 This program only works for the Yeast datasets.
 Demonstrated that the perpair filtering is the best filtering.
