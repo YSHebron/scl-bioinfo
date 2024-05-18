@@ -191,6 +191,7 @@ qclq.txt
 .gitattributes
 .idea
 *png
+debug.txt
 
 # Prototypes
 code/denoise_1
