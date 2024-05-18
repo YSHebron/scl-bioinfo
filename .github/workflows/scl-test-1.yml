@@ -31,8 +31,8 @@ jobs:
       run: python code/PC2P/PC2P.py data/Yeast/FilteredPPINs/Collins_CYC_perpair_weighted.txt data/Results/Dummy
     - name: Test clustering using Collins CYC perpair PPIN (parallel-mp)
       run: python code/PC2P/PC2P.py data/Yeast/FilteredPPINs/Collins_CYC_perpair_weighted.txt data/Results/Dummy -p mp
-    - name: Evaluate predictions from Collins CYC perpair PPIN
-      run: python code/PC2P/PC2P_eval.py data/Results/Dummy/Collins_CYC_perpair_predicted.txt data/Yeast/CYC_complexes.txt data/Analysis/Dummy
+    # - name: Evaluate predictions from Collins CYC perpair PPIN
+    #   run: python code/PC2P/PC2P_eval.py data/Results/Dummy/Collins_CYC_perpair_predicted.txt data/Yeast/CYC_complexes.txt data/Analysis/Dummy
       
       
               

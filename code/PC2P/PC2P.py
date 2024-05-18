@@ -20,19 +20,6 @@ parops.add_argument('--pool_thresh', nargs='?', type=positive_int, default=100, 
 parops.add_argument('--num_procs', nargs='?', type=positive_int, default=16, const=16, help='num of processes created by each call to pool (for mp only, default 16)')
 args = parser.parse_args()
 
-# function to score the complex
-def get_score(complex, edgesref):
-    totalweight = 0
-    for id1 in range(len(complex)):
-        for id2 in range(1,len(complex)):
-           id_a = complex[id1]
-           id_b = complex[id2]
-           key = (id_a, id_b) if id_a < id_b else (id_b, id_a)
-           if key in edgesref:
-               totalweight += edgesref[key]
-    score = totalweight*2 / ((len(complex) * (len(complex)-1)))
-    return score
-
 # Generate minimumm node cut (edge_cut) and apply it to G, scores components (complexes) of G
 # and evaluates G
 def perform_cnp(G, inputfile, outputdir, parallel, pool_thresh, num_procs):
@@ -71,13 +58,6 @@ def perform_cnp(G, inputfile, outputdir, parallel, pool_thresh, num_procs):
     G_cnp_components = [sorted(list(cplx)) for cplx in G_cnp_components]
     printc("First 10 complexes, sorted by decreasing number of proteins:")
     print(*G_cnp_components[:10], sep="\n")
-
-    ### Prepare for Scoring Detected Clusters (done simultaneously with writing to result)
-    scorededges = {}
-    for id_a, id_b, score in G.edges(data=True):
-        # keys are tuples of protein pairs, and values are their scores
-        key = (id_a, id_b) if id_a < id_b else (id_b, id_a)
-        scorededges[key] = score["weight"]
     
     ### Writing to results
     if not outputdir.is_dir():
@@ -88,9 +68,7 @@ def perform_cnp(G, inputfile, outputdir, parallel, pool_thresh, num_procs):
         for complex in G_cnp_components:
             # protein === node
             # Score the complex by their weighted density
-            # Each line: (len(complex)_score): p1 p2 p3 ...
-            score = get_score(complex, scorededges)
-            f.write(f"({len(complex)}_{score}): ")
+            # Each line: p1 p2 p3 ...
             for protein in complex:
                 f.write("%s " % protein)
             f.write("\n")
