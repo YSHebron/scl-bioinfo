@@ -145,7 +145,7 @@ if __name__ == '__main__':
 
     ### PreProcessing
     new_edges = list()
-
+    printc('Getting the complement of G ......\n')
     for g in nx.connected_components(G):
         g_cmp = nx.complement(nx.induced_subgraph(G,g))
         # graph_stats(g_cmp)
