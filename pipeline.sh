@@ -49,6 +49,7 @@ fi
 filteredfile="data/Interm/filtered_ppin.txt"
 decompfile="data/Interm/decomp_ppin.txt"
 hubfile="data/Interm/hub_proteins.txt"
+clusters_PC2P="data/Results/Dummy/PC2P_predicted.txt"
 
 # Parse user-defined parameters
 ppinfile=
@@ -104,6 +105,7 @@ python code/hub_remove.py $filteredfile $decompfile $hubfile
 
 # Parallel Clustering
 ## 1. PC2P
+python code/PC2P/PC2P.py $decompfile $clusters_PC2P -p mp
 
 ## 2. CUBCO+
 
@@ -117,3 +119,4 @@ python code/hub_remove.py $filteredfile $decompfile $hubfile
 # Ensemble Clustering
 
 # Evaluation
+python code/PC2P/PC2P_eval.py $clusters_PC2P $reffile $outputdir
