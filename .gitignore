@@ -191,7 +191,7 @@ qclq.txt
 .gitattributes
 .idea
 *png
-debug.txt
+debug*.txt
 data/Interm
 
 # Prototypes

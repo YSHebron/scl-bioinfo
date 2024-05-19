@@ -99,9 +99,11 @@ printf "Output:\t%s\n" $(realpath "$outputdir" -q)
 ## Note: This pipeline is packaged with Negatome 2.0 datasets.
 python code/filtering.py $ppinfile $reffile $filteredfile --negfile $negfile --confidence 0.33
 
+## DECOMP 1: Hub Removal -> data/Interm/decomp_ppin.txt, data/Interm/hub_proteins.txt
+python code/hub_remove.py $filteredfile $decompfile $hubfile
+
 # Parallel Clustering
 ## 1. PC2P
-python code/hub_remove.py $filteredfile $decompfile $hubfile
 
 ## 2. CUBCO+
 
