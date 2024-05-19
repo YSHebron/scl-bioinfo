@@ -5,15 +5,17 @@
 set -e
 
 help() {
-echo "usage: ./pipeline.sh [-i [ppinfile]] [-r [reffile]] [-o [outputdir]] [-h]
+echo "usage: ./pipeline.sh [-p [ppinfile]] [-r [reffile]] [-o [outputdir]] [-n [negfile]] [-h]
     
 Runs P5COMP on the given PPIN file (ppinfile) and evaluates against the given gold standard (reffile).
 Final predicted clusters will be written in outputdir.
+Important: Protein names (PID) should be in gene name (ordered locus) or KEGG format (ex. YLR075W).
 
 options:
-    -i [ppinfile]       path to PPIN file (.txt, .csv, .tsv) (required)
+    -p [ppinfile]       path to PPIN file (.txt) where each row is (u v s) (required)
     -r [reffile]        path to gold standard or reference complexes file (.txt) (required)
     -o [outputdir]      path to output directory (required)
+    -n [negfile]        path to negatome (.txt) where each row is (u v) (optional)
     -h                  show this help information"
 }
 
@@ -21,63 +23,75 @@ log() {
     echo "$@" >> ./debug.txt
 }
 
-if [ $# -eq 0 ]
-then
-echo "No options supplied."
-help
-exit 1
+validate_file() {
+    if [[ ! -f $1 ]]; then 
+        echo "$1 is not a valid file."
+        exit 1
+    fi
+}
+
+validate_dir() {
+    if [[ ! -d $1 ]]; then 
+        echo "$1 is not a valid directory."
+        exit 1
+    fi
+}
+
+if [ $# -eq 0 ]; then
+    echo "No options supplied."
+    help
+    exit 1
 fi
 
 # Parse command line
 ppinfile=
 reffile=
 outputdir=
-while getopts ":hi:r:o:" opt; do
+while getopts ":hp:r:o:n:" opt; do
     case ${opt} in
         h)
             help
             exit 0
             ;;
-        i)
+        p)
             ppinfile=$OPTARG
-            if [[ ! -f $ppinfile ]]; then 
-                echo "$ppinfile is not a valid file."
-                exit 1
-            fi
             ;;
         r)
             reffile=$OPTARG
-            if [[ ! -f $reffile ]]; then 
-                echo "$reffile is not a valid file."
-                exit 1
-            fi
             ;;
         o)
             outputdir=$OPTARG
-            if [[ ! -d $outputdir ]]; then 
-                echo "$outputdir is not a valid directory."
-                exit 1
-            fi
+            ;;
+        n)
+            negfile=$OPTARG
             ;;
         \?)
-            echo "Invalid option: -$OPTARG."
+            echo "Error: Invalid option: -$OPTARG."
             exit 1
             ;;
         :)
-            echo "Option -$OPTARG requires a path argument."
+            echo "Error: Option -$OPTARG requires an argument."
             exit 1
             ;;
     esac
 done
 
-echo "Running P5COMP..."
-printf "CWD:\t%s\n" "$(pwd)"
-printf "PPIN:\t%s\n" "$(realpath "$ppinfile")"
-printf "Ref:\t%s\n" "$(realpath "$reffile")"
-printf "Output:\t%s\n" "$(realpath "$outputdir")"
+if [[ -z $ppinfile || -z $reffile || -z $outputdir ]]; then
+    echo "Error: Missing -p, -r, and/or -o arguments. See -h."
+    exit 1
+fi
+validate_file $ppinfile && validate_file $reffile && validate_dir $outputdir
 
-# Denoising
-## Filtering
+echo "Running P5COMP..."
+printf "PPIN:\t%s\n" $(realpath "$ppinfile" -q)
+printf "Ref:\t%s\n" $(realpath "$reffile" -q)
+printf "Output:\t%s\n" $(realpath "$outputdir" -q)
+
+# Denoising -> data/Interm/filtered_ppin.txt
+## Filtering: Negatome and PerProteinPair filtering.
+## Note: This pipeline is packaged with Negatome 2.0 datasets.
+
+python code/filtering.py $ppinfile $reffile $outputdir --negfile $negfile --confidence 0.33
 
 # Parallel Clustering
 

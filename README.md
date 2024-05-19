@@ -58,7 +58,7 @@ data/
 
 * Wrap up TODOs in initial Gantt Chart.
 * Filter integrated dataset before PC2P.
-* Apply negatome filtering.
+* Apply negatome filtering. Sources: https://github.com/Zhaonan99/NVDT, https://github.com/mattilalab/petrov-et-al-2020, https://github.com/lafleur1/embeddingsPPI/blob/2743925fb9d6489dbe68fc6d0cc70eea8c955a9f/ppiDB/Negatome/Negatome2_combinedStringent.txt
 * Produce other pre- and post-processing steps for PC2P or the BSS family.
 * Create evaluation that will benchmark main algo based on performance of other classical clustering methods (like MCL).
 * Try other BSS family algorithms (GCC and CUBCO/+).
