@@ -192,6 +192,7 @@ qclq.txt
 .idea
 *png
 debug.txt
+data/Interm
 
 # Prototypes
 code/denoise_1

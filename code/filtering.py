@@ -6,7 +6,7 @@ from pathlib import Path
 parser = argparse.ArgumentParser(description='PerProteinPair and Negatome filtering.')
 parser.add_argument('ppinfile', type=Path, help='path to PPIN')
 parser.add_argument('reffile', type=Path, help='path to gold standard')
-parser.add_argument('outputdir', type=Path, help='directory to output preprocessed PPIN')
+parser.add_argument('outfile', type=Path, help='writepath for filtered PPIN')
 parser.add_argument('--negfile', type=Path, help='path to negatome', nargs='?', required=False, const=None)
 parser.add_argument('--confidence', type=float, metavar='[0.0-1.0]', default=0.0, help='interaction score threshold')
 args = parser.parse_args()
@@ -71,6 +71,5 @@ if __name__ == '__main__':
     # ppin = filter_per_protein(ppin, args.reffile)
     # print(f"Per Protein\t{len(ppin)}")
     
-    outfile = args.outputdir / "ppin_filtered.txt"
-    utils.write_ppin_dict_to_txt(ppin, outfile, weighted=True)
+    utils.write_ppin_dict_to_txt(ppin, args.outfile, weighted=True)
     

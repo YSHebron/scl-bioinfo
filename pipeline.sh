@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # P5COMP: Parameter-free Pipeline for Predicting Problematic Protein Complexes
+# Can only currently be run from repository root.
+# Disclaimer: Parameter-free in a very specific, clustering sense.
 
 set -e
 
@@ -43,7 +45,12 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
-# Parse command line
+# Developer parameters
+filteredfile="data/Interm/filtered_ppin.txt"
+decompfile="data/Interm/decomp_ppin.txt"
+hubfile="data/Interm/hub_proteins.txt"
+
+# Parse user-defined parameters
 ppinfile=
 reffile=
 outputdir=
@@ -90,13 +97,11 @@ printf "Output:\t%s\n" $(realpath "$outputdir" -q)
 # Denoising -> data/Interm/filtered_ppin.txt
 ## Filtering: Negatome and PerProteinPair filtering.
 ## Note: This pipeline is packaged with Negatome 2.0 datasets.
-
-python code/filtering.py $ppinfile $reffile $outputdir --negfile $negfile --confidence 0.33
+python code/filtering.py $ppinfile $reffile $filteredfile --negfile $negfile --confidence 0.33
 
 # Parallel Clustering
-
 ## 1. PC2P
-
+python code/hub_remove.py $filteredfile $decompfile $hubfile
 
 ## 2. CUBCO+
 
