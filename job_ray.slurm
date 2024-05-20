@@ -3,7 +3,7 @@
 #SBATCH --nodes=5
 #SBATCH --exclusive
 #SBATCH --tasks-per-node=1
-#SBATCH --cpus-per-task=35
+#SBATCH --cpus-per-task=30
 #SBATCH --mem-per-cpu=8GB
 #SBATCH --output=/home/yshebron/scl-bioinfo/test.out
 
@@ -58,10 +58,16 @@ done
 
 # Insert your code here.
 cd ~/scl-bioinfo
+filteredfile="data/Interm/filtered_ppin.txt"
+decompfile="data/Interm/decomp_ppin.txt"
+hubfile="data/Interm/hub_proteins.txt"
+iAdjustCD_outfile="data/Interm/ppin_adjusted.txt"
+outputdir="data/Results/Dummy"
+predictsfile_PC2P="${outputdir}/PC2P_predicted.txt"
+postprocessed_PC2P="${outputdir}/PC2P_postprocessed.txt"
 # python -u code/PC2P/PC2P.py code/PC2P/Yeast/FilteredPPINs/Collins_SGD_perprotein_weighted.txt code/PC2P/Results/Dummy -p
 # python -u code/PC2P/PC2P.py code/PC2P/Yeast/FilteredPPINs/Collins_CYC_perprotein_weighted.txt code/PC2P/Results/Dummy -p
-# python -u code/PC2P/PC2P.py code/PC2P/Yeast/Integrated_CYC_ppirel.txt code/PC2P/Results/Integrated -p
-./pipeline.sh -p data/Yeast/Integrated/Integrated_CYC_nofilter_weighted.txt -r data/Yeast/SGD_complexes.txt -o data/Results/Dummy -n data/Negatome/negatome_2_mix_mapped.txt
+python -u code/PC2P/PC2P.py $decompfile $predictsfile_PC2P -p ray
 
 # [Optional] You can run other commands here
 
