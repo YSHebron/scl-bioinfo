@@ -5,6 +5,7 @@
 import argparse
 import PredictedClusters_Analysis as pc
 from utils import printc
+from classes import Cluster
 from pathlib import Path
 
 parser = argparse.ArgumentParser(description='Evaluate results of PC2P (or other clustering algorithm). Must follow line format (size_score): p1 p2 ...')
@@ -12,16 +13,6 @@ parser.add_argument('predictsfile', type=str, help='relpath to predicted cluster
 parser.add_argument('complexfile', type=str, help='relpath to gold standard complex file')
 parser.add_argument('outputdir', type=str, help='relpath to output dir for evaluation results')
 args = parser.parse_args()
-
-# To emulate Yong and Wong for predicts, we also add number of correct matches
-class Cluster:
-    def __init__(self, proteins = set(), score = 0, id = None):
-        self.proteins = set(proteins)
-        self.score = score
-        self.id = id
-    
-    def __str__(self):
-        return "(%d_%.6f): %s" % (len(self.proteins), self.score, " ".join(self.proteins))
 
 # Calculate Jaccard similarity between P and C
 # P: Predicted cluster

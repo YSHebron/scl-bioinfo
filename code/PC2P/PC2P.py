@@ -54,8 +54,8 @@ def perform_cnp(G):
     G_cnp_components = list(nx.connected_components(G_cnp))
     G_cnp_components.sort(key=len, reverse=True)
     G_cnp_components = [sorted(list(cplx)) for cplx in G_cnp_components]
-    printc("First 10 complexes, sorted by decreasing number of proteins:")
-    print(*G_cnp_components[:10], sep='\n')
+    printc("First 3 PC2P clusters, sorted by decreasing number of proteins:")
+    print(*G_cnp_components[:3], sep='\n')
     
     ### Writing to results
     outfile = args.outfile

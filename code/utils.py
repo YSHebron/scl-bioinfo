@@ -30,7 +30,7 @@ def read_ppin_to_dict(ppinfile: Path, weighted=False) -> dict:
                 ppin[key] = float(s)
         else:
             for line in f:
-                u, v = line.split()
+                u, v = line.split()[:2]
                 key = (u, v) if u < v else (v, u) # lexical ordering
                 ppin[key] = None
             

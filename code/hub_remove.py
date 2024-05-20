@@ -6,8 +6,8 @@ from pathlib import Path
 
 parser = argparse.ArgumentParser(description="Hub Decomposition 1: Hub Removal")
 parser.add_argument('ppinfile', type=Path, help='path to PPIN')
-parser.add_argument('outfile', type=Path, help='writepath for decomposed PPIN')
 parser.add_argument('hubfile', type=Path, help='writepath for hub proteins')
+parser.add_argument('outfile', type=Path, help='writepath for decomposed PPIN')
 args = parser.parse_args()
 
 def rel_connectivity(G: nx.Graph):

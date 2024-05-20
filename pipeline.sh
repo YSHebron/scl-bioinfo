@@ -49,7 +49,7 @@ fi
 filteredfile="data/Interm/filtered_ppin.txt"
 decompfile="data/Interm/decomp_ppin.txt"
 hubfile="data/Interm/hub_proteins.txt"
-clusters_PC2P="data/Results/Dummy/PC2P_predicted.txt"
+iAdjustCD_outfile="data/Interm/ppin_adjusted.txt"
 
 # Parse user-defined parameters
 ppinfile=
@@ -100,12 +100,20 @@ printf "Output:\t%s\n" $(realpath "$outputdir" -q)
 ## Note: This pipeline is packaged with Negatome 2.0 datasets.
 python code/filtering.py $ppinfile $reffile $filteredfile --negfile $negfile --confidence 0.33
 
-## DECOMP 1: Hub Removal -> data/Interm/decomp_ppin.txt, data/Interm/hub_proteins.txt
-python code/hub_remove.py $filteredfile $decompfile $hubfile
+### DECOMP 1: Hub Removal
+### -> data/Interm/ppin_adjusted.txt
+### -> data/Interm/decomp_ppin.txt, data/Interm/hub_proteins.txt 
+python code/iAdjustCD.py $filteredfile $iAdjustCD_outfile
+python code/hub_remove.py $filteredfile $hubfile $decompfile
 
 # Parallel Clustering
 ## 1. PC2P
-python code/PC2P/PC2P.py $decompfile $clusters_PC2P -p mp
+predictsfile_PC2P="${outputdir}/PC2P_predicted.txt"
+postprocessed_PC2P="${outputdir}/PC2P_postprocessed.txt"
+python code/PC2P/PC2P.py $decompfile $predictsfile_PC2P -p mp
+
+### DECOMP 2: Hub Return -> data/Results/Dummy/{method}_predicted.txt
+python code/hub_return.py $predictsfile_PC2P $iAdjustCD_outfile $hubfile $filteredfile $postprocessed_PC2P
 
 ## 2. CUBCO+
 
@@ -119,4 +127,4 @@ python code/PC2P/PC2P.py $decompfile $clusters_PC2P -p mp
 # Ensemble Clustering
 
 # Evaluation
-python code/PC2P/PC2P_eval.py $clusters_PC2P $reffile $outputdir
+python code/PC2P/PC2P_eval.py $postprocessed_PC2P $reffile $outputdir
