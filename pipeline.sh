@@ -110,7 +110,7 @@ python code/hub_remove.py $filteredfile $hubfile $decompfile
 ## 1. PC2P
 predictsfile_PC2P="${outputdir}/PC2P_predicted.txt"
 postprocessed_PC2P="${outputdir}/PC2P_postprocessed.txt"
-python code/PC2P/PC2P.py $decompfile $predictsfile_PC2P -p mp
+python code/PC2P/PC2P.py $decompfile $predictsfile_PC2P -p ray
 
 ### DECOMP 2: Hub Return -> data/Results/Dummy/{method}_predicted.txt
 python code/hub_return.py $predictsfile_PC2P $iAdjustCD_outfile $hubfile $filteredfile $postprocessed_PC2P

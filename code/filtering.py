@@ -66,8 +66,8 @@ if __name__ == '__main__':
     if args.negfile is not None:
         ppin = filter_with_negatome(ppin, utils.read_ppin_to_dict(args.negfile))
         print(f"Negatome 2.0\t\t{len(ppin)}")
-    ppin = filter_per_pair(ppin, args.reffile)
-    print(f"Per Protein Pair\t{len(ppin)}")
+    # ppin = filter_per_pair(ppin, args.reffile)
+    # print(f"Per Protein Pair\t{len(ppin)}")
     # ppin = filter_per_protein(ppin, args.reffile)
     # print(f"Per Protein\t{len(ppin)}")
     
