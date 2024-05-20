@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=scl1
-#SBATCH --nodes=6
+#SBATCH --nodes=5
 #SBATCH --exclusive
 #SBATCH --tasks-per-node=1
 #SBATCH --cpus-per-task=35
