@@ -8,7 +8,7 @@ import pandas as pd
 import argparse
 import time
 from pathlib import Path
-from helper import printc, positive_int, graph_stats, graph_memory
+from utils import printc, positive_int, graph_stats, graph_memory
 from operator import itemgetter
 
 parser = argparse.ArgumentParser(description='Perform CUBCO+ on PPI dataset and evaluate results. Can work with csv (with header p1, p2, score) or txt (no header) inputs. For scored clusters, use weighted edge list.')

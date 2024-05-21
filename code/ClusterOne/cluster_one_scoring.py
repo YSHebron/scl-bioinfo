@@ -70,7 +70,6 @@ if __name__ == '__main__':
     with clusterfile.open("w") as f:
         # complex === line
         for complex in cmplx:
-            print(complex)
             # protein === node
             # Score the complex by their weighted density
             # Each line: (len(complex)_score): p1 p2 p3 ...
