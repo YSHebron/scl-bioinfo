@@ -2,7 +2,8 @@
 
 # P5COMP: Parameter-free Pipeline for Predicting Problematic Protein Complexes
 # Can only currently be run from repository root.
-# Disclaimer: Parameter-free in a very specific, clustering sense.
+# Disclaimer: This still contain necessary usage parameters such as paths to files and directories
+# Note that usage parameters are not clustering parameters.
 
 set -e
 
@@ -11,7 +12,7 @@ echo "usage: ./pipeline.sh [-p [ppinfile]] [-r [reffile]] [-o [outputdir]] [-n [
     
 Runs P5COMP on the given PPIN file (ppinfile) and evaluates against the given gold standard (reffile).
 Final predicted clusters will be written in outputdir.
-Important: Protein names (PID) should be in gene name (ordered locus) or KEGG format (ex. YLR075W).
+Important: Protein names (PID) should be in gene name (ordered locus) or KEGG format (ex. YLR075W) to match gold standards.
 
 options:
     -p [ppinfile]       path to PPIN file (.txt) where each row is (u v s) (required)
@@ -40,7 +41,7 @@ validate_dir() {
 }
 
 if [ $# -eq 0 ]; then
-    echo "No options supplied."
+    echo "Error: No options supplied. See help below."
     help
     exit 1
 fi
@@ -85,9 +86,10 @@ while getopts ":hp:r:o:n:" opt; do
 done
 
 if [[ -z $ppinfile || -z $reffile || -z $outputdir ]]; then
-    echo "Error: Missing -p, -r, and/or -o arguments. See -h."
+    echo "Error: Missing -p, -r, and/or -o arguments. See help (-h)."
     exit 1
 fi
+mkdir -p $outputdir
 validate_file $ppinfile && validate_file $reffile && validate_dir $outputdir
 
 echo "Running P5COMP..."
@@ -105,26 +107,36 @@ python code/filtering.py $ppinfile $reffile $filteredfile --negfile $negfile --c
 ### -> data/Interm/decomp_ppin.txt, data/Interm/hub_proteins.txt 
 python code/iAdjustCD.py $filteredfile $iAdjustCD_outfile
 python code/hub_remove.py $filteredfile $hubfile $decompfile
+# At this point, hubfile contains the hub proteins while decompfile contains the decomposed PPIN.
+# The iAdjustCD_outfile contains the rescored PPIN, for use in hub_return.
 
-# Parallel Clustering
-## 1. PC2P
+# Parallel Clustering (Ensemble Clustering)
+## 1. PC2P with hub return -> data/Results/Dummy/PC2P_predicted.txt, data/Results/Dummy/PC2P_postprocessed.txt
 predictsfile_PC2P="${outputdir}/PC2P_predicted.txt"
 postprocessed_PC2P="${outputdir}/PC2P_postprocessed.txt"
 python code/PC2P/PC2P.py $decompfile $predictsfile_PC2P -p mp
-
-### DECOMP 2: Hub Return -> data/Results/Dummy/{method}_predicted.txt
 python code/hub_return.py $predictsfile_PC2P $iAdjustCD_outfile $hubfile $filteredfile $postprocessed_PC2P
 
-## 2. CUBCO+
+## NOTE: UNCOMMENT ONLY THE FOLLOWING python LINES ONCE CUBCO+ and ClusterOne CAN SUPPORT DECOMP
+## For parallelization, might separate clustering algorithms from DECOMP (but seq ok for now)
+## TODO: Simplify variables (predictsfile_method to just predictsfile, etc.)
 
+## 2. CUBCO+ with hub return -> data/Results/Dummy/CUBCO+_predicted.txt, data/Results/Dummy/CUBCO+_postprocessed.txt
+## Note: omit '+' character from varnames
+predictsfile_CUBCO="${outputdir}/CUBCO+_predicted.txt"
+postprocessed_CUBCO="${outputdir}/CUBCO+_postprocessed.txt"
+# python code/CUBCO+/CUBCO.py $decompfile $predictsfile_CUBCO
+# python code/hub_return.py $predictsfile_CUBCO $iAdjustCD_outfile $hubfile $filteredfile $postprocessed_CUBCO
 
-## 3. FINCH
-
-
-## 4. ClusterOne
-
+## 3. ClusterOne with hub return -> data/Results/Dummy/ClusterOne_predicted.txt, data/Results/Dummy/ClusterOne_postprocessed.txt
+# Insert ClusterOne code
+predictsfile_ClusterOne="${outputdir}/ClusterOne_predicted.txt"
+postprocessed_ClusterOne="${outputdir}/ClusterOne_postprocessed.txt"
+# python code/CUBCO+/CUBCO.py $decompfile $predictsfile_CUBCO
+# python code/hub_return.py $predictsfile_ClusterOne $iAdjustCD_outfile $hubfile $filteredfile $postprocessed_ClusterOne
 
 # Ensemble Clustering
+# TODO: Insert Ensemble Clustering Code
 
 # Evaluation
 python code/PC2P/PC2P_eval.py $postprocessed_PC2P $reffile $outputdir

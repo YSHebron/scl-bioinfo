@@ -35,6 +35,8 @@ def iAdjustCD(u: str, v: str, k: int, G: nx.Graph) -> float:
     num = sum([iAdjustCD(x, u, k-1, G) + iAdjustCD(x, v, k-1, G) for x in Nu.intersection(Nv)])
     den = sum([iAdjustCD(x, u, k-1, G) for x in Nu]) + _lambda(u, Nu, k-1, G) \
             + sum([iAdjustCD(x, v, k-1, G) for x in Nv]) + _lambda(v, Nv, k-1, G)
+    if den == 0:    # BUG: unsure if denominator is allowed to be 0, consult iAdjustCD and CMC paper
+        return 0
     return num/den
 
 if __name__ == '__main__':

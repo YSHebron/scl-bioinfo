@@ -1,8 +1,6 @@
 # scl-bioinfo
 
-A bioinformatics project that aims to extend parameter-free computational protein complex prediction methods. Output will be a prediction pipeline containing an improved algorithm that may integrate more than one unsupervised clustering algorithm. Improvements will be based on general performance metrics, currently AUC-PR and F-measaure, but may be composited to include more metrics. Benchmarked algorithms will include the original unmodified algorithms and classical protein complex prediction methods. The Integrated pipeline by Yong and Wong will remain part of the benchmark.
-
-Root folder will eventually contain the entrypoint to our pipeline.
+A bioinformatics-proteomics project that aims to extend parameter-free protein complex prediction methods. Output will be a prediction pipeline containing an improved algorithm that may integrate more than one unsupervised clustering algorithm. Improvements will be based on general performance metrics, currently AUC-PR and F-measaure, but may be composited to include more metrics. Benchmarked algorithms will include the original unmodified algorithms and classical protein complex prediction methods. The Integrated pipeline by Yong and Wong will remain part of the benchmark.
 
 ## Usage
 
@@ -30,7 +28,7 @@ python code/PC2P/PC2P_eval.py data/Results/Dummy/Dummy_CYC_testonly_predicted.tx
 ### Proposed Pipeline
 
 ```sh
-DataPreparation >> { Preprocessing >> {Hub Decomposition} | Clustering >> {PC2P, FINCH, ONCQS, MCL}* | Postprocessing >> {Return Hub Proteins, Ensemble Clustering} } >> Evaluation
+DataPreparation >> { Preprocessing >> {Hub Decomposition} | Clustering >> {PC2P, CUBCO+, ClusterOne}* | Postprocessing >> {Return Hub Proteins, Ensemble Clustering} } >> Evaluation
 ```
 
 * `DataPreparation` (with filtering) will involve `data/Yeast (PPIN Name) > data/Yeas (FilteredPPINs)t`.
