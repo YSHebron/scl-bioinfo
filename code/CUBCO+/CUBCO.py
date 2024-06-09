@@ -14,6 +14,7 @@ from operator import itemgetter
 parser = argparse.ArgumentParser(description='Perform CUBCO+ on PPI dataset and evaluate results. Can work with csv (with header p1, p2, score) or txt (no header) inputs. For scored clusters, use weighted edge list.')
 parser.add_argument('inputfile', type=Path, help='relpath to PPI dataset to be processed')
 parser.add_argument('outputdir', type=Path, help='relpath to output dir for predicted complexes')
+parser.add_argument('outfile', type=Path, help='writepath for CUBCO+ predicted clusters')
 args = parser.parse_args()
 
 def ave_number_of_p3(e,G):
@@ -111,7 +112,7 @@ def min_cut(*args, **kwargs):
         yield set(G_bar.nodes())
 
 if __name__ == '__main__':
-    inputfile, outputdir = args.inputfile, args.outputdir
+    inputfile, outputdir, outfile = args.inputfile, args.outputdir, args.outfile
     global reachable, non_reachable, G_bar, G, node_deg1
     start_time = time.time()
     rounds = 1
@@ -133,12 +134,12 @@ if __name__ == '__main__':
         # for .txt with no header edge lists
         G = nx.read_weighted_edgelist(inputfile, create_using = nx.Graph, nodetype = str)
     
-    outputfile = Path(outputdir, "clusters_cubcoplus.txt")
-    gcomplement = Path(outputdir, inputfile.stem.removesuffix("_weighted") + "_complement.txt")
+    outfile.parent.mkdir(exist_ok=True, parents=True)
+    gcomplement = Path(outputdir, inputfile.stem + "_complement.txt")
     printc("CWD:\t%s " % Path.cwd())
     printc("Input:\t%s" % inputfile)
     printc("G Complement: \t%s" % gcomplement)
-    printc("Output:\t%s" % outputfile)
+    printc("Output:\t%s" % outfile)
     graph_stats(G)
     graph_memory(G)
     print(nx.to_numpy_array(G))
@@ -174,7 +175,7 @@ if __name__ == '__main__':
         
         i = 1
         edges = 0
-        with outputfile.open("a") as f:
+        with outfile.open("a") as f:
             if G_bar.number_of_edges()>0:
                 for r in result:
                     if r:
@@ -210,7 +211,7 @@ if __name__ == '__main__':
     printc('Number of removed edges is: %s' % (len(G.edges()) - edges))
     
     
-    with outputfile.open("r") as f:
+    with outfile.open("r") as f:
         cmplx = f.readlines()
     cmplx.sort(key=len, reverse=True)
     cmplx = [x.strip() for x in cmplx] 
@@ -219,7 +220,7 @@ if __name__ == '__main__':
     cmplx = list(cmplx)
     cmplx.sort(key=len, reverse=True)
     
-    with outputfile.open("w") as f:
+    with outfile.open("w") as f:
         for item in cmplx:
             for node in item:
                 f.write("%s " % node)
