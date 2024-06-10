@@ -1,7 +1,7 @@
 # Program that combines all of the predicted clusters
 # Do ensemble.py --help for help on running this program.
 # Sample run: python code/ensemble.py data/Results/Dummy/Trial/ClusterOne_postprocessed.txt data/Results/Dummy/Trial/CUBCO+_postprocessed.txt data/Results/Dummy/Trial/PC2P_postprocessed.txt data/Results/Dummy/Trial
-# python code/ensemble.py data/Results/Dummy/P5COMP/ClusterOne_postprocessed.txt data/Results/Dummy/P5COMP/CUBCO+_postprocessed.txt data/Results/Dummy/P5COMP/PC2P_postprocessed.txt data/Results/Dummy/P5COMP
+# python code/ensemble.py data/Results/Dummy/P5COMP/ClusterOne_postprocessed.txt data/Results/Dummy/P5COMP/CUBCO+_postprocessed.txt data/Results/Dummy/P5COMP/PC2P_postprocessed.txt data/Results/Dummy/P5COMP/P5COMP_clusters.txt
 
 
 import argparse
@@ -69,6 +69,59 @@ def remove_duplicate_clusters(clusters, match_thresh):
 
     return [clus for clus in clusters_to_keep if clus.id not in clusters_to_delete]
 
+def remove_duplicate_clusters_id(clusters):
+    unique_clusters = {}
+    for cluster in clusters:
+        if cluster.id not in unique_clusters:
+            unique_clusters[cluster.id] = cluster
+        # else:
+        #     print(f"Duplicate ID found and removed: {cluster.id}")
+    
+    printc(f"In remove_duplicate_clusters_id, num to delete = {len(clusters) - len(unique_clusters)}")
+    return list(unique_clusters.values())
+
+def ensemble_clustering(cluster1, cluster2, cluster3, match_thresh):
+    clusters_to_keep = []
+
+    # Check if a cluster in cluster1 is in cluster2 and cluster3 based on a match threshold (match_thresh)
+    # If match_clusters_lb >= match_thresh, it is a match and store the cluster with the higher score in clusters_to_keep
+
+    for index1 in range(len(cluster1)):
+        votes = [] # This stores the similar clusters.
+        clus1 = cluster1[index1]
+        votes.append(clus1)
+
+        # Check if the cluster is in cluster2
+        for index2 in range(len(cluster2)):
+            clus2 = cluster2[index2]
+            matchscore = match_clusters_lb(clus1.proteins, clus2.proteins)
+            if matchscore >= match_thresh:
+                # It is in cluster2. +1 to the vote
+                votes.append(clus2)
+                # Done checking cluster 2
+                break
+        
+        # Check if the cluster is in cluster3
+        for index3 in range(len(cluster3)):
+            clus3 = cluster3[index3]
+            matchscore = match_clusters_lb(clus1.proteins, clus3.proteins)
+            if matchscore >= match_thresh:
+                # It is in cluster3. +1 to the vote
+                votes.append(clus3)
+                # Done checking cluster 3
+                break
+
+        # Check how many votes. If >=2 then the cluster with the highest score will be kept
+        if len(votes) >= 2:
+            # Sort votes by score in descending order and keep the highest score cluster
+            votes.sort(key=lambda x: x.score, reverse=True)
+            clusters_to_keep.append(votes[0])
+
+    print("In ensemble_clustering, num to keep:\t", len(clusters_to_keep))
+
+    return clusters_to_keep
+
+
 if __name__ == '__main__':
     c1file, cubcofile, pc2pfile, outfile = Path(args.c1file), Path(args.cubcofile), Path(args.pc2pfile), Path(args.outfile)
     printc("CluserOne clusters File:\t%s" % c1file)
@@ -97,12 +150,18 @@ if __name__ == '__main__':
     
     combined_clusters = c1_clusters + cubco_clusters + pc2p_clusters
     printc("Total number of clusters:\t%d" %len(combined_clusters))
-    combined_clusters = remove_duplicate_clusters(combined_clusters, match_thresh)
-    print("P5COMP clusters:\t", len(combined_clusters))
+    final_clusters = ensemble_clustering(c1_clusters, cubco_clusters, pc2p_clusters, match_thresh)
+    printc("Number of possible clusters:\t%d" %len(final_clusters))
+    final_clusters += ensemble_clustering(cubco_clusters, pc2p_clusters, c1_clusters, match_thresh)
+    printc("Number of possible clusters:\t%d" %len(final_clusters))
+    final_clusters += ensemble_clustering(pc2p_clusters, c1_clusters, cubco_clusters, match_thresh)
+    printc("Number of possible clusters:\t%d" %len(final_clusters))
+    final_clusters = remove_duplicate_clusters_id(final_clusters)
+    print("P5COMP clusters:\t", len(final_clusters))
 
     # Output results
     with outfile.open('w') as f:
-        for cluster in combined_clusters:
+        for cluster in final_clusters:
             f.write(str(cluster) + "\n")
 
     

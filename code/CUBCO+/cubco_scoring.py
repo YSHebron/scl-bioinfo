@@ -7,7 +7,7 @@ import argparse
 from pathlib import Path
 from utils import printc
 
-parser = argparse.ArgumentParser(description='Perform PC2P on PPI dataset and evaluate results. Can work with csv (with header p1, p2, score) or txt (no header) inputs. For scored clusters, use weighted edge list.')
+parser = argparse.ArgumentParser(description='Scores the clusters predicted by CUBCO+')
 parser.add_argument('inputfile', type=Path, help='relpath to PPI dataset to be processed')
 parser.add_argument('clusterfile', type=Path, help='relpath to clusters file to be scored')
 parser.add_argument('outfile', type=Path, help='writepath for CUBCO+ scored clusters' )

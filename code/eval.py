@@ -154,8 +154,8 @@ if __name__ == '__main__':
     #c1file, cubcofile, complexfile, outputdir = Path(args.c1file), Path(args.cubcofile), Path(args.complexfile), Path(args.outputdir)
     printc("CluserOne clusters File:\t%s" % c1file)
     printc("CUBCO+ cluters File:\t%s" % cubcofile)
-    # printc("PC2P clusters File:\t%s" % pc2pfile)
-    # printc("P5COMP clusters File:\t%s" % p5compfile)
+    printc("PC2P clusters File:\t%s" % pc2pfile)
+    printc("P5COMP clusters File:\t%s" % p5compfile)
     printc("Complex File:\t%s" % complexfile)
     #printc("Output File:\t%s" % Path(outputdir, "P5COMP_eval.txt"))
 
@@ -255,7 +255,7 @@ if __name__ == '__main__':
 
     printc("Evaluating P5COMP...\n")
     clusters_P5COMP = []
-    with c1file.open() as f:
+    with p5compfile.open() as f:
         for lineno, line in enumerate(f, 1):
             # Let lineno be the cluster id
             raw = line.split()
