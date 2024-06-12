@@ -1,8 +1,24 @@
 # scl-bioinfo
 
-A bioinformatics-proteomics project that aims to extend parameter-free protein complex prediction methods. Output will be a prediction pipeline containing an improved algorithm that may integrate more than one unsupervised clustering algorithm. Improvements will be based on general performance metrics, currently AUC-PR and F-measaure, but may be composited to include more metrics. Benchmarked algorithms will include the original unmodified algorithms and classical protein complex prediction methods. The Integrated pipeline by Yong and Wong will remain part of the benchmark.
+A bioinformatics-proteomics project that aims to extend parameter-free protein complex prediction methods. Output will be a prediction pipeline containing an improved algorithm that may integrate more than one unsupervised clustering algorithm. Improvements will be based on general performance metrics, currently AUC-PR and F-measaure, but may be composited to include more metrics. Benchmarked algorithms will include the original unmodified algorithms and classical protein complex prediction methods.
 
 ## Usage
+A pipeline CLI for both Windows and Linux is provided, namely `pipeline.ps1` and `pipeline.sh` respectively. For quick help on their usage, try running `./pipeline.sh -h` if you're on Linux. This will display the following message:
+```sh
+usage: ./pipeline.sh [-p [ppinfile]] [-r [reffile]] [-o [outputdir]] [-n [negfile]] [-h]
+    
+Runs P5COMP on the given PPIN file (ppinfile) and evaluates against the given gold standard (reffile).
+Final predicted clusters will be written in outputdir.
+Important: Protein names (PID) should be in gene name (ordered locus) or KEGG format (ex. YLR075W) to match gold standards.
+
+options:
+    -p [ppinfile]       path to PPIN file (.txt) where each row is (u v s) (required)
+    -r [reffile]        path to gold standard or reference complexes file (.txt) (required)
+    -o [outputdir]      path to output directory (required)
+    -n [negfile]        path to negatome (.txt) where each row is (u v) (optional)
+    -h                  show this help information"
+```
+No help message is currently available for `pipeline.ps1` on Windows. A proper tutorial is still being written. The rest of the Usage section is outdated.
 
 For `code/PC2P` and other algos pending to be implemented here, the pipeline steps are described below. Note that preprocessing (e.g. filtering), clustering, postprocessing (e.g. ensembling), and evaluation steps are still separate. Please take note of the required file name formats.
 
