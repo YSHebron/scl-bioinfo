@@ -1,5 +1,5 @@
-# Do cluster_one_scoring.py --help for help on running this program.
-# Sample run: python code/ClusterOne/cluster_one_scoring.py data/Yeast/FilteredPPINs/Collins_CYC_perpair_weighted.txt data/Results/Dummy/clusters_clusterone.py
+# Do cubco_scoring.py --help for help on running this program.
+# Sample run: python code/PC2P/PC2P_scoring.py data/Yeast/Collins/Collins_CYC_weighted.txt data/Results/Dummy/Raw/Collins_CYC/clusters_cubcoplus.txt data/Results/Dummy/Raw/Collins_CYC/CUBCO+_postprocessed.txt
 
 import networkx as nx
 import pandas as pd
@@ -7,10 +7,10 @@ import argparse
 from pathlib import Path
 from utils import printc
 
-parser = argparse.ArgumentParser(description='Scores the clusters predicted by ClusterOne')
+parser = argparse.ArgumentParser(description='Scores the clusters predicted by PC2P')
 parser.add_argument('inputfile', type=Path, help='relpath to PPI dataset to be processed')
 parser.add_argument('clusterfile', type=Path, help='relpath to clusters file to be scored')
-parser.add_argument('outfile', type=Path, help='writepath for ClusterOne scored clusters' )
+parser.add_argument('outfile', type=Path, help='writepath for PC2P scored clusters' )
 args = parser.parse_args()
 
 # function to score the complex
@@ -63,10 +63,9 @@ if __name__ == '__main__':
         lines = f.readlines()
 
     # Process each line to remove whitespace and split by tab characters
-    cmplx = [line.strip().split('\t') for line in lines if line.strip()]
+    cmplx = [line.strip().split() for line in lines if line.strip()]
     cmplx.sort(key=len, reverse=True)
 
-    # print(cmplx)
     outfile.parent.mkdir(exist_ok=True, parents=True)
     with outfile.open("w") as f:
         # complex === line
@@ -74,6 +73,8 @@ if __name__ == '__main__':
             # protein === node
             # Score the complex by their weighted density
             # Each line: (len(complex)_score): p1 p2 p3 ...
+            if len(complex) == 1:
+                continue
             score = get_score(complex, scorededges)
             f.write(f"({len(complex)}_{score}): ")
             for protein in complex:

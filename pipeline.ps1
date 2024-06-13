@@ -4,6 +4,7 @@
 # .\pipeline.ps1 -i ".\data\Dummy_CYC_testonly.txt"  -r ".\data\Yeast\CYC_complexes.txt" -o ".\data\Results"
 # .\pipeline.ps1 -i ".\data\Yeast\Collins\collins2007.txt"  -r ".\data\Yeast\CYC_complexes.txt" -o ".\data\Results\Dummy\Trial" -n ".\data\Negatome\negatome_2_mix_mapped.txt"
 # --negfile data/Negatome/negatome_2_mix_mapped.txt
+# .\pipeline.ps1 -i ".\data\Human\PIPS\PIPS_New_Processed.txt"  -r ".\data\Human\Corum_complexes.txt" -o ".\data\Results\Dummy\P5COMP_PIPS" 
 
 param (
     [Parameter(Mandatory=$true)] [string]$i,
@@ -42,15 +43,17 @@ Write-Output ""
 
 # Developer parameters
 $filteredfile="data/Interm/filtered_ppin.txt"
+$filteredfile_PerProteinPair="data/Interm/filteredOnly_ppin.txt"
 $decompfile="data/Interm/decomp_ppin.txt"
 $hubfile="data/Interm/hub_proteins.txt"
-$clusters_PC2P="data/Results/Dummy/PC2P_predicted.txt"
 $iAdjustCD_outfile="data/Interm/ppin_adjusted.txt"
 
 # Denoising -> data/Interm/filtered_ppin.txt
 ## Filtering: Negatome and PerProteinPair filtering.
 ## Note: This pipeline is packaged with Negatome 2.0 datasets.
 python code/filtering.py $i $r $filteredfile --negfile $n --confidence 0.33
+## Filtering: PerProteinPair filtering.
+python code/filtering.py $i $r $filteredfile_PerProteinPair --confidence 0.33
 
 ### DECOMP 1: Hub Removal
 ### -> data/Interm/ppin_adjusted.txt
@@ -67,7 +70,15 @@ Write-Output ""
 $predictsfile_PC2P = Join-Path -Path $o -ChildPath "PC2P_predicted.txt"
 $postprocessed_PC2P = Join-Path -Path $o -ChildPath "PC2P_postprocessed.txt"
 python code/PC2P/PC2P.py $decompfile $predictsfile_PC2P -p mp
+# python code/PC2P/PC2P_scoring.py $i $predictsfile_PC2P $postprocessed_PC2P
 python code/hub_return.py $predictsfile_PC2P $iAdjustCD_outfile $hubfile $filteredfile $postprocessed_PC2P
+
+Write-Output "Running PC2P on the filtered proteins (PerProteinPair filtering only)"
+# Runing PC2P on the filtered proteins without negatome and hub decomposition
+$predictsfile_PC2P_PerProteinPair = Join-Path -Path $o -ChildPath "PC2P_predicted_PerProteinPair.txt"
+$postprocessed_PC2P_PerProteinPair = Join-Path -Path $o -ChildPath "PC2P_postprocessed_PerProteinPair.txt"
+python code/PC2P/PC2P.py $filteredfile_PerProteinPair $predictsfile_PC2P_PerProteinPair -p mp
+python code/PC2P/PC2P_scoring.py $filteredfile_PerProteinPair $predictsfile_PC2P_PerProteinPair $postprocessed_PC2P_PerProteinPair
 
 Write-Output ===========================`n
 
@@ -81,6 +92,12 @@ $postprocessed_CUBCO = Join-Path -Path $o -ChildPath "CUBCO+_postprocessed.txt"
 python code/CUBCO+/CUBCO.py $decompfile $o $predictsfile_CUBCO
 python code/hub_return.py $predictsfile_CUBCO $iAdjustCD_outfile $hubfile $filteredfile $postprocessed_CUBCO
 
+Write-Output "Running CUBCO+ on the filtered proteins (PerProteinPair filtering only)"
+# Runing CUBCO+ on the filtered proteins without negatome and hub decomposition
+$predictsfile_CUBCO_PerProteinPair = Join-Path -Path $o -ChildPath "CUBCO+_predicted_PerProteinPair.txt"
+$postprocessed_CUBCO_PerProteinPair = Join-Path -Path $o -ChildPath "CUBCO+_postprocessed_PerProteinPair.txt"
+python code/CUBCO+/CUBCO.py $filteredfile_PerProteinPair $o $predictsfile_CUBCO_PerProteinPair
+python code/CUBCO+/cubco_scoring.py $filteredfile_PerProteinPair $predictsfile_CUBCO_PerProteinPair $postprocessed_CUBCO_PerProteinPair
 Write-Output ===========================`n
 
 ## 3. ClusterOne
@@ -96,7 +113,17 @@ $javaCommand = "java -jar ""$jarPath"" ""$filteredfile"" > ""$predictsfile_Clust
 Invoke-Expression $javaCommand
 ## Score clusters
 $postprocessed_ClusterOne = Join-Path -Path $o -ChildPath "ClusterOne_postprocessed.txt"
-python code/ClusterOne/cluster_one_scoring.py $filteredfile $predictsfile_ClusterOne $postprocessed_ClusterOne
+python code/ClusterOne/cluster_one_scoring.py $i $predictsfile_ClusterOne $postprocessed_ClusterOne
+
+# Write-Output "Running ClusterOne on the filtered proteins (PerProteinPair filtering only)"
+# Runing ClusterOne on the filtered proteins without negatome and hub decomposition
+$outfile2 = "\ClusterOne_predicted_PerProteinPair.txt"
+$postprocessed_ClusterOne_PerProteinPair = Join-Path -Path $o -ChildPath "ClusterOne_postprocessed_PerProteinPair.txt"
+$predictsfile_ClusterOne_PerProteinPair = $o+$outfile2
+New-Item -Path $predictsfile_ClusterOne_PerProteinPair -ItemType File
+$javaCommand = "java -jar ""$jarPath"" ""$filteredfile_PerProteinPair"" > ""$predictsfile_ClusterOne_PerProteinPair"""
+Invoke-Expression $javaCommand
+python code/ClusterOne/cluster_one_scoring.py $filteredfile_PerProteinPair $predictsfile_ClusterOne_PerProteinPair $postprocessed_ClusterOne_PerProteinPair
 
 Write-Output ===========================`n
 
@@ -106,7 +133,10 @@ Write-Output "================ P5COMP =================="
 Write-Output "=========================================="
 Write-Output ""
 $P5COMP_clusters = Join-Path -Path $o -ChildPath "P5COMP_clusters.txt"
+$P5COMP_clusters_PerProteinPair = Join-Path -Path $o -ChildPath "P5COMP_clusters_PerProteinPair.txt"
 python code/ensemble.py $postprocessed_ClusterOne $postprocessed_CUBCO $postprocessed_PC2P $P5COMP_clusters
+python code/ensemble.py $postprocessed_ClusterOne_PerProteinPair $postprocessed_CUBCO_PerProteinPair $postprocessed_PC2P_PerProteinPair $P5COMP_clusters_PerProteinPair
+
 Write-Output ===========================`n
 
 # Evaluation
@@ -114,4 +144,7 @@ Write-Output "=========================================="
 Write-Output "============== Evaluating ================"
 Write-Output "=========================================="
 Write-Output ""
+$P5COMP_eval = Join-Path -Path $o -ChildPath "P5COMP_eval.txt"
+$P5COMP_eval_PerProteinPair = Join-Path -Path $o -ChildPath "P5COMP_eval_PerProteinPair.txt"
 python code/eval.py $postprocessed_ClusterOne $postprocessed_CUBCO $postprocessed_PC2P $P5COMP_clusters $r $o
+python code/eval.py $postprocessed_ClusterOne_PerProteinPair $postprocessed_CUBCO_PerProteinPair $postprocessed_PC2P_PerProteinPair $P5COMP_clusters_PerProteinPair $r $o
