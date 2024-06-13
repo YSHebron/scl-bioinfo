@@ -101,7 +101,7 @@ if __name__ == '__main__':
     print("P5COMP clusters:\t", len(combined_clusters))
 
     # Output results
-    with outfile.open('w') as f:
+    with outfile.open('w+') as f:
         for cluster in combined_clusters:
             f.write(str(cluster) + "\n")
 

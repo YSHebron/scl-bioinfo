@@ -59,7 +59,7 @@ if __name__ == '__main__':
         key = (id_a, id_b) if id_a < id_b else (id_b, id_a)
         scorededges[key] = score["weight"]
     
-    with clusterfile.open("r", encoding='utf-16') as f:
+    with clusterfile.open("r") as f:
         lines = f.readlines()
 
     # Process each line to remove whitespace and split by tab characters
