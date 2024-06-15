@@ -15,7 +15,7 @@ def read_ppin_to_graph(ppinfile: Path) -> nx.Graph:
     
     if ppinfile.suffix != ".txt":
         df = pd.read_csv(ppinfile)
-        return nx.from_pandas_edgelist(df, source = "u", target = "v", create_using = nx.Graph, edge_attr = "s")
+        return nx.from_pandas_edgelist(df, source = "u", target = "v", create_using = nx.Graph, edge_attr = "w")
     else:
         return nx.read_weighted_edgelist(ppinfile, create_using = nx.Graph, nodetype = str)
 
@@ -25,12 +25,12 @@ def read_ppin_to_dict(ppinfile: Path, weighted=False) -> dict:
     with open(ppinfile) as f:
         if weighted:
             for line in f:
-                u, v, s = line.split()
+                u, v, w = line.split()
                 key = (u, v) if u < v else (v, u) # lexical ordering
-                ppin[key] = float(s)
+                ppin[key] = float(w)
         else:
             for line in f:
-                u, v = line.split()[:2]
+                u, v = line.split()[:2] # exclude score
                 key = (u, v) if u < v else (v, u) # lexical ordering
                 ppin[key] = None
             
@@ -39,13 +39,14 @@ def read_ppin_to_dict(ppinfile: Path, weighted=False) -> dict:
 
 def write_ppin_dict_to_txt(ppin: dict, outfile: Path, weighted=False):
     outfile.parent.mkdir(exist_ok=True, parents=True)
+    # PPIN will be written in decreasing order of reliability
     ppin = dict(sorted(ppin.items(), key=lambda ppi: ppi[1], reverse=True))
     with open(outfile, 'w') as f:
         if weighted:
             for ppi in ppin:
                 u, v = ppi
-                s = ppin[ppi]
-                f.write(f"{u} {v} {s}\n")
+                w = ppin[ppi]
+                f.write(f"{u} {v} {w}\n")
         else:
             for ppi in ppin:
                 u, v = ppi

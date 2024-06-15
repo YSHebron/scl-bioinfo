@@ -144,3 +144,12 @@ We are expanding our testing from just S. Cerevisiae PPINs to also include H. Sa
 #### PPIN Sources for S. Cerevisiae
 
 [Insert data sources here from IntAct or some other Interactome database]
+
+---
+
+Department of Computer Science\
+University of the Philippines Diliman
+
+2nd Semester A.Y. 2023-2024
+
+© Course Materials and Advising by Dr. John Justine Villar

@@ -50,10 +50,10 @@ $iAdjustCD_outfile="data/Interm/ppin_adjusted.txt"
 
 # Denoising -> data/Interm/filtered_ppin.txt
 ## Filtering: Negatome and PerProteinPair filtering.
-## Note: This pipeline is packaged with Negatome 2.0 datasets.
-python code/filtering.py $i $r $filteredfile --negfile $n --confidence 0.33
+## Note: This repo comes with Negatome 2.0 datasets.
+python code/filtering.py $i $r $filteredfile --negfile $n
 ## Filtering: PerProteinPair filtering.
-python code/filtering.py $i $r $filteredfile_PerProteinPair --confidence 0.33
+python code/filtering.py $i $r $filteredfile_PerProteinPair
 
 ### DECOMP 1: Hub Removal
 ### -> data/Interm/ppin_adjusted.txt

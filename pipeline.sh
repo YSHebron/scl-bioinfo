@@ -8,7 +8,7 @@
 set -e
 
 help() {
-echo "usage: ./pipeline.sh [-p [ppinfile]] [-r [reffile]] [-o [outputdir]] [-n [negfile]] [-h]
+echo "usage: ./pipeline.sh [-p [ppinfile]] [-r [reffile]] [-o [outputdir]] [-n [negfile]] [-f [filter]] [-h]
     
 Runs P5COMP on the given PPIN file (ppinfile) and evaluates against the given gold standard (reffile).
 Final predicted clusters will be written in outputdir.
@@ -19,6 +19,7 @@ options:
     -r [reffile]        path to gold standard or reference complexes file (.txt) (required)
     -o [outputdir]      path to output directory (required)
     -n [negfile]        path to negatome (.txt) where each row is (u v) (optional)
+    -f [filter]         filtering type (perpair or perprotein)
     -h                  show this help information"
 }
 
@@ -100,7 +101,8 @@ printf "Output:\t%s\n" $(realpath "$outputdir" -q)
 # Denoising -> data/Interm/filtered_ppin.txt
 ## Filtering: Negatome and PerProteinPair filtering.
 ## Note: This pipeline is packaged with Negatome 2.0 datasets.
-python code/filtering.py $ppinfile $reffile $filteredfile --negfile $negfile --confidence 0.33
+python code/filtering.py $ppinfile $reffile $filteredfile --negfile $negfile
+python code/filtering.py $i $r $filteredfile_PerProteinPair
 
 ### DECOMP 1: Hub Removal
 ### -> data/Interm/ppin_adjusted.txt
