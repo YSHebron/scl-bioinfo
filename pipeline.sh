@@ -15,7 +15,7 @@ Final predicted clusters will be written in outputdir.
 Important: Protein names (PID) should be in gene name (ordered locus) or KEGG format (ex. YLR075W) to match gold standards.
 
 options:
-    -p [ppinfile]       path to PPIN file (.txt) where each row is (u v s) (required)
+    -p [ppinfile]       path to PPIN file (.txt) where each row is (u v w) (required)
     -r [reffile]        path to gold standard or reference complexes file (.txt) (required)
     -o [outputdir]      path to output directory (required)
     -n [negfile]        path to negatome (.txt) where each row is (u v) (optional)
@@ -57,11 +57,15 @@ iAdjustCD_outfile="data/Interm/ppin_adjusted.txt"
 ppinfile=
 reffile=
 outputdir=
-while getopts ":hp:r:o:n:" opt; do
+filtering=
+while getopts ":hp:r:o:n:f:" opt; do
     case ${opt} in
         h)
             help
             exit 0
+            ;;
+        f)
+            filtering=$OPTARG
             ;;
         p)
             ppinfile=$OPTARG
@@ -99,21 +103,24 @@ printf "Ref:\t%s\n" $(realpath "$reffile" -q)
 printf "Output:\t%s\n" $(realpath "$outputdir" -q)
 
 # Denoising -> data/Interm/filtered_ppin.txt
-## Filtering: Negatome and PerProteinPair filtering.
+## Filtering: Negatome and either PerProteinPair / PerProtein filtering.
 ## Note: This pipeline is packaged with Negatome 2.0 datasets.
-python code/filtering.py $ppinfile $reffile $filteredfile --negfile $negfile
-python code/filtering.py $i $r $filteredfile_PerProteinPair
+echo "1. Denoising..."
+python code/filtering.py $ppinfile $reffile $filteredfile --negfile $negfile --filtering $filtering
 
 ### DECOMP 1: Hub Removal
 ### -> data/Interm/ppin_adjusted.txt
 ### -> data/Interm/decomp_ppin.txt, data/Interm/hub_proteins.txt 
+echo "2. Hub Removal..."
 python code/iAdjustCD.py $filteredfile $iAdjustCD_outfile
 python code/hub_remove.py $filteredfile $hubfile $decompfile
 # At this point, hubfile contains the hub proteins while decompfile contains the decomposed PPIN.
 # The iAdjustCD_outfile contains the rescored PPIN, for use in hub_return.
 
+echo "Clustering Algorithms..."
 # Parallel Clustering (Ensemble Clustering)
 ## 1. PC2P with hub return -> data/Results/Dummy/PC2P_predicted.txt, data/Results/Dummy/PC2P_postprocessed.txt
+echo "Running PC2P..."
 predictsfile_PC2P="${outputdir}/PC2P_predicted.txt"
 postprocessed_PC2P="${outputdir}/PC2P_postprocessed.txt"
 python code/PC2P/PC2P.py $decompfile $predictsfile_PC2P -p mp
@@ -125,20 +132,27 @@ python code/hub_return.py $predictsfile_PC2P $iAdjustCD_outfile $hubfile $filter
 
 ## 2. CUBCO+ with hub return -> data/Results/Dummy/CUBCO+_predicted.txt, data/Results/Dummy/CUBCO+_postprocessed.txt
 ## Note: omit '+' character from varnames
+echo "Running CUBCO+..."
 predictsfile_CUBCO="${outputdir}/CUBCO+_predicted.txt"
 postprocessed_CUBCO="${outputdir}/CUBCO+_postprocessed.txt"
-# python code/CUBCO+/CUBCO.py $decompfile $predictsfile_CUBCO
-# python code/hub_return.py $predictsfile_CUBCO $iAdjustCD_outfile $hubfile $filteredfile $postprocessed_CUBCO
+python code/CUBCO+/CUBCO.py $decompfile $outputdir $predictsfile_CUBCO
+python code/hub_return.py $predictsfile_CUBCO $iAdjustCD_outfile $hubfile $filteredfile $postprocessed_CUBCO
 
 ## 3. ClusterOne with hub return -> data/Results/Dummy/ClusterOne_predicted.txt, data/Results/Dummy/ClusterOne_postprocessed.txt
 # Insert ClusterOne code
+echo "Running ClusterOne..."
 predictsfile_ClusterOne="${outputdir}/ClusterOne_predicted.txt"
 postprocessed_ClusterOne="${outputdir}/ClusterOne_postprocessed.txt"
-# python code/CUBCO+/CUBCO.py $decompfile $predictsfile_CUBCO
-# python code/hub_return.py $predictsfile_ClusterOne $iAdjustCD_outfile $hubfile $filteredfile $postprocessed_ClusterOne
+jarPath="code/ClusterOne/cluster_one-1.0.jar"
+java -jar $jarPath $filteredfile > $predictsfile_ClusterOne
+
+## Score clusters
+python code/ClusterOne/cluster_one_scoring.py $ppinfile $predictsfile_ClusterOne $postprocessed_ClusterOne
 
 # Ensemble Clustering
-# TODO: Insert Ensemble Clustering Code
+echo "Finale: Running Ensemble Clustering..."
+P5COMP_clusters="${outputdir}/P5COMP_clusters.txt"
+python code/ensemble.py $postprocessed_ClusterOne $postprocessed_CUBCO $postprocessed_PC2P $P5COMP_clusters
 
-# Evaluation
-python code/PC2P/PC2P_eval.py $postprocessed_PC2P $reffile $outputdir
+# Evaluation (currently assumes running from root)
+python code/eval.py $postprocessed_ClusterOne $postprocessed_CUBCO $postprocessed_PC2P $P5COMP_clusters $reffile $outputdir
