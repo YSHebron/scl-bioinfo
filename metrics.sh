@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo "Method, GldStd, PPIN, Predicts, Refs, Precision, Recall, F1-score, F2-score, AUC-PR, MMR, Sensitivity, PPP, Accuracy, F-Match, Separation" > results.csv
-
 declare -a methods=(
     [1]=PC2P
     [2]=CUBCO+
@@ -20,6 +18,10 @@ declare -a ppins=(
     [3]=KroganExt
     [4]=BIM
 )
+
+# Results File
+resultsfile=$1
+echo "Method, GldStd, PPIN, Predicts, Refs, Precision, Recall, F1-score, F2-score, AUC-PR, MMR, Sensitivity, PPP, Accuracy, F-Match, Separation" > $resultsfile
 
 p=
 r=
@@ -46,10 +48,10 @@ for gldstd in "${gldstds[@]}"; do
         esac
         # P5COMP
         ./pipeline2.sh -p $p -r $r -o $o \
-            -n data/Negatome/negatome_2_mix_mapped.txt -f perpair -a "P5COMP-${gldstd}-${ppin}"
+            -n data/Negatome/negatome_2_mix_mapped.txt -f perpair -a "P5COMP-${gldstd}-${ppin}" -R $resultsfile
         # PC2P, CUBCO+, and ClusterOne
         for method in "${methods[@]}"; do
-            ./pipeline3.sh -p $p -r $r -o $o -f perprotein -a "${method}-${gldstd}-${ppin}"
+            ./pipeline3.sh -p $p -r $r -o $o -f perpair -a "${method}-${gldstd}-${ppin}" -R $resultsfile
         done
     done
 done

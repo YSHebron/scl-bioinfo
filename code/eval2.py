@@ -49,7 +49,7 @@ def CmatchesP(C, P, match_thresh):
     
     return Jaccard(C.proteins,P.proteins)
 
-def calc_prec_rec_comp_pred(clusters, refs, matched_complexes_ref, outputfile: Path, matchscore_thr=0.5, quiet=True) -> float:
+def calc_prec_rec_comp_pred(clusters, refs, matched_complexes_ref, outputfile: Path, matchscore_thr=0.75, quiet=True) -> float:
     results = []
 
     correct_clusters = {}
@@ -154,7 +154,7 @@ if __name__ == '__main__':
     printc("outfile_A:\t%s" % outfile_A)    # AUC-PR plot points
 
     # Set parameters
-    match_thresh = 0.75
+    match_thresh = 0.5
 
     # Note: pc (imported) measures accept format of list of clusters (sets)
     # We generate these as follows
@@ -208,11 +208,11 @@ if __name__ == '__main__':
     num_refs = len(refs)
     
     # METRICS
-    precision = pc.precision(refs_set, predicts_set)
-    recall = pc.recall(refs_set, predicts_set)
-    f1 = pc.F_measure(refs_set, predicts_set, F=1)
-    f2 = pc.F_measure(refs_set, predicts_set, F=2)
-    auc = calc_prec_rec_comp_pred(clusters, refs, {}, outfile_A, quiet=True) # also prints auc_points
+    precision = pc.precision(refs_set, predicts_set, threshold=match_thresh)
+    recall = pc.recall(refs_set, predicts_set, threshold=match_thresh)
+    f1 = pc.F_measure(refs_set, predicts_set, F=1, threshold=match_thresh)
+    f2 = pc.F_measure(refs_set, predicts_set, F=2, threshold=match_thresh)
+    auc = calc_prec_rec_comp_pred(clusters, refs, {}, outfile_A, quiet=True, matchscore_thr=match_thresh) # also prints auc_points
     mmr = pc.maximum_matching_ratio(refs_set, predicts_set)
     sensitivity = pc.clusteringwise_sensitivity(refs_set, predicts_set)
     ppp = pc.positive_predictive_value(refs_set, predicts_set)

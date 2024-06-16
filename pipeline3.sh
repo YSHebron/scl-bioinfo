@@ -51,7 +51,8 @@ reffile=
 outputdir=
 filtering=
 attribs=
-while getopts ":hp:r:o:f:a:" opt; do
+resfile=
+while getopts ":hp:r:o:f:a:R:" opt; do
     case ${opt} in
         h)
             help
@@ -59,6 +60,9 @@ while getopts ":hp:r:o:f:a:" opt; do
             ;;
         f)
             filtering=$OPTARG
+            ;;
+        R)
+            resfile=$OPTARG
             ;;
         a)
             attribs=$OPTARG
@@ -102,15 +106,15 @@ case "$method" in
         postprocessed="${outputdir}/PC2P_postprocessed.txt"
         python code/PC2P/PC2P.py $filteredfile $predictsfile -p mp
         python code/PC2P/PC2P_scoring.py $filteredfile $predictsfile $postprocessed
-        python code/eval2.py $postprocessed $reffile results.csv auc_pts.csv --attribs $attribs
+        python code/eval2.py $postprocessed $reffile $resfile auc_pts.csv --attribs $attribs
    ;;
    "CUBCO+")
         echo "IND 2: Running CUBCO+..."
         predictsfile="${outputdir}/CUBCO+_predicted.txt"
-        postprocessed="${outputdir}/PC2P_postprocessed.txt"
+        postprocessed="${outputdir}/CUBCO+_postprocessed.txt"
         python code/CUBCO+/CUBCO.py $filteredfile $outputdir $predictsfile
         python code/CUBCO+/cubco_scoring.py $filteredfile $predictsfile $postprocessed
-        python code/eval2.py $postprocessed $reffile results.csv auc_pts.csv --attribs $attribs
+        python code/eval2.py $postprocessed $reffile $resfile auc_pts.csv --attribs $attribs
    ;;
    "ClusterOne")
         echo "IND 3: Running ClusterOne..."
@@ -121,6 +125,6 @@ case "$method" in
 
         ## Score ClusterOne clusters
         python code/ClusterOne/cluster_one_scoring.py $ppinfile $predictsfile $postprocessed
-        python code/eval2.py $postprocessed $reffile results.csv auc_pts.csv --attribs $attribs
+        python code/eval2.py $postprocessed $reffile $resfile auc_pts.csv --attribs $attribs
    ;;
 esac
