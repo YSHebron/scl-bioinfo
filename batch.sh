@@ -3,5 +3,6 @@ echo "Method, GldStd, PPIN, Predicts, Refs, Precision, Recall, F1-score, F2-scor
 
 for i in {1..10}
 do
-    ./metrics.sh results.csv
+    # metrics.sh -resultsfile -recreate
+    ./metrics.sh results.csv false
 done

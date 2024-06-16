@@ -122,6 +122,15 @@ def ensemble_clustering(cluster1, cluster2, cluster3, match_thresh):
     return clusters_to_keep
 
 
+def remove_low_reliability_clusters(clusters):
+    clusters_to_keep = []
+    for cluster in clusters:
+        cluster: Cluster
+        if cluster.score > 1.0:
+            clusters_to_keep.append(cluster)
+    return clusters_to_keep
+
+
 if __name__ == '__main__':
     c1file, cubcofile, pc2pfile, outfile = Path(args.c1file), Path(args.cubcofile), Path(args.pc2pfile), Path(args.outfile)
     printc("CluserOne clusters File:\t%s" % c1file)
@@ -134,30 +143,32 @@ if __name__ == '__main__':
     printc("Match threshold:\t%.2f" % match_thresh)
 
     c1_clusters = read_Clusters(c1file, 0)
-    print("ClusterOne clusters before removing duplicates:\t", len(c1_clusters))
-    c1_clusters = remove_duplicate_clusters(c1_clusters, match_thresh)
-    print("ClusterOne clusters after removing duplicates:\t", len(c1_clusters))
+    # print("ClusterOne clusters before removing duplicates:\t", len(c1_clusters))
+    # c1_clusters = remove_duplicate_clusters(c1_clusters, match_thresh)
+    # print("ClusterOne clusters after removing duplicates:\t", len(c1_clusters))
 
     cubco_clusters = read_Clusters(cubcofile, len(c1_clusters))
     print("CUBCO+ clusters before removing duplicates:\t", len(cubco_clusters))
-    cubco_clusters = remove_duplicate_clusters(cubco_clusters, match_thresh)
-    print("CUBCO+ clusters after removing duplicates:\t", len(cubco_clusters))
+    # cubco_clusters = remove_duplicate_clusters(cubco_clusters, match_thresh)
+    # print("CUBCO+ clusters after removing duplicates:\t", len(cubco_clusters))
 
     pc2p_clusters = read_Clusters(pc2pfile, len(c1_clusters)+len(cubco_clusters))
-    print("PC2P clusters before removing duplicates:\t", len(pc2p_clusters))
-    pc2p_clusters = remove_duplicate_clusters(pc2p_clusters, match_thresh)
-    print("PC2P clusters after removing duplicates:\t", len(pc2p_clusters))
+    # print("PC2P clusters before removing duplicates:\t", len(pc2p_clusters))
+    # pc2p_clusters = remove_duplicate_clusters(pc2p_clusters, match_thresh)
+    # print("PC2P clusters after removing duplicates:\t", len(pc2p_clusters))
     
     combined_clusters = c1_clusters + cubco_clusters + pc2p_clusters
     printc("Total number of clusters:\t%d" %len(combined_clusters))
-    final_clusters = ensemble_clustering(c1_clusters, cubco_clusters, pc2p_clusters, match_thresh)
-    printc("Number of possible clusters:\t%d" %len(final_clusters))
-    final_clusters += ensemble_clustering(cubco_clusters, pc2p_clusters, c1_clusters, match_thresh)
-    printc("Number of possible clusters:\t%d" %len(final_clusters))
-    final_clusters += ensemble_clustering(pc2p_clusters, c1_clusters, cubco_clusters, match_thresh)
-    printc("Number of possible clusters:\t%d" %len(final_clusters))
-    final_clusters = remove_duplicate_clusters_id(final_clusters)
-    print("P5COMP clusters:\t", len(final_clusters))
+    # NOTE: Found out the best configuration is a simple concatenation of all the results
+    # final_clusters = ensemble_clustering(c1_clusters, cubco_clusters, pc2p_clusters, match_thresh)
+    # printc("Number of possible clusters:\t%d" %len(final_clusters))
+    # final_clusters += ensemble_clustering(cubco_clusters, pc2p_clusters, c1_clusters, match_thresh)
+    # printc("Number of possible clusters:\t%d" %len(final_clusters))
+    # final_clusters += ensemble_clustering(pc2p_clusters, c1_clusters, cubco_clusters, match_thresh)
+    # printc("Number of possible clusters:\t%d" %len(final_clusters))
+    # final_clusters = remove_duplicate_clusters_id(final_clusters)
+    # final_clusters = remove_low_reliability_clusters(combined_clusters)
+    # print("P5COMP clusters:\t", len(final_clusters))
 
     # Output results
     with outfile.open('w+') as f:
