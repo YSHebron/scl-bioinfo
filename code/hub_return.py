@@ -41,7 +41,7 @@ def score_cluster(C: Cluster, w: dict):
 
 if __name__ == '__main__':
     # NOTE: Although P == clusters, C == complexes in our eqns, here C == clusters to follow lit.
-    printc("Performing return of hub proteins...")
+    printc("Performing return of hub proteins...", "green")
     predicts = []
     adjust_ppin = utils.read_ppin_to_dict(args.adjustfile, weighted=True)
     hubs = []
@@ -56,12 +56,15 @@ if __name__ == '__main__':
         
     hub_add_thres = 0.3     # literature-based
     
+    num_hub_proteins_added = 0
     for u in hubs:
         for C in predicts:
             C: Cluster
             if connectivity(u, C, adjust_ppin) > hub_add_thres:
                 C.proteins.add(u)
+                num_hub_proteins_added += 1
                 # print(f"Added hub {u} to Cluster {C.id}")
+    printc(f"num_hub_proteins_added: {num_hub_proteins_added}")
                 
     for C in predicts.copy():
         if len(C.proteins) < 2:
