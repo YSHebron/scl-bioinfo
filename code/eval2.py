@@ -49,6 +49,44 @@ def CmatchesP(C, P, match_thresh):
     
     return Jaccard(C.proteins,P.proteins)
 
+def match_clusters_lb(clus1, clus2):
+    # Ensure clus1 is the larger cluster for efficiency
+    if len(clus1) < len(clus2):
+        clus1, clus2 = clus2, clus1
+    
+    # Compute the number of intersecting elements
+    num_intersect = len(set(clus2).intersection(set(clus1)))
+    
+    # Compute the union of elements
+    num_union = len(clus1) + len(clus2) - num_intersect
+    
+    return num_intersect / num_union
+
+def remove_duplicate_clusters(clusters, match_thresh):
+    clusters_to_keep = []
+    clusters_to_delete = set()
+
+    for idx1 in range(len(clusters)):
+        if clusters[idx1].id in clusters_to_delete:
+            continue
+        for idx2 in range(idx1 + 1, len(clusters)):
+            thresh = match_thresh
+            clus1 = clusters[idx1]
+            clus2 = clusters[idx2]
+            if clus2.id in clusters_to_delete:
+                continue
+            if len(clus1.proteins) <= 3 and len(clus2.proteins) <= 3:
+                thresh=1 # If small clusters, they should be equal
+            matchscore = match_clusters_lb(clus1.proteins, clus2.proteins)
+            if matchscore >= thresh:
+                clusters_to_delete.add(clus2.id)
+        
+        clusters_to_keep.append(clusters[idx1])
+
+    printc(f"In remove_duplicate_clusters, num to delete = {len(clusters_to_delete)}")
+
+    return [clus for clus in clusters_to_keep if clus.id not in clusters_to_delete]
+
 def calc_prec_rec_comp_pred(clusters, refs, matched_complexes_ref, outputfile: Path, matchscore_thr=0.75, quiet=True) -> float:
     results = []
 
@@ -195,6 +233,9 @@ if __name__ == '__main__':
             cluster.matches = 0
             clusters.append(cluster)
     clusters.sort(key = lambda x: x.score, reverse=True)
+    print("Number of clusters before removing duplicates:\t", len(clusters))
+    clusters = remove_duplicate_clusters(clusters, 0.75)
+    print("Number of clusters after removing duplicates:\t", len(clusters))
 
     # print(calc_prec_rec_comp_pred(clusters, refs, {}, outfile_A, quiet=True))
     
