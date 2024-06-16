@@ -90,7 +90,7 @@ fi
 mkdir -p $outputdir
 validate_file $ppinfile && validate_file $reffile && validate_dir $outputdir
 
-echo "RUNNING INDEPENDENT CLUSTERING ALGO:"
+echo "RUNNING INDEPENDENT CLUSTERING ALGO: ${attribs}"
 echo "Denoising..."
 python code/filtering.py $ppinfile $reffile $filteredfile --filtering $filtering
 

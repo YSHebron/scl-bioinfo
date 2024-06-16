@@ -104,7 +104,6 @@ def yield_cmp_len_greater_1(*args, **kwargs):
 def min_cut(*args, **kwargs):
     global round
     while len(G_bar.nodes()) > 1:
-        print("test")
         if len(G_bar.nodes()) <= 3:
             yield set(G_bar.nodes())
             break
@@ -123,6 +122,51 @@ def min_cut(*args, **kwargs):
                 yield yield_cmp_len_greater_1().__next__()
     else:
         yield set(G_bar.nodes())
+        
+def CUBCO(args):
+    # for g in nx.connected_components(G):
+    g, G, G_bar, G_cmp, outfile = args
+    if len(g)>3:
+        G_bar = nx.induced_subgraph(G_cmp,g).copy()
+        result = min_cut()
+    else:
+        result = [g]
+    
+    # i = 1
+    # edges = 0
+    with outfile.open("a") as f:
+        if G_bar.number_of_edges()>0:
+            for r in result:
+                if r:
+                    sbg = nx.induced_subgraph(G,r)
+                    sbg_cmp = list(nx.connected_components(sbg))
+                    if len(sbg_cmp) > 1:
+                        for cmp in sbg_cmp:
+                            f.writelines("%s " % c for c in cmp)
+                            f.write("\n")
+                        # edges += len(sbg.edges())
+                    else: 
+                        f.writelines("%s " % v for v in r)
+                        f.write("\n")
+                        # edges += len(sbg.edges())
+        else:
+            sbg = nx.induced_subgraph(G,g)
+            sbg_cmp = list(nx.connected_components(sbg))
+            # printc(sbg_cmp)
+            if len(sbg_cmp) > 1:
+                for cmp in sbg_cmp:
+                    f.writelines("%s " % c for c in cmp)
+                    f.write("\n")
+                # edges += len(sbg.edges())
+            else: 
+                f.writelines("%s " % v for v in g)
+                f.write("\n")
+                # edges += len(sbg.edges())
+            # print('round after one result in a file: ', rounds, end="\r")
+            # rounds += 1
+    if not nx.is_empty(G_bar):
+        G_bar.clear()
+    #G_bar.clear()
 
 if __name__ == '__main__':
     inputfile, outputdir, outfile = args.inputfile, args.outputdir, args.outfile
@@ -162,12 +206,12 @@ if __name__ == '__main__':
     printc('Getting the complement of G ......\n')
     pool = mp.Pool(16)
     for g in nx.connected_components(G):
-        print("test")
+        # print("test")
         g_cmp = nx.complement(nx.induced_subgraph(G,g))
         rescores = pool.map(ave_number_of_p3_parallelized, [(edge,G) for edge in g_cmp.edges()])
         for i, edge in enumerate(g_cmp.edges()):
             new_edges.append([edge[0], edge[1], rescores[i]])
-    print("exiting getting complement...")
+    print("Exiting getting complement...")
     pool.close()
     pool.join()
 
@@ -182,50 +226,11 @@ if __name__ == '__main__':
     G_bar = nx.Graph()
     G_cmp = nx.read_weighted_edgelist(gcomplement, create_using = nx.Graph(), nodetype = str)
     printc('Performing CUBCO+ ......')
-    for g in nx.connected_components(G):
-
-        if len(g)>3:
-            G_bar = nx.induced_subgraph(G_cmp,g).copy()
-            result = min_cut()
-        else:
-            result = [g]
-        
-        i = 1
-        edges = 0
-        with outfile.open("a") as f:
-            if G_bar.number_of_edges()>0:
-                for r in result:
-                    if r:
-                        sbg = nx.induced_subgraph(G,r)
-                        sbg_cmp = list(nx.connected_components(sbg))
-                        if len(sbg_cmp) > 1:
-                            for cmp in sbg_cmp:
-                                f.writelines("%s " % c for c in cmp)
-                                f.write("\n")
-                            edges += len(sbg.edges())
-                        else: 
-                            f.writelines("%s " % v for v in r)
-                            f.write("\n")
-                            edges += len(sbg.edges())
-            else:
-                sbg = nx.induced_subgraph(G,g)
-                sbg_cmp = list(nx.connected_components(sbg))
-                # printc(sbg_cmp)
-                if len(sbg_cmp) > 1:
-                    for cmp in sbg_cmp:
-                        f.writelines("%s " % c for c in cmp)
-                        f.write("\n")
-                    edges += len(sbg.edges())
-                else: 
-                    f.writelines("%s " % v for v in g)
-                    f.write("\n")
-                    edges += len(sbg.edges())
-                print('round after one result in a file: ', rounds, end="\r")
-                rounds += 1
-        if not nx.is_empty(G_bar):
-            G_bar.clear()
-        #G_bar.clear()
-    printc('Number of removed edges is: %s' % (len(G.edges()) - edges))
+    pool = mp.Pool(16)
+    pool.map(CUBCO, [(g,G,G_bar,G_cmp,outfile) for g in nx.connected_components(G)])
+    pool.close()
+    pool.join()
+    # printc('Number of removed edges is: %s' % (len(G.edges()) - edges))
     
     
     with outfile.open("r") as f:
