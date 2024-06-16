@@ -61,7 +61,7 @@ if __name__ == '__main__':
             C: Cluster
             if connectivity(u, C, adjust_ppin) > hub_add_thres:
                 C.proteins.add(u)
-                print(f"Added hub {u} to Cluster {C.id}")
+                # print(f"Added hub {u} to Cluster {C.id}")
                 
     for C in predicts.copy():
         if len(C.proteins) < 2:
