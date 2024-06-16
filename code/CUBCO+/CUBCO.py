@@ -20,8 +20,8 @@ args = parser.parse_args()
 
 def ave_number_of_p3(e,G):
     s = 0
-    if not nx.has_path(G, e[0], e[1]):
-        return s
+    # if not nx.has_path(G, e[0], e[1]):
+    #     return s
     ws = [p for p in nx.all_simple_paths(G,e[0],e[1],cutoff=3) if len(p)==4]
     if ws:
         for w in ws:
@@ -204,7 +204,7 @@ if __name__ == '__main__':
     ### PreProcessing
     new_edges = list()
     printc('Getting the complement of G ......\n')
-    pool = mp.Pool(16)
+    pool = mp.Pool(64)
     for g in nx.connected_components(G):
         # print("test")
         g_cmp = nx.complement(nx.induced_subgraph(G,g))
@@ -226,7 +226,7 @@ if __name__ == '__main__':
     G_bar = nx.Graph()
     G_cmp = nx.read_weighted_edgelist(gcomplement, create_using = nx.Graph(), nodetype = str)
     printc('Performing CUBCO+ ......')
-    pool = mp.Pool(16)
+    pool = mp.Pool(64)
     pool.map(CUBCO, [(g,G,G_bar,G_cmp,outfile) for g in nx.connected_components(G)])
     pool.close()
     pool.join()

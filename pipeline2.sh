@@ -23,6 +23,7 @@ options:
     -n [negfile]        path to negatome (.txt) where each row is (u v) (optional)
     -f [filter]         filtering type (perpair or perprotein)
     -a [attribs]        attributes for evaluation file name of format 'algo-goldstd-ppin', ex: P5COMP-CYC-Collins
+    -r [resfile]        path to results file for evaluation
     -h                  show this help information"
 }
 
@@ -62,7 +63,8 @@ reffile=
 outputdir=
 filtering=
 attribs=
-while getopts ":hp:r:o:n:f:a:" opt; do
+resfile=
+while getopts ":hp:r:o:n:f:a:R:" opt; do
     case ${opt} in
         h)
             help
@@ -73,6 +75,9 @@ while getopts ":hp:r:o:n:f:a:" opt; do
             ;;
         a)
             attribs=$OPTARG
+            ;;
+        R)
+            resfile=$OPTARG
             ;;
         p)
             ppinfile=$OPTARG
@@ -158,4 +163,4 @@ final_clusters="${outputdir}/${attribs}_clusters.txt"
 python code/ensemble.py $postprocessed_ClusterOne $postprocessed_CUBCO $postprocessed_PC2P $final_clusters
 
 # Evaluation (currently assumes running from root)
-python code/eval2.py $final_clusters $reffile results.csv auc_pts.csv --attribs $attribs
+python code/eval2.py $final_clusters $reffile $resfile auc_pts.csv --attribs $attribs
