@@ -104,62 +104,28 @@ fi
 mkdir -p $outputdir
 validate_file $ppinfile && validate_file $reffile && validate_dir $outputdir
 
-echo "Running P5COMP..."
-printf "PPIN:\t%s\n" $(realpath "$ppinfile" -q)
-printf "Ref:\t%s\n" $(realpath "$reffile" -q)
-printf "Output:\t%s\n" $(realpath "$outputdir" -q)
+echo "RUNNING INDEPENDENT CLUSTERING ALGOS:"
+echo "Denoising..."
+python code/filtering.py $ppinfile $reffile $filteredfile --filtering $filtering
 
-# Denoising -> data/Interm/filtered_ppin.txt
-## Filtering: Negatome and either PerProteinPair / PerProtein filtering.
-## Note: This pipeline is packaged with Negatome 2.0 datasets.
-echo "1. Denoising..."
-python code/filtering.py $ppinfile $reffile $filteredfile --negfile $negfile --filtering $filtering
-
-### DECOMP 1: Hub Removal
-### -> data/Interm/ppin_adjusted.txt
-### -> data/Interm/decomp_ppin.txt, data/Interm/hub_proteins.txt 
-echo "2. Hub Removal..."
-python code/iAdjustCD.py $filteredfile $iAdjustCD_outfile
-python code/hub_remove.py $filteredfile $hubfile $decompfile
-# At this point, hubfile contains the hub proteins while decompfile contains the decomposed PPIN.
-# The iAdjustCD_outfile contains the rescored PPIN, for use in hub_return.
-
-echo "Clustering Algorithms..."
-# Parallel Clustering (Ensemble Clustering)
-## 1. PC2P with hub return -> data/Results/Dummy/PC2P_predicted.txt, data/Results/Dummy/PC2P_postprocessed.txt
-echo "Running PC2P..."
+echo "IND 1: Running PC2P..."
 predictsfile_PC2P="${outputdir}/PC2P_predicted.txt"
-postprocessed_PC2P="${outputdir}/PC2P_postprocessed.txt"
-python code/PC2P/PC2P.py $decompfile $predictsfile_PC2P -p mp
-python code/hub_return.py $predictsfile_PC2P $iAdjustCD_outfile $hubfile $filteredfile $postprocessed_PC2P
+python code/PC2P/PC2P.py $filteredfile $predictsfile_PC2P -p mp
 
-## NOTE: UNCOMMENT ONLY THE FOLLOWING python LINES ONCE CUBCO+ and ClusterOne CAN SUPPORT DECOMP
-## For parallelization, might separate clustering algorithms from DECOMP (but seq ok for now)
-## TODO: Simplify variables (predictsfile_method to just predictsfile, etc.)
-
-## 2. CUBCO+ with hub return -> data/Results/Dummy/CUBCO+_predicted.txt, data/Results/Dummy/CUBCO+_postprocessed.txt
-## Note: omit '+' character from varnames
-echo "Running CUBCO+..."
+echo "IND 2: Running CUBCO+..."
 predictsfile_CUBCO="${outputdir}/CUBCO+_predicted.txt"
-postprocessed_CUBCO="${outputdir}/CUBCO+_postprocessed.txt"
-python code/CUBCO+/CUBCO.py $decompfile $outputdir $predictsfile_CUBCO
-python code/hub_return.py $predictsfile_CUBCO $iAdjustCD_outfile $hubfile $filteredfile $postprocessed_CUBCO
+python code/CUBCO+/CUBCO.py $filteredfile $outputdir $predictsfile_CUBCO
 
-## 3. ClusterOne with hub return -> data/Results/Dummy/ClusterOne_predicted.txt, data/Results/Dummy/ClusterOne_postprocessed.txt
-# Insert ClusterOne code
-echo "Running ClusterOne..."
+echo "IND 3: Running ClusterOne..."
 predictsfile_ClusterOne="${outputdir}/ClusterOne_predicted.txt"
 postprocessed_ClusterOne="${outputdir}/ClusterOne_postprocessed.txt"
 jarPath="code/ClusterOne/cluster_one-1.0.jar"
 java -jar $jarPath $filteredfile > $predictsfile_ClusterOne
 
-## Score clusters
+## Score ClusterOne clusters
 python code/ClusterOne/cluster_one_scoring.py $ppinfile $predictsfile_ClusterOne $postprocessed_ClusterOne
 
-# Ensemble Clustering
-echo "Finale: Running Ensemble Clustering..."
-final_clusters="${outputdir}/${attribs}_clusters.txt"
-python code/ensemble.py $postprocessed_ClusterOne $postprocessed_CUBCO $postprocessed_PC2P $final_clusters
-
 # Evaluation (currently assumes running from root)
-python code/eval2.py $final_clusters $reffile results.csv auc_pts.csv --attribs $attribs
+python code/eval2.py $predictsfile_PC2P $reffile results.csv auc_pts.csv --attribs $attribs
+python code/eval2.py $predictsfile_CUBCO $reffile results.csv auc_pts.csv --attribs $attribs
+python code/eval2.py $postprocessed_ClusterOne $reffile results.csv auc_pts.csv --attribs $attribs
