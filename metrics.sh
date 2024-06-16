@@ -21,7 +21,6 @@ declare -a ppins=(
 
 # Results File
 resultsfile=$1
-echo "Method, GldStd, PPIN, Predicts, Refs, Precision, Recall, F1-score, F2-score, AUC-PR, MMR, Sensitivity, PPP, Accuracy, F-Match, Separation" > $resultsfile
 
 p=
 r=
