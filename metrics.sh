@@ -43,11 +43,11 @@ for gldstd in "${gldstds[@]}"; do
             p=eval/BIM.txt
         fi
         # P5COMP
-        ./pipeline2.sh -p $p -r $r -o $o \
-            -n data/Negatome/negatome_2_mix_mapped.txt -f perpair -a "P5COMP-${gldstd}-${ppin}"
+        # ./pipeline2.sh -p $p -r $r -o $o \
+        #     -n data/Negatome/negatome_2_mix_mapped.txt -f perpair -a "P5COMP-${gldstd}-${ppin}"
         # PC2P, CUBCO+, and ClusterOne
         for method in "${methods[@]}"; do
-            ./pipeline3.sh -p $p -r $r -o $o -f perprotein -a "${method}-${gldstd}-${ppin}"
+            ./pipeline3.sh -p $p -r $r -o $o -f perpair -a "${method}-${gldstd}-${ppin}"
         done
     done
 done

@@ -1,16 +1,9 @@
 #!/bin/bash
 
-# P5COMP: Parameter-free Pipeline for Predicting Problematic Protein Complexes
-# Can only currently be run from repository root.
-# Disclaimer: This still contain necessary usage parameters such as paths to files and directories
-# Note that usage parameters are not clustering parameters.
-
-# Sample: ./pipeline.sh -p data/Yeast/Collins/collins2007.txt -r data/Yeast/CYC_complexes.txt -o data/Results/P5COMP -n data/Negatome/negatome_2_mix_mapped.txt -f perpair
-
 set -e
 
 help() {
-echo "usage: ./pipeline.sh [-p [ppinfile]] [-r [reffile]] [-o [outputdir]] [-n [negfile]] [-f [filter]] [-h]
+echo "usage: ./pipeline.sh [-p [ppinfile]] [-r [reffile]] [-o [outputdir]] [-f [filter]] [-h]
     
 Runs P5COMP on the given PPIN file (ppinfile) and evaluates against the given gold standard (reffile).
 Final predicted clusters will be written in outputdir.
@@ -20,7 +13,6 @@ options:
     -p [ppinfile]       path to PPIN file (.txt) where each row is (u v w) (required)
     -r [reffile]        path to gold standard or reference complexes file (.txt) (required)
     -o [outputdir]      path to output directory (required)
-    -n [negfile]        path to negatome (.txt) where each row is (u v) (optional)
     -f [filter]         filtering type (perpair or perprotein)
     -a [attribs]        attributes for evaluation file name of format 'algo-goldstd-ppin', ex: P5COMP-CYC-Collins
     -h                  show this help information"
@@ -52,9 +44,6 @@ fi
 
 # Developer parameters
 filteredfile="data/Interm/filtered_ppin.txt"
-decompfile="data/Interm/decomp_ppin.txt"
-hubfile="data/Interm/hub_proteins.txt"
-iAdjustCD_outfile="data/Interm/ppin_adjusted.txt"
 
 # Parse user-defined parameters
 ppinfile=
@@ -62,7 +51,7 @@ reffile=
 outputdir=
 filtering=
 attribs=
-while getopts ":hp:r:o:n:f:a:" opt; do
+while getopts ":hp:r:o:f:a:" opt; do
     case ${opt} in
         h)
             help
@@ -83,9 +72,6 @@ while getopts ":hp:r:o:n:f:a:" opt; do
         o)
             outputdir=$OPTARG
             ;;
-        n)
-            negfile=$OPTARG
-            ;;
         \?)
             echo "Error: Invalid option: -$OPTARG."
             exit 1
@@ -104,28 +90,37 @@ fi
 mkdir -p $outputdir
 validate_file $ppinfile && validate_file $reffile && validate_dir $outputdir
 
-echo "RUNNING INDEPENDENT CLUSTERING ALGOS:"
+echo "RUNNING INDEPENDENT CLUSTERING ALGO:"
 echo "Denoising..."
 python code/filtering.py $ppinfile $reffile $filteredfile --filtering $filtering
 
-echo "IND 1: Running PC2P..."
-predictsfile_PC2P="${outputdir}/PC2P_predicted.txt"
-python code/PC2P/PC2P.py $filteredfile $predictsfile_PC2P -p mp
+method=${attribs%%-*}
+case "$method" in
+   "PC2P")
+        echo "IND 1: Running PC2P..."
+        predictsfile="${outputdir}/PC2P_predicted.txt"
+        postprocessed="${outputdir}/PC2P_postprocessed.txt"
+        python code/PC2P/PC2P.py $filteredfile $predictsfile -p mp
+        python code/PC2P/PC2P_scoring.py $filteredfile $predictsfile $postprocessed
+        python code/eval2.py $postprocessed $reffile results.csv auc_pts.csv --attribs $attribs
+   ;;
+   "CUBCO+")
+        echo "IND 2: Running CUBCO+..."
+        predictsfile="${outputdir}/CUBCO+_predicted.txt"
+        postprocessed="${outputdir}/PC2P_postprocessed.txt"
+        python code/CUBCO+/CUBCO.py $filteredfile $outputdir $predictsfile
+        python code/CUBCO+/cubco_scoring.py $filteredfile $predictsfile $postprocessed
+        python code/eval2.py $postprocessed $reffile results.csv auc_pts.csv --attribs $attribs
+   ;;
+   "ClusterOne")
+        echo "IND 3: Running ClusterOne..."
+        predictsfile="${outputdir}/ClusterOne_predicted.txt"
+        postprocessed="${outputdir}/ClusterOne_postprocessed.txt"
+        jarPath="code/ClusterOne/cluster_one-1.0.jar"
+        java -jar $jarPath $filteredfile > $predictsfile
 
-echo "IND 2: Running CUBCO+..."
-predictsfile_CUBCO="${outputdir}/CUBCO+_predicted.txt"
-python code/CUBCO+/CUBCO.py $filteredfile $outputdir $predictsfile_CUBCO
-
-echo "IND 3: Running ClusterOne..."
-predictsfile_ClusterOne="${outputdir}/ClusterOne_predicted.txt"
-postprocessed_ClusterOne="${outputdir}/ClusterOne_postprocessed.txt"
-jarPath="code/ClusterOne/cluster_one-1.0.jar"
-java -jar $jarPath $filteredfile > $predictsfile_ClusterOne
-
-## Score ClusterOne clusters
-python code/ClusterOne/cluster_one_scoring.py $ppinfile $predictsfile_ClusterOne $postprocessed_ClusterOne
-
-# Evaluation (currently assumes running from root)
-python code/eval2.py $predictsfile_PC2P $reffile results.csv auc_pts.csv --attribs $attribs
-python code/eval2.py $predictsfile_CUBCO $reffile results.csv auc_pts.csv --attribs $attribs
-python code/eval2.py $postprocessed_ClusterOne $reffile results.csv auc_pts.csv --attribs $attribs
+        ## Score ClusterOne clusters
+        python code/ClusterOne/cluster_one_scoring.py $ppinfile $predictsfile $postprocessed
+        python code/eval2.py $postprocessed $reffile results.csv auc_pts.csv --attribs $attribs
+   ;;
+esac

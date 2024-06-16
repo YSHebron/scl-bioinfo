@@ -133,10 +133,6 @@ postprocessed_PC2P="${outputdir}/PC2P_postprocessed.txt"
 python code/PC2P/PC2P.py $decompfile $predictsfile_PC2P -p mp
 python code/hub_return.py $predictsfile_PC2P $iAdjustCD_outfile $hubfile $filteredfile $postprocessed_PC2P
 
-## NOTE: UNCOMMENT ONLY THE FOLLOWING python LINES ONCE CUBCO+ and ClusterOne CAN SUPPORT DECOMP
-## For parallelization, might separate clustering algorithms from DECOMP (but seq ok for now)
-## TODO: Simplify variables (predictsfile_method to just predictsfile, etc.)
-
 ## 2. CUBCO+ with hub return -> data/Results/Dummy/CUBCO+_predicted.txt, data/Results/Dummy/CUBCO+_postprocessed.txt
 ## Note: omit '+' character from varnames
 echo "Running CUBCO+..."

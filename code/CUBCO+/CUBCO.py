@@ -7,6 +7,7 @@ import math
 import pandas as pd
 import argparse
 import time
+import multiprocessing as mp
 from pathlib import Path
 from utils import printc, positive_int, graph_stats, graph_memory
 from operator import itemgetter
@@ -18,6 +19,17 @@ parser.add_argument('outfile', type=Path, help='writepath for CUBCO+ predicted c
 args = parser.parse_args()
 
 def ave_number_of_p3(e,G):
+    s = 0
+    if not nx.has_path(G, e[0], e[1]):
+        return s
+    ws = [p for p in nx.all_simple_paths(G,e[0],e[1],cutoff=3) if len(p)==4]
+    if ws:
+        for w in ws:
+            s += 1/(math.sqrt(nx.degree(G,w[1])*nx.degree(G,w[2])))
+    return s
+
+def ave_number_of_p3_parallelized(args):
+    e, G = args
     ws = [p for p in nx.all_simple_paths(G,e[0],e[1],cutoff=3) if len(p)==4]
     s = 0
     if ws:
@@ -92,6 +104,7 @@ def yield_cmp_len_greater_1(*args, **kwargs):
 def min_cut(*args, **kwargs):
     global round
     while len(G_bar.nodes()) > 1:
+        print("test")
         if len(G_bar.nodes()) <= 3:
             yield set(G_bar.nodes())
             break
@@ -147,12 +160,16 @@ if __name__ == '__main__':
     ### PreProcessing
     new_edges = list()
     printc('Getting the complement of G ......\n')
+    pool = mp.Pool(16)
     for g in nx.connected_components(G):
+        print("test")
         g_cmp = nx.complement(nx.induced_subgraph(G,g))
-        # graph_stats(g_cmp)
-        for edge in g_cmp.edges():
-            rescore = ave_number_of_p3(edge, G)
-            new_edges.append([edge[0], edge[1], rescore])
+        rescores = pool.map(ave_number_of_p3_parallelized, [(edge,G) for edge in g_cmp.edges()])
+        for i, edge in enumerate(g_cmp.edges()):
+            new_edges.append([edge[0], edge[1], rescores[i]])
+    print("exiting getting complement...")
+    pool.close()
+    pool.join()
 
     ### Writing new edge to gcomplement file
     if not outputdir.is_dir():
