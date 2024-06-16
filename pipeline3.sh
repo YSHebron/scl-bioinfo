@@ -106,6 +106,7 @@ case "$method" in
         postprocessed="${outputdir}/PC2P_postprocessed.txt"
         python code/PC2P/PC2P.py $filteredfile $predictsfile -p mp
         python code/PC2P/PC2P_scoring.py $filteredfile $predictsfile $postprocessed
+        python code/remove_duplicates.py $postprocessed
         python code/eval2.py $postprocessed $reffile $resfile auc_pts.csv --attribs $attribs
    ;;
    "CUBCO+")
@@ -114,6 +115,7 @@ case "$method" in
         postprocessed="${outputdir}/CUBCO+_postprocessed.txt"
         python code/CUBCO+/CUBCO.py $filteredfile $outputdir $predictsfile
         python code/CUBCO+/cubco_scoring.py $filteredfile $predictsfile $postprocessed
+        python code/remove_duplicates.py $postprocessed
         python code/eval2.py $postprocessed $reffile $resfile auc_pts.csv --attribs $attribs
    ;;
    "ClusterOne")
@@ -125,6 +127,7 @@ case "$method" in
 
         ## Score ClusterOne clusters
         python code/ClusterOne/cluster_one_scoring.py $ppinfile $predictsfile $postprocessed
+        python code/remove_duplicates.py $postprocessed
         python code/eval2.py $postprocessed $reffile $resfile auc_pts.csv --attribs $attribs
    ;;
 esac
