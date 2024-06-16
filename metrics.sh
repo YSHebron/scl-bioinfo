@@ -23,7 +23,7 @@ declare -a ppins=(
 resultsfile=$1
 recreate=$2     # true or false
 
-if [ $recreate ]
+if [ "$recreate" = true ]
 then
     echo "Method, GldStd, PPIN, Predicts, Refs, Precision, Recall, F1-score, F2-score, AUC-PR, MMR, Sensitivity, PPP, Accuracy, F-Match, Separation" > $resultsfile
 fi
