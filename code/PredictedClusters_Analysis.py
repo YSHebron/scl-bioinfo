@@ -35,8 +35,8 @@ def maximum_matching_ratio(reference, predicted, score_threshold=0.2):
                 continue
 
             scores[id1, id2 + n] = score
-    print("score is:", scores)
-    print("fully matched V1", count, "out of", n)
+    # print("score is:", scores)    # NOTE: Disabled as this is too loud
+    print("MMR fully matched V1", count, "out of", n)
     inpt = [(v1, v2, w) for (v1, v2), w in scores.items()]
     mates = maxWeightMatching(inpt)
     score = sum(scores[i, mate] for i, mate in enumerate(mates) if i < mate)
@@ -135,29 +135,48 @@ def jaccard(set1, set2):
     )
 
 
-def precision_Jaccard(reference, predicted, threshold=0.5):
+def precision(reference, predicted, threshold=0.5):
     counter = 0
-    for pred in predicted:
-        for ref in reference:
-            score = jaccard(ref.proteins, pred.proteins)
-            if score >= threshold:
-                counter += 1
-                break
+    if isinstance(reference[0], set):
+        for pred in predicted:
+            for ref in reference:
+                score = jaccard(ref, pred)
+                if score >= threshold:
+                    counter += 1
+                    break
+    else:
+        for pred in predicted:
+            for ref in reference:
+                score = jaccard(ref.proteins, pred.proteins)
+                if score >= threshold:
+                    counter += 1
+                    break
     return counter / float(len(predicted))
 
 
-def recall_Jaccard(reference, predicted, threshold=0.5):
+def recall(reference, predicted, threshold=0.5):
     counter = 0
-    for ref in reference:
-        for pred in predicted:
-            score = jaccard(ref.proteins, pred.proteins)
-            if score >= threshold:
-                counter += 1
-                break
+    if isinstance(reference[0], set):
+        for ref in reference:
+            for pred in predicted:
+                score = jaccard(ref, pred)
+                if score >= threshold:
+                    counter += 1
+                    break
+    else:
+        for ref in reference:
+            for pred in predicted:
+                score = jaccard(ref.proteins, pred.proteins)
+                if score >= threshold:
+                    counter += 1
+                    break
     return counter / float(len(reference))
 
 
-def F_measure_Jaccard(reference, predicted, threshold=0.5):
-    p = precision_Jaccard(reference, predicted, threshold)
-    r = recall_Jaccard(reference, predicted, threshold)
-    return (2 * p * r) / (p + r)
+def F_measure(reference, predicted, F=1, threshold=0.5):
+    p = precision(reference, predicted, threshold)
+    r = recall(reference, predicted, threshold)
+    if (F == 1):
+        return (2 * p * r) / (p + r)
+    elif (F == 2):
+        return (4 * p * r) / (5 * p + r)

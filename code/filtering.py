@@ -10,7 +10,7 @@ parser.add_argument('reffile', type=Path, help='path to gold standard')
 parser.add_argument('outfile', type=Path, help='writepath for filtered PPIN')
 parser.add_argument('--negfile', type=Path, help='path to negatome', nargs='?', required=False, const=None)
 parser.add_argument('--confidence', type=float, metavar='[0.0-1.0]', default=0.0, help='interaction score threshold')
-parser.add_argument('--filtering', type=str, metavar='[perpair,perprotein,direct]', default='perpair', help='initial filtering')
+parser.add_argument('--filtering', type=str, choices='[perpair,perprotein,direct]', default='perpair', help='initial filtering')
 parser.add_argument('--directfile', type=Path, help='required when using direct filtering', nargs='?', required=False)
 args = parser.parse_args()
 

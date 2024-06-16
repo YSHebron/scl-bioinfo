@@ -5,6 +5,8 @@
 # Disclaimer: This still contain necessary usage parameters such as paths to files and directories
 # Note that usage parameters are not clustering parameters.
 
+# Sample: ./pipeline.sh -p data/Yeast/Collins/collins2007.txt -r data/Yeast/CYC_complexes.txt -o data/Results/P5COMP -n data/Negatome/negatome_2_mix_mapped.txt -f perpair
+
 set -e
 
 help() {

@@ -197,9 +197,9 @@ if __name__ == '__main__':
     # True Positive Rate / Quantity
     calc_prec_rec_comp_pred(match_thresh, clusters_PC2P, refs, {}, eval_PC2P, quiet=True)
     
-    print("Precision:\t%.6f" % pc.precision_Jaccard(refs, clusters_PC2P))
-    print("Recall:\t\t%.6f" % pc.recall_Jaccard(refs, clusters_PC2P))
-    print("F-score:\t%.6f" % pc.F_measure_Jaccard(refs, clusters_PC2P))
+    print("Precision:\t%.6f" % pc.precision(refs, clusters_PC2P))
+    print("Recall:\t\t%.6f" % pc.recall(refs, clusters_PC2P))
+    print("F-score:\t%.6f" % pc.F_measure(refs, clusters_PC2P))
 
     printc("Evaluating CUBCO+...\n")
     clusters_CUBCO = []
@@ -223,9 +223,9 @@ if __name__ == '__main__':
     # True Positive Rate / Quantity
     calc_prec_rec_comp_pred(match_thresh, clusters_CUBCO, refs, {}, eval_CUBCO , quiet=True)
     
-    print("Precision:\t%.6f" % pc.precision_Jaccard(refs, clusters_CUBCO))
-    print("Recall:\t\t%.6f" % pc.recall_Jaccard(refs, clusters_CUBCO))
-    print("F-score:\t%.6f" % pc.F_measure_Jaccard(refs, clusters_CUBCO))
+    print("Precision:\t%.6f" % pc.precision(refs, clusters_CUBCO))
+    print("Recall:\t\t%.6f" % pc.recall(refs, clusters_CUBCO))
+    print("F-score:\t%.6f" % pc.F_measure(refs, clusters_CUBCO))
 
     printc("Evaluating ClusterOne...\n")
     clusters_ClusterOne = []
@@ -249,9 +249,9 @@ if __name__ == '__main__':
     # True Positive Rate / Quantity
     calc_prec_rec_comp_pred(match_thresh, clusters_ClusterOne, refs, {}, eval_ClusterOne, quiet=True)
     
-    print("Precision:\t%.6f" % pc.precision_Jaccard(refs, clusters_ClusterOne))
-    print("Recall:\t\t%.6f" % pc.recall_Jaccard(refs, clusters_ClusterOne))
-    print("F-score:\t%.6f" % pc.F_measure_Jaccard(refs, clusters_ClusterOne))
+    print("Precision:\t%.6f" % pc.precision(refs, clusters_ClusterOne))
+    print("Recall:\t\t%.6f" % pc.recall(refs, clusters_ClusterOne))
+    print("F-score:\t%.6f" % pc.F_measure(refs, clusters_ClusterOne))
 
     printc("Evaluating P5COMP...\n")
     clusters_P5COMP = []
@@ -275,6 +275,6 @@ if __name__ == '__main__':
     # True Positive Rate / Quantity
     calc_prec_rec_comp_pred(match_thresh, clusters_P5COMP, refs, {}, eval_P5COMP, quiet=True)
     
-    print("Precision:\t%.6f" % pc.precision_Jaccard(refs, clusters_P5COMP))
-    print("Recall:\t\t%.6f" % pc.recall_Jaccard(refs, clusters_P5COMP))
-    print("F-score:\t%.6f" % pc.F_measure_Jaccard(refs, clusters_P5COMP))
+    print("Precision:\t%.6f" % pc.precision(refs, clusters_P5COMP))
+    print("Recall:\t\t%.6f" % pc.recall(refs, clusters_P5COMP))
+    print("F-score:\t%.6f" % pc.F_measure(refs, clusters_P5COMP))
