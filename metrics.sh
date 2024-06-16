@@ -25,26 +25,28 @@ p=
 r=
 o="data/Results/P5COMP"
 for gldstd in "${gldstds[@]}"; do
-    if [ "$gldstd" = "CYC" ]; then
-        r=eval/CYC2008.txt
-    elif [ "$gldstd" = "SGD" ]; then
-        r=eval/SGD.txt
-    fi
+    case "$gldstd" in
+        "CYC") r=eval/CYC2008.txt
+        ;;
+        "SGD") r=eval/SGD.txt
+        ;;
+    esac
     for ppin in "${ppins[@]}"; do
-        if [ "$ppin" = "Collins" ]; then
-            p=eval/Collins.txt
-        elif [ "$ppin" = "Gavin" ]; then
-            p=eval/Gavin.txt
-        elif [ "$ppin" = "KroganCore" ]; then
-            p=eval/KroganCore.txt
-        elif [ "$ppin" = "KroganExt" ]; then
-            p=eval/KroganExt.txt
-        elif [ "$ppin" = "BIM" ]; then
-            p=eval/BIM.txt
-        fi
+        case "$ppin" in
+            "Collins") p=eval/Collins.txt
+            ;;
+            "Gavin") p=eval/Gavin.txt
+            ;;
+            "KroganCore") p=eval/KroganCore.txt
+            ;;
+            "KroganExt") p=eval/KroganExt.txt
+            ;;
+            "BIM") p=eval/BIM.txt
+            ;;
+        esac
         # P5COMP
-        # ./pipeline2.sh -p $p -r $r -o $o \
-        #     -n data/Negatome/negatome_2_mix_mapped.txt -f perpair -a "P5COMP-${gldstd}-${ppin}"
+        ./pipeline2.sh -p $p -r $r -o $o \
+            -n data/Negatome/negatome_2_mix_mapped.txt -f perpair -a "P5COMP-${gldstd}-${ppin}"
         # PC2P, CUBCO+, and ClusterOne
         for method in "${methods[@]}"; do
             ./pipeline3.sh -p $p -r $r -o $o -f perpair -a "${method}-${gldstd}-${ppin}"
