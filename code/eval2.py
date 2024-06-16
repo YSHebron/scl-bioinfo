@@ -16,8 +16,7 @@ parser.add_argument('predictsfile', type=Path, help='path to predicted clusters 
 parser.add_argument('complexfile', type=Path, help='path to gold standard complex file')
 parser.add_argument('outfile_M', type=Path, help='path to output file for results, in .csv format')
 parser.add_argument('outfile_A', type=Path, help='path to output file for AUC-PR, in .csv format')
-parser.add_argument('--attribute', type=str, help='evaluation attribute of format "algo-goldstd-ppin", ex: "P5COMP-CYC-Collins"')
-parser.add_argument('--new', type=str, help='evaluation attribute of format "algo-goldstd-ppin", ex: "P5COMP-CYC-Collins"')
+parser.add_argument('--attribs', type=str, help='evaluation attribute of format "algo-goldstd-ppin", ex: "P5COMP-CYC-Collins"')
 args = parser.parse_args()
 
 # Calculate Jaccard similarity between P and C
@@ -148,7 +147,7 @@ if __name__ == '__main__':
     complexfile: Path = args.complexfile
     outfile_M: Path = args.outfile_M
     outfile_A: Path = args.outfile_A
-    printc("Starting evaluation of %s..." % args.attribute, "red")
+    printc("Starting evaluation of %s..." % args.attribs, "red")
     printc("predictsfile:\t%s" % predictsfile)
     printc("complexfile:\t%s" % complexfile)
     printc("outfile_M:\t%s" % outfile_M)    # all metrics, aside from AUC-PR plot points
@@ -204,7 +203,7 @@ if __name__ == '__main__':
     # print("F-score:\t%.6f" % pc.F_measure_Jaccard(refs, clusters))
     
     # ID VARIABLES
-    method, gldstd, ppin = args.attribute.split('-')
+    method, gldstd, ppin = args.attribs.split('-')
     num_predicts = len(clusters)
     num_refs = len(refs)
     
@@ -222,10 +221,13 @@ if __name__ == '__main__':
     separation = pc.clusteringwise_separation(refs_set, predicts_set)
     
     # Collect Results and Append to results.csv Masterfile
-    df.loc[len(df)] = [method, gldstd, ppin, num_predicts, num_refs,
+    results = [method, gldstd, ppin, num_predicts, num_refs,
                        precision, recall, f1, f2, auc,
                        mmr, sensitivity, ppp, accuracy, f_match, separation]
-    df.to_csv('results.csv', mode='a', index=False, header=False)
+    df.loc[len(df)] = results
+    with outfile_M.open('a') as f:
+        f.write(",".join([str(res) for res in results]))
+        f.write("\n")
     
     print(df)
     
