@@ -60,7 +60,7 @@ def remove_duplicate_clusters(clusters, match_thresh):
             if len(clus1.proteins) <= 3 and len(clus2.proteins) <= 3:
                 thresh=1 # If small clusters, they should be equal
             matchscore = match_clusters_lb(clus1.proteins, clus2.proteins)
-            if matchscore >= thresh:
+            if matchscore >= 1:
                 clusters_to_delete.add(clus2.id)
         
         clusters_to_keep.append(clusters[idx1])
@@ -149,8 +149,8 @@ if __name__ == '__main__':
 
     cubco_clusters = read_Clusters(cubcofile, len(c1_clusters))
     print("CUBCO+ clusters before removing duplicates:\t", len(cubco_clusters))
-    # cubco_clusters = remove_duplicate_clusters(cubco_clusters, match_thresh)
-    # print("CUBCO+ clusters after removing duplicates:\t", len(cubco_clusters))
+    cubco_clusters = remove_duplicate_clusters(cubco_clusters, match_thresh)
+    print("CUBCO+ clusters after removing duplicates:\t", len(cubco_clusters))
 
     pc2p_clusters = read_Clusters(pc2pfile, len(c1_clusters)+len(cubco_clusters))
     # print("PC2P clusters before removing duplicates:\t", len(pc2p_clusters))
