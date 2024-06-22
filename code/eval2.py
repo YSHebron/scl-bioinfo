@@ -11,7 +11,7 @@ from utils import printc
 from classes import Cluster
 from pathlib import Path
 
-parser = argparse.ArgumentParser(description='Evaluate results of clustering algorithm. Must follow line format `(size_score): p1 p2 ...`')
+parser = argparse.ArgumentParser(description='Evaluate results of clustering algorithm. Will append to `outfile` Clusters must follow line format `(<size>_<score>): p1 p2 ...`')
 parser.add_argument('predictsfile', type=Path, help='path to predicted clusters file')
 parser.add_argument('complexfile', type=Path, help='path to gold standard complex file')
 parser.add_argument('outfile_M', type=Path, help='path to output file for results, in .csv format')

@@ -1,9 +1,19 @@
 # scl-bioinfo
 
-A bioinformatics-proteomics project that aims to extend parameter-free protein complex prediction methods. Output will be a prediction pipeline containing an improved algorithm that may integrate more than one unsupervised clustering algorithm. Improvements will be based on general performance metrics, currently AUC-PR and F-measaure, but may be composited to include more metrics. Benchmarked algorithms will include the original unmodified algorithms and classical protein complex prediction methods.
+A proteomics project that aims to **augment, extend, and integrate** parameter-free protein complex prediction methods to improve their performance on various protein interaction networks. Focus is on adapting to noisy PPINs and predicting overlapping complexes through purely topological graph clustering. Effort is to be made to not include additional biological information such as ontologies and other annotations, and to improve recall without sacrificing precision.
+
+* Augment - add necessary pre- and post-processing steps to clustering algorithms.
+* Extend - modify clustering algorithm itself as needed, possibly targeting time complexity.
+* Integrate - perform ensemble clustering on multiple clustering algorithms.
+
+Output will be a prediction pipeline that may integrate more than one component unsupervised clustering algorithm. Improvements will be based on general performance metrics such as F-scores and AUC-PR with emphasis on biological significance of results. Benchmarked algorithms will include the unmodified component algorithms when ran independently and classical protein complex prediction methods.
 
 ## Usage
-A pipeline CLI for both Windows and Linux is provided, namely `pipeline.ps1` and `pipeline.sh` respectively. For quick help on their usage, try running `./pipeline.sh -h` if you're on Linux. This will display the following message:
+
+A pipeline CLI for Linux systems are provided, namely `pipeline.sh`.[^1] For quick help on their usage, try running `./pipeline.sh -h` if you're on Linux. This will display the following message:
+
+[^1]: The pipeline CLI for Windows `pipeline.ps1` is still under construction.
+
 ```sh
 usage: ./pipeline.sh [-p [ppinfile]] [-r [reffile]] [-o [outputdir]] [-n [negfile]] [-h]
     
@@ -62,88 +72,16 @@ data/
 ├─ Analysis/ # performance metrics evaluation and plots
 ```
 
-## Working Notes
-
-* Moved long-runner.sh and simple-trainer.py to personal backup.
-* Moved randomized yeast data to personal backup.
-* In preparation for further experiments on generalized clustering algorithms, we have made separate folders inside the `data/Results/` and `data/Analysis/` labeled by which clustering algorithm produced them.
-
 ## TODOs
 
-* Wrap up TODOs in initial Gantt Chart.
-* Filter integrated dataset before PC2P.
-* Apply negatome filtering. Sources: https://github.com/Zhaonan99/NVDT, https://github.com/mattilalab/petrov-et-al-2020, https://github.com/lafleur1/embeddingsPPI/blob/2743925fb9d6489dbe68fc6d0cc70eea8c955a9f/ppiDB/Negatome/Negatome2_combinedStringent.txt
-* Produce other pre- and post-processing steps for PC2P or the BSS family.
+* Granular.
 * Create evaluation that will benchmark main algo based on performance of other classical clustering methods (like MCL).
 * Try other BSS family algorithms (GCC and CUBCO/+).
 * Try other unsupervised (parameter-free) algorithms not in BSS family, use only latest ones.
-* Optimization of PC2P using igraph.
-* Programs only currently tested on Yeast PPINs, if possible try to make room for Human PPINs.
-
-## On Data
-
-**Important:** `data/curated` has been completely git ignored due to the large sizes of its contents. If you need said data, please contact the authors. If you are an author, please see our `Datasets` Teams folder. A ZIP file there is also being constantly updated containing the complete datasets that we use. The directory and ZIP file contains the following:
-
-* BIOGRID_3.0.67_2010
-* BIOGRID_4.4.227_2023
-* Cayetano
-* CYC2008_2008
-* DIP_2017
-* GO_Yeast_2023
-* iRefIndex_2023
-* SGD_GSE3431_2010
-* STRING_2023
-* Yong and Wong
-
-`data/curated` contains raw, preprocessed, enriched, as well as reference Protein Interaction and Complex datasets for the target organism, the yeast *S. Cerevisiae*. A statistical overview of the datasets may be found in `data/overview`. Data collection is guided by the related literature, mainly Srihari (2017), Omranian (2022), and Cayetano (2022).
-
-Data here will be fed to the **prediction pipeline's** entry point at `code`. Intermediate data may be produced and fed back to this directory. Legacy data are obtained for fair comparison with previous papers.
-
-`data/curated` currently contains the yeast datasets below, organized into PPI datasets and protein complex gold standards (large files are gitignored).
-
-Yeast PPI Datasets (and GO annotation):
-
-* BIOGRID 3.0.67 (2010) (large files)
-* BIOGRID 4.4.227 (2023) (large files)
-* DIP PPIN (2017) (large files)
-* iRefIndex (2023)
-* STRING (2023)
-* GO S. Cerevisiae (2023) - topology and annotations
-
-Yeast Gold Standards:
-
-* CYC2008 (2008) (`data/Yeast/CYC_complexes.txt`)
-* SGD GSE3431 (2010) (`data/Yeast/SGD_complexes.txt`)
-
-`data/Yeast/CYC_complexes.txt` and `data/Yeast/CYC_complexes_integrated.txt` are the same. If you need the gitignore'd files, you may find it in our Teams.
-
-### Cayetano (2022) Datasets
-
-`data` also contains the raw DIP and SWC datasets used by Cayetano, procured directly from [https://github.com/avancayetano/cs199-bioinformatics]. You may find these in `data/curated/Cayetano`.
-
-### Omranian (2022) Datasets
-
-Omranian's comparative study used 4 Yeast datasets and 2 Human datasets. The Yeast datasets four are comprised of Collins, Gavin, KroganCore, and KroganExt, which are used for the protein complex prediction. The predicted complexes are then benchmarked against the fifth one, the gold standard CYC2008. You may find the first four in `data/curated/Omranian`, while CYC2008 are already in `data`.
-
-**NOTICE**: The Omranian datasets on Yeast will now be our main datasets. Further modifications can be done to edit the scoring or compositiong of the datasets.
-
-### On Edge Weights
-
-Note that the edge weights between proteins may indicate any of the following (as specified by the dataset):
-
-* Affinity or strength of the interaction
-* Reliability of the interaction (obtained experimentally)
-* Distance of the interaction, as used with shortest paths computation
-
-Please consult the data source for specifications.
-
-### Dataset Updates
-
-We are expanding our testing from just S. Cerevisiae PPINs to also include H. Sapiens, D. Melanogasater, E. Coli, and C. Elegans datasets.
-
-#### PPIN Sources for S. Cerevisiae
-
-[Insert data sources here from IntAct or some other Interactome database]
+* Optimization of CNP-based algorithms using igraph.
+* Programs only currently tested on Yeast PPINs. Try to test on Human PPINs.
+* Further parallelization of pipeline.
+* Use strategic imports from a `main` python file instead of doing the `argparse` route.
 
 ---
 
