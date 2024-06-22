@@ -171,6 +171,9 @@ if __name__ == '__main__':
     # Format: "Method, GldStd, PPIN, Precision, Recall, F1-score, F2-score,
     #          AUC-PR, Separation, F-Match, Accuracy, Sensitivity, PPP, MMR"
     # if outfile_M still doesn't exist, recreate it
+    if not outfile_M.exists():
+        outfile_M.parent.mkdir(parents=True, exist_ok=True)
+        outfile_M.write_text("Method,GldStd,PPIN,Predicts,Refs,Precision,Recall,F1-score,F2-score,AUC-PR,MMR,Sensitivity,PPP,Accuracy,F-Match,Separation\n")
     df = pd.read_csv(outfile_M, index_col=False)
     
     # Setup for AUC-PR (requires scored clusters)
@@ -225,6 +228,7 @@ if __name__ == '__main__':
                        precision, recall, f1, f2, auc,
                        mmr, sensitivity, ppp, accuracy, f_match, separation]
     df.loc[len(df)] = results
+    
     with outfile_M.open('a') as f:
         f.write(",".join([str(res) for res in results]))
         f.write("\n")

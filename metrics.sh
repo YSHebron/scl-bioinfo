@@ -25,7 +25,7 @@ recreate=$2     # true or false
 
 if [ "$recreate" = true ]
 then
-    echo "Method, GldStd, PPIN, Predicts, Refs, Precision, Recall, F1-score, F2-score, AUC-PR, MMR, Sensitivity, PPP, Accuracy, F-Match, Separation" > $resultsfile
+    echo "Method,GldStd,PPIN,Predicts,Refs,Precision,Recall,F1-score,F2-score,AUC-PR,MMR,Sensitivity,PPP,Accuracy,F-Match,Separation" > $resultsfile
 fi
 
 p=
@@ -52,11 +52,11 @@ for gldstd in "${gldstds[@]}"; do
             ;;
         esac
         # P5COMP
-        ./pipeline2.sh -p $p -r $r -o $o \
+        ./pipeline1.sh -p $p -r $r -o $o \
             -n data/Negatome/negatome_2_mix_mapped.txt -f perpair -a "P5COMP-${gldstd}-${ppin}" -R $resultsfile
         # PC2P, CUBCO+, and ClusterOne
         for method in "${methods[@]}"; do
-            ./pipeline3.sh -p $p -r $r -o $o -f perpair -a "${method}-${gldstd}-${ppin}" -R $resultsfile
+            ./pipeline2.sh -p $p -r $r -o $o -f perpair -a "${method}-${gldstd}-${ppin}" -R $resultsfile
         done
     done
 done

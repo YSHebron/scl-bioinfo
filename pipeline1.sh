@@ -22,6 +22,8 @@ options:
     -o [outputdir]      path to output directory (required)
     -n [negfile]        path to negatome (.txt) where each row is (u v) (optional)
     -f [filter]         filtering type (perpair or perprotein)
+    -a [attribs]        attributes for evaluation file name of format 'algo-goldstd-ppin', ex: P5COMP-CYC-Collins
+    -r [resfile]        path to results file for evaluation
     -h                  show this help information"
 }
 
@@ -60,7 +62,9 @@ ppinfile=
 reffile=
 outputdir=
 filtering=
-while getopts ":hp:r:o:n:f:" opt; do
+attribs=
+resfile=
+while getopts ":hp:r:o:n:f:a:R:" opt; do
     case ${opt} in
         h)
             help
@@ -68,6 +72,12 @@ while getopts ":hp:r:o:n:f:" opt; do
             ;;
         f)
             filtering=$OPTARG
+            ;;
+        a)
+            attribs=$OPTARG
+            ;;
+        R)
+            resfile=$OPTARG
             ;;
         p)
             ppinfile=$OPTARG
@@ -128,10 +138,6 @@ postprocessed_PC2P="${outputdir}/PC2P_postprocessed.txt"
 python code/PC2P/PC2P.py $decompfile $predictsfile_PC2P -p mp
 python code/hub_return.py $predictsfile_PC2P $iAdjustCD_outfile $hubfile $filteredfile $postprocessed_PC2P
 
-## NOTE: UNCOMMENT ONLY THE FOLLOWING python LINES ONCE CUBCO+ and ClusterOne CAN SUPPORT DECOMP
-## For parallelization, might separate clustering algorithms from DECOMP (but seq ok for now)
-## TODO: Simplify variables (predictsfile_method to just predictsfile, etc.)
-
 ## 2. CUBCO+ with hub return -> data/Results/Dummy/CUBCO+_predicted.txt, data/Results/Dummy/CUBCO+_postprocessed.txt
 ## Note: omit '+' character from varnames
 echo "Running CUBCO+..."
@@ -153,8 +159,8 @@ python code/ClusterOne/cluster_one_scoring.py $ppinfile $predictsfile_ClusterOne
 
 # Ensemble Clustering
 echo "Finale: Running Ensemble Clustering..."
-P5COMP_clusters="${outputdir}/P5COMP_clusters.txt"
-python code/ensemble.py $postprocessed_ClusterOne $postprocessed_CUBCO $postprocessed_PC2P $P5COMP_clusters
+final_clusters="${outputdir}/${attribs}_clusters.txt"
+python code/ensemble.py $postprocessed_ClusterOne $postprocessed_CUBCO $postprocessed_PC2P $final_clusters
 
 # Evaluation (currently assumes running from root)
-python code/eval.py $postprocessed_ClusterOne $postprocessed_CUBCO $postprocessed_PC2P $P5COMP_clusters $reffile $outputdir
+python code/eval2.py $final_clusters $reffile $resfile auc_pts.csv --attribs $attribs
