@@ -110,7 +110,7 @@ data/
 * Optimization of CNP-based algorithms using `igraph`.
 * Programs only currently tested on Yeast PPINs. Try to scale to Human PPINs and other algorithms.
 * Further parallelization of pipeline.
-* Use strategic imports from a `main` python file instead of doing the `argparse` route. `main` should be the new entrypoint instead of the shell or Powershell scripts.
+* Use strategic imports from a `main` python file instead of doing the `argparse` route. `main` should be the new entrypoint instead of the shell or Powershell scripts. Alternatively, try setting up everything in Jupyter Notebooks (note that .ipynb can also run shell commands from the notebook environment).
 * Make this a pip-installable software.
 
 ---
